@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 
 
-namespace launcher_cae
+namespace senior_project
 {
     class XmlVerification
     {
