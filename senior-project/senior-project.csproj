@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="windows\XmlHelperClass.cs" />
+    <Compile Include="windows\xmlVerification.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,6 +95,45 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\35k58YHr_400x400.jpg" />
+    <Resource Include="Images\add-file-512.png" />
+    <Resource Include="Images\add-user-512.png" />
+    <Resource Include="Images\addfile.png" />
+    <Resource Include="Images\arrow-27-512.png" />
+    <Resource Include="Images\arrow-91-512.png" />
+    <Resource Include="Images\comment-square-512.png" />
+    <Resource Include="Images\download-512.png" />
+    <Resource Include="Images\edit-12-512.png" />
+    <Resource Include="Images\play-3-512.png" />
+    <Resource Include="Images\play-512.png" />
+    <Resource Include="Images\plus-4-24.png" />
+    <Resource Include="Images\plus-4-512.png" />
+    <Resource Include="Images\question-mark-4-512.png" />
+    <Resource Include="Images\splashscreen.png" />
+    <Resource Include="Images\test.png" />
+    <Resource Include="Images\timer-512.png" />
+    <Resource Include="Images\transparent_cae_symbol.png" />
+    <Resource Include="Images\undo-4-512.png" />
+    <Resource Include="Images\user-512.png" />
+    <Resource Include="Images\white_cae_transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="windows\icons\add-user-512.png" />
+    <Resource Include="windows\icons\arrow-27-512.png" />
+    <Resource Include="windows\icons\arrow-91-512.png" />
+    <Resource Include="windows\icons\checked-checkbox-512.png" />
+    <Resource Include="windows\icons\comment-square-512.png" />
+    <Resource Include="windows\icons\comments-512.png" />
+    <Resource Include="windows\icons\edit-6-512.png" />
+    <Resource Include="windows\icons\icons8-menu-512.png" />
+    <Resource Include="windows\icons\menu-4-512.png" />
+    <Resource Include="windows\icons\question-mark-4-512.png" />
+    <Resource Include="windows\icons\splashscreen.png" />
+    <Resource Include="windows\icons\timer-512.png" />
+    <Resource Include="windows\icons\undo-4-512.png" />
+    <Resource Include="windows\icons\x-mark-5-512.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
