@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\ttruo\Desktop\SeniorProject\senior-project\App.xaml
-11151548125
+10-1926221276
 
-81451489767
+17-1625787253
 13-1505183044
-MainWindow.xaml;
+MainWindow.xaml;windows\AddSectionWindow.xaml;windows\AddTestStepWindow.xaml;windows\commentWindow.xaml;windows\MoveSectionorStep.xaml;windows\Redlines.xaml;windows\RedlinesTester.xaml;windows\TestAdmin.xaml;windows\Tester.xaml;windows\userInfoPage.xaml;
 
 False
 

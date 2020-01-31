@@ -1,0 +1,14 @@
+﻿<Window x:Class="senior_project.commentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:senior_project"
+        mc:Ignorable="d"
+        Title="Comment" Height="250" Width="500">
+    <Grid>
+        <TextBox x:Name="commentBox" HorizontalAlignment="Left" Height="67" TextWrapping="Wrap"  VerticalAlignment="Top" Width="421" Margin="38,22,0,0" PreviewMouseDown="CommentBox_PreviewMouseDown"/>
+        <Button x:Name="submitButton" IsDefault="True" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="206,178,0,0" Click="SubmitButton_Click"/>
+
+    </Grid>
+</Window>

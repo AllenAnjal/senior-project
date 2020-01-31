@@ -1,0 +1,49 @@
+﻿<Window x:Class="senior_project.RedlinesTester"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:senior_project"
+        mc:Ignorable="d"
+        Title="Redline Proposal" Height="450" Width="800" Background="#FF858181">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="160*"/>
+            <ColumnDefinition Width="597*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="58*"/>
+            <RowDefinition Height="287*"/>
+            <RowDefinition Height="65*"/>
+        </Grid.RowDefinitions>
+        <ComboBox 
+            x:Name="ActionsList" 
+            HorizontalAlignment="Left" 
+            Text="Select Redline Action to Take"
+            Margin="41,5,0,0" 
+            VerticalAlignment="Top" 
+            Width="544" 
+            Height="36"
+            FontSize="21"
+            SelectionChanged="ComboBox_SelectionChanged" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1">
+        </ComboBox>
+        <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="From Section" VerticalAlignment="Top" FontSize="21" Height="36" Width="128" Grid.Row="2" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,41,0,0" TextWrapping="Wrap" Text="To Section" VerticalAlignment="Top" FontSize="21" Height="36" Width="128" Grid.Row="2" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,82,0,0" TextWrapping="Wrap" Text="From Step" VerticalAlignment="Top" FontSize="21" Height="36" Width="128" Grid.Row="2" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,123,0,0" TextWrapping="Wrap" Text="To Step" VerticalAlignment="Top" FontSize="21" Height="36" Width="128" Grid.Row="2"  Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Proposed Text" VerticalAlignment="Top" Height="36" FontSize="21" Width="184" Grid.Row="2" Grid.Column="1" Margin="10,164,0,0" Grid.ColumnSpan="2"/>
+
+
+
+        <Button Content="Save Proposal" Grid.Column="2" HorizontalAlignment="Left" Margin="451,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="136" Height="55" Click="Button_Click"/>
+        <TextBox x:Name="FromSection" PreviewTextInput="NumberValidationTextBox" Grid.Column="2" HorizontalAlignment="Left" Background="White" Margin="0,0,0,0" Grid.Row="2" FontSize="21" Height="36" Width="154" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="ToSection" PreviewTextInput="NumberValidationTextBox" Grid.Column="2" HorizontalAlignment="Left" Background="White" Margin="0,41,0,0" Grid.Row="2" FontSize="21" Height="36" Width="154" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+        <TextBox x:Name="FromStep" PreviewTextInput="NumberValidationTextBox" Grid.Column="2" HorizontalAlignment="Left" Background="White" Margin="0,82,0,0" Grid.Row="2" FontSize="21" Height="36" Width="154" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+        <TextBox x:Name="ToStep" PreviewTextInput="NumberValidationTextBox" Grid.Column="2" HorizontalAlignment="Left" Background="White" Margin="0,123,0,0" Grid.Row="2" FontSize="21" Height="36" Width="154" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+        <TextBox x:Name="ProposedText" Grid.Column="2" HorizontalAlignment="Left" Background="White" Margin="0,164,0,0" Grid.Row="2" FontSize="21" Height="123" Width="446" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+
+
+    </Grid>
+</Window>

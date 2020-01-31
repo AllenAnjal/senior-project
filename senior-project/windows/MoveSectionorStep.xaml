@@ -1,0 +1,33 @@
+﻿<Window x:Class="senior_project.MoveSectionorStep"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:senior_project"
+        mc:Ignorable="d"
+        Title="Move Section or Step" Height="397.727" Width="611.545" ResizeMode="CanMinimize">
+    <Grid Margin="0,0,-6,-1" Background="LightSlateGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="126*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="163*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="176*"/>
+            <ColumnDefinition Width="47*"/>
+            <ColumnDefinition Width="43*"/>
+            <ColumnDefinition Width="383*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="From Section" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="66,36,120,0" Height="46" Width="175" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Bold" Background="LightGray" BorderThickness="2" BorderBrush="Black" Grid.Column="3"/>
+        <Button x:Name="save1" IsDefault="True" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" Width="132" Margin="119,106,0,0" Height="40" Click="save1_Click"  Grid.Column="3" FontSize="20" Background="DodgerBlue" FontWeight="Bold" BorderThickness="2" Foreground="DarkBlue" BorderBrush="AntiqueWhite" Grid.Row="2" RenderTransformOrigin="0.235,0.575"/>
+        <Label Content="From Step" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="66,19,120,0" Height="46" Width="175" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Bold" Background="LightGray" BorderThickness="2" BorderBrush="Black" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2"/>
+        <Label Content="To Section" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="66,94,120,0" Height="46" Width="175" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Bold" Background="LightGray" BorderThickness="2" BorderBrush="Black" Grid.Column="3"/>
+        <Label Content="To Step" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="66,34,120,0" Height="46" Width="175" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Bold" Background="LightGray" BorderThickness="2" BorderBrush="Black" Grid.Row="2" Grid.Column="3"/>
+        <TextBox x:Name="FromSectBox" Grid.Column="3" HorizontalAlignment="Left" Height="46" Margin="257,36,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="67" PreviewTextInput="NumberValidationTextBox" TabIndex="0" IsEnabled="False"/>
+        <TextBox x:Name="ToStepBox" Grid.Column="3" HorizontalAlignment="Left" Height="46" Margin="257,34,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="67" Grid.Row="2" PreviewTextInput="NumberValidationTextBox" TabIndex="3" IsEnabled="False"/>
+        <TextBox x:Name="FromStepBox" Grid.Column="3" HorizontalAlignment="Left" Height="46" Margin="257,19,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="67" Grid.Row="1" Grid.RowSpan="2" PreviewTextInput="NumberValidationTextBox" TabIndex="2" IsEnabled="False"/>
+        <TextBox x:Name="ToSectBox" Grid.Column="3" HorizontalAlignment="Left" Height="46" Margin="257,94,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="67" PreviewTextInput="NumberValidationTextBox" TabIndex="1" IsEnabled="False"/>
+        <RadioButton x:Name="MoveSect" Grid.ColumnSpan="4"  FontSize="35" Content="Move Section" HorizontalAlignment="Left" Height="42" Margin="34,103,0,0" VerticalAlignment="Top" Width="242" Grid.RowSpan="2" Checked="RadioButton_Checked"/>
+        <RadioButton x:Name="MoveStep" Grid.ColumnSpan="4" Content="Move Test Step" FontSize="35" HorizontalAlignment="Left" Height="51" Margin="34,45,0,0" VerticalAlignment="Top" Width="255" Grid.Row="1" Grid.RowSpan="2" Checked="RadioButton_Checked_1"/>
+    </Grid>
+</Window>

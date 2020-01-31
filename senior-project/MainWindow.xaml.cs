@@ -47,8 +47,8 @@ namespace senior_project
             if (xmlProcedure != null)
             {
                 this.Hide();
-              //  Tester tester = new Tester(xmlProcedure);
-                //tester.Show();
+                Tester tester = new Tester(xmlProcedure);
+                tester.Show();
             }
             else
             {
@@ -62,7 +62,8 @@ namespace senior_project
             if (xmlProcedure != null)
             {
                 this.Hide();
-              //  TestAdmin admin = new TestAdmin(xmlProcedure, false);
+                TestAdmin admin = new TestAdmin(xmlProcedure, false);
+                admin.Show();
             }
             else
             {
@@ -76,7 +77,8 @@ namespace senior_project
             if (xmlProcedure != null)
             {
                 this.Hide();
-             //   TestAdmin admin = new TestAdmin(xmlProcedure, true);
+                TestAdmin admin = new TestAdmin(xmlProcedure, true);
+                admin.Show();
             }
             else
             {
