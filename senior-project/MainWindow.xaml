@@ -13,6 +13,7 @@
         Width="360"
         Height="548.495">
 
+    <!-- This is a grid. -->
     <Grid
             Background="#025DBA"
             Margin="0,0,0,-1">
