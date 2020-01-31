@@ -32,6 +32,7 @@ namespace senior_project
         public string TimeElapsed { get; set; }
         private DispatcherTimer timer;
         private DateTime start;
+        bool showTable = false;
 
 
         public Tester(TestProcedure newProcedure)
@@ -52,6 +53,19 @@ namespace senior_project
     
     #region buttons
 
+        private void TocButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (showTable)
+            {
+                treeView1.Visibility = Visibility.Visible;
+                showTable = false;
+            }
+            else
+            {
+                treeView1.Visibility = Visibility.Hidden;
+                showTable = true;
+            }
+        }
     private void passAction()
         {
             hasCommented = false;

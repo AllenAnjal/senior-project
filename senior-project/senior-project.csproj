@@ -183,5 +183,8 @@
     <Resource Include="windows\icons\undo-4-512.png" />
     <Resource Include="windows\icons\x-mark-5-512.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="windows\icons\icons8-index-52.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

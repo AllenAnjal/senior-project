@@ -35,26 +35,25 @@
                 Width="40"
                 Visibility="Hidden"
                 Opacity=".5"
+                FontSize="6"
                 PreviewMouseLeftButtonUp="TreeView1_PreviewMouseLeftButtonUp_1"
                 SelectedItemChanged="TreeView1_SelectedItemChanged"
                 Grid.Column="0" Margin="0,0,0,0" Grid.RowSpan="2"
                 ></TreeView>
-            <Button Height="10" Name="tocButton" Command="{Binding showTOC}" CommandParameter="{Binding ElementName=buttonImage, Path=Source}">
-                <Image Name="buttonImage">
-                    <Image.Style>
-                        <Style TargetType="{x:Type Image}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding isToggle}" Value="True">
-                                    <Setter Property="Source" Value="icons\arrow-91-512.png"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding isToggle}" Value="False">
-                                    <Setter Property="Source" Value="icons\arrow-27-512.png"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
+            <Button Name="tocButton" 
+                Width="6" Height="6" 
+                Margin="0,0,0,-1"
+                Click="TocButton_Click"
+                ToolTip="Toggle the table of contents" 
+                VerticalAlignment="Top"
+                HorizontalAlignment="left"
+                BorderThickness="0"
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0">
+                <Image Source="icons\icons8-index-52.png" RenderTransformOrigin="0.498,0.389"></Image>
             </Button>
+
+
+
             <Button Name="passButton" 
                 Width="11" Height="13" 
                 Margin="0,0,0,-1"
