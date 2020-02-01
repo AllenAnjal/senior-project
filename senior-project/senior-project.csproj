@@ -60,6 +60,9 @@
     </ApplicationDefinition>
     <Compile Include="windows\AddSectionWindow.xaml.cs" />
     <Compile Include="windows\AddTestStepWindow.xaml.cs" />
+    <Compile Include="windows\askForFilename.xaml.cs">
+      <DependentUpon>askForFilename.xaml</DependentUpon>
+    </Compile>
     <Compile Include="windows\commentWindow.xaml.cs" />
     <Compile Include="windows\MoveSectionorStep.xaml.cs" />
     <Compile Include="windows\Redlines.xaml.cs" />
@@ -88,6 +91,10 @@
     <Page Include="windows\AddTestStepWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="windows\askForFilename.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="windows\commentWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

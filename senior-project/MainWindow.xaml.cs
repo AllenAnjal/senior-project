@@ -31,7 +31,7 @@ namespace senior_project
             InitializeComponent();
         }
         TestProcedure xmlProcedure = new TestProcedure();
-
+        
 
         #endregion
 
@@ -73,12 +73,14 @@ namespace senior_project
 
         private void create_btn(object sender, RoutedEventArgs e)
         {
-            xmlProcedure = XmlVerification.loadXml();
+            askForFilename ask = new askForFilename();
+            
+            //xmlProcedure = XmlVerification.loadXml();
             if (xmlProcedure != null)
             {
                 this.Hide();
-                TestAdmin admin = new TestAdmin(xmlProcedure, true);
-                admin.Show();
+                ask.Show();
+                //admin.Show();
             }
             else
             {

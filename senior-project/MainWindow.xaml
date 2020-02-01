@@ -11,8 +11,11 @@
         FontSize="14"
         Closing="Window_Closing"
         Width="360"
-        Height="548.495">
-
+        Height="548.495"
+        ResizeMode="NoResize"
+        
+        >
+    
     <!-- This is a grid. -->
     <Grid
             Background="#025DBA"
