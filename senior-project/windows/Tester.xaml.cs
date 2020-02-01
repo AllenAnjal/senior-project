@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -29,11 +28,6 @@ namespace senior_project
         String commentDefault = "Leave a comment";
         TestProcedure xmlProcedure;
         bool hasCommented = false;
-        public string TimeElapsed { get; set; }
-        private DispatcherTimer timer;
-        private DateTime start;
-        bool showTable = false;
-
 
         public Tester(TestProcedure newProcedure)
         {
@@ -45,28 +39,11 @@ namespace senior_project
 
             XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
             beginTest();
-
-
         }
 
+        #region buttons
 
-    
-    #region buttons
-
-        private void TocButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (showTable)
-            {
-                treeView1.Visibility = Visibility.Visible;
-                showTable = false;
-            }
-            else
-            {
-                treeView1.Visibility = Visibility.Hidden;
-                showTable = true;
-            }
-        }
-    private void passAction()
+        private void passAction()
         {
             hasCommented = false;
             writeStep(true);
@@ -91,11 +68,11 @@ namespace senior_project
             {
                 passAction();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
-           
+
         }
 
         private void FailButton_Click(object sender, RoutedEventArgs e)
@@ -110,13 +87,13 @@ namespace senior_project
             }
         }
 
-
+       
 
         public void writeStep(bool pass)
         {
             TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
 
-            if(item?.Tag != null && item?.Tag is TestProcedureSectionTest_Step)
+            if (item?.Tag != null && item?.Tag is TestProcedureSectionTest_Step)
             {
                 TestProcedureSectionTest_Step step = ((TestProcedureSectionTest_Step)item.Tag);
                 if (pass)
@@ -148,18 +125,16 @@ namespace senior_project
         {
             TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
 
-            if(item?.Tag != null && item.Tag is TestProcedureSectionTest_Step)
+            if (item?.Tag != null && item.Tag is TestProcedureSectionTest_Step)
             {
                 String imagePath = ((TestProcedureSectionTest_Step)item.Tag).Image.ToString();
 
-                if(File.Exists(imagePath))
+                if (File.Exists(imagePath))
                 {
                     Process.Start(imagePath);
                 }
             }
         }
-
-
 
         private void SaveXmlButton_Click(object sender, RoutedEventArgs e)
         {
@@ -168,7 +143,7 @@ namespace senior_project
             saveFile.Filter = "XML Documents (.xml)|*.xml";
             saveFile.FileName = "XMLSave";
 
-           if(saveFile.ShowDialog().GetValueOrDefault())
+            if (saveFile.ShowDialog().GetValueOrDefault())
             {
                 Console.WriteLine(saveFile.FileName);
             }
@@ -176,24 +151,24 @@ namespace senior_project
             XmlVerification.writeXmltoFile(xmlProcedure, saveFile.FileName);
         }
         #endregion
-        
+
         #region TreeView
         private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            //updateTextBoxes();
+            updateTextBoxes();
         }
 
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
-           // updateTextBoxes();
+            updateTextBoxes();
         }
         //Initialize the treeView to section 0, step 0 
-        
-            
+
+
         //Navigate to next step in test procedure
-        
+
         #endregion
-            
+
         #region Test Steps
         private void forwardStep()
         {
@@ -248,24 +223,23 @@ namespace senior_project
         }
         #endregion
 
-        
+
         private void updateTextBoxes()
         {
             TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-            if(item?.Tag is TestProcedureSectionTest_Step)
+            if (item?.Tag is TestProcedureSectionTest_Step)
             {
                 TestProcedureSectionTest_Step step = (TestProcedureSectionTest_Step)item.Tag;
-                /*
+
                 stepBox.Text = step.id.ToString();
                 stationBox.Text = step.Station.ToString();
                 controlActionBox.Text = step.Control_Action.ToString();
                 expectedResultBox.Text = step.Expected_Result.ToString();
 
-                imageButtonChange(step);
-                */
+              
             }
         }
-        
+
         private void Window_Closed(object sender, EventArgs e)
         {
             MainWindow t = new MainWindow();
@@ -283,7 +257,7 @@ namespace senior_project
             {
                 loadComment();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
@@ -292,7 +266,7 @@ namespace senior_project
         private void loadComment()
         {
             TestProcedureSectionTest_Step step = XmlVerification.getCurrentStep(ref treeView1);
-            if(step != null && !hasCommented)
+            if (step != null && !hasCommented)
             {
                 commentWindow newWindow = new commentWindow(ref step);
                 newWindow.ShowDialog();
@@ -301,7 +275,7 @@ namespace senior_project
                     hasCommented = true;
                     XmlVerification.writeXmltoFile(xmlProcedure, "tmp.xml");
                 }
-            }          
+            }
         }
     }
 }

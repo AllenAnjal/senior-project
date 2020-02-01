@@ -13,11 +13,11 @@
     <Grid>
         <Label
             Foreground="White"
-            Content="Enter in xml filename to be created" Margin="22,10,10,35"
+            Content="Enter in xml filename to be created" Margin="18,10,10,35"
             />
-        <StackPanel  Background="White" Opacity=".5" Margin="10,36,10,49">
-            <TextBlock x:Name="nameBox" Height="26" Margin="5"/>
-        </StackPanel>
+
+        <TextBox x:Name="nameBox" HorizontalAlignment="Center" Height="20" TextWrapping="Wrap"  VerticalAlignment="Center" Width="200" Margin="0,0,0,0" />
+
         <Button
             Height="20"
             Click="SubmitButton"

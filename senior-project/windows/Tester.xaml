@@ -11,98 +11,245 @@
     Width="800"
     Closed="Window_Closed">
     <Viewbox
-        Stretch="Fill"  Height="auto">
+        Stretch="Fill">
+        <Viewbox.ContextMenu>
+            <ContextMenu>
+                <MenuItem
+                    Header="Exit"
+                    Click="Exit_Button" />
+            </ContextMenu>
+        </Viewbox.ContextMenu>
         <Grid
-            Height="auto"
-            Width="auto"
-            Background="White">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="88.313"/>
-                <RowDefinition Height="11.687"/>
-            </Grid.RowDefinitions>
-
+            Height="421"
+            Width="786"
+            
+            Background="white">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
                 <ColumnDefinition
-                    Width="61" />
+                    Width="101*" />
+                <ColumnDefinition
+                    Width="26*" />
+                <ColumnDefinition
+                    Width="266*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding TimeElapsed}" VerticalAlignment="Top"  HorizontalAlignment="Right" Grid.Column="1" FontSize="4" Margin="0,0,3,0"/>
             <TreeView
                 x:Name="treeView1"
                 IsEnabled="True"
                 Background="#025dba"
-                Height="Auto"
-                Width="40"
-                Visibility="Hidden"
                 Opacity=".5"
-                FontSize="6"
+                Margin="0,0,37,0"
+                Height="421"
+                VerticalAlignment="Bottom"
+                FontSize="22"
                 PreviewMouseLeftButtonUp="TreeView1_PreviewMouseLeftButtonUp_1"
                 SelectedItemChanged="TreeView1_SelectedItemChanged"
-                Grid.Column="0" Margin="0,0,0,0" Grid.RowSpan="2"
-                ></TreeView>
-            <Button Name="tocButton" 
-                Width="6" Height="6" 
-                Margin="0,0,0,-1"
-                Click="TocButton_Click"
-                ToolTip="Toggle the table of contents" 
-                VerticalAlignment="Top"
-                HorizontalAlignment="left"
-                BorderThickness="0"
-                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0">
-                <Image Source="icons\icons8-index-52.png" RenderTransformOrigin="0.498,0.389"></Image>
-            </Button>
-
-
-
-            <Button Name="passButton" 
-                Width="11" Height="13" 
-                Margin="0,0,0,-1"
+                Grid.ColumnSpan="2" />
+            <Viewbox
+                x:Name="buttonGrid"
+                Width="569"
+                Grid.Column="1"
+                Margin="15,0,0,5"
+                StretchDirection="Both"
+                VerticalAlignment="Bottom"
+                Stretch="Fill"
+                Grid.ColumnSpan="2" />
+            <Button
+                x:Name="passButton"
+                ToolTip="Press to pass step"
                 Click="PassButton_Click"
-                ToolTip="Pass Step" 
-                VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Grid.Row="1"
-                BorderThickness="0"
-                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1">
-                <Image Source="icons\checked-checkbox-512.png" RenderTransformOrigin="0.498,0.389"></Image>
+                Grid.Column="2" Margin="401,366,80,10"
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="icons\checked-checkbox-512.png" ></Image>
             </Button>
-            <Button Name="failButton" 
-                Width="11" Height="13" 
-                Margin="0,0,11,-10"
+            <Button
+                x:Name="failButton"
+                ToolTip="Press to fail step and leave comment"
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                
                 Click="FailButton_Click"
-                ToolTip="Fail Step" 
-                VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Grid.Row="1"
-                BorderThickness="0"
-                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1">
-                <Image Source="icons\x-mark-5-512.png" RenderTransformOrigin="0.498,0.389"></Image>
+                Grid.Column="2" Margin="460,366,10,10"
+                >
+                <Image Source="icons\x-mark-5-512.png" ></Image>
             </Button>
-            <Button Name="redlineButton" 
-                Width="11" Height="13" 
-                Margin="0,0,23,-1"
+            <Button
+                x:Name="redlineButton"
+                ToolTip="Leave a redline suggestion"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="67"
+                Grid.Column="2"
+                Margin="329,366,0,0"
+                Height="45"
                 Click="RedlineButton_Click"
-                ToolTip="Suggest a redline" 
-                VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Grid.Row="1"
-                BorderThickness="0"
-                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1">
-                <Image Source="icons\edit-6-512.png" RenderTransformOrigin="0.498,0.389"></Image>
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="icons\edit-6-512.png"/>
             </Button>
-            <Button Name="commentButton" 
-                Width="11" Height="13" 
-                Margin="0,0,33,-1"
-                Click="CommentButton_Click"
-                ToolTip="Leave a comment" 
+            <Grid
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Height="34"
+                Margin="45,30,0,0"
                 VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Grid.Row="1"
-                BorderThickness="0"
-                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1">
+                Width="529"
+                Background="#FF9B9898"
+                Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="56*" />
+                    <ColumnDefinition
+                        Width="131*" />
+                    <ColumnDefinition
+                        Width="146*" />
+                    <ColumnDefinition
+                        Width="196*" />
+                    <ColumnDefinition
+                        Width="0*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Content="Step"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Height="34"
+                    Width="56"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" />
+                <Label
+                    Content="Station"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Height="34"
+                    Width="132"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    Grid.ColumnSpan="2"
+                    Margin="55,0,0,0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" />
+                <Label
+                    Content="Control Action"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Height="34"
+                    Width="147"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    Grid.ColumnSpan="2"
+                    Margin="130,0,0,0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" />
+                <Label
+                    Content="Expected Result"
+                    Grid.Column="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Height="34"
+                    Width="197"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    Grid.ColumnSpan="2"
+                    Margin="145,0,0,0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" />
+            </Grid>
+            <Grid
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Height="73"
+                Margin="45,64,0,0"
+                VerticalAlignment="Top"
+                Width="529"
+                Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="56*" />
+                    <ColumnDefinition
+                        Width="131*" />
+                    <ColumnDefinition
+                        Width="146*" />
+                    <ColumnDefinition
+                        Width="196*" />
+                    <ColumnDefinition
+                        Width="0*" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    x:Name="stepBox"
+                    HorizontalAlignment="Left"
+                    Height="74"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Top"
+                    Width="56"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    Margin="0,-1,0,0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True" />
+                <TextBox
+                    x:Name="stationBox"
+                    HorizontalAlignment="Left"
+                    Height="74"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Top"
+                    Width="132"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    Margin="55,-1,0,0"
+                    Grid.ColumnSpan="2"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True" />
+                <TextBox
+                    x:Name="controlActionBox"
+                    HorizontalAlignment="Left"
+                    Height="74"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Top"
+                    Width="147"
+                    Grid.Column="1"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    Margin="130,-1,0,0"
+                    Grid.ColumnSpan="2"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True" />
+                <TextBox
+                    x:Name="expectedResultBox"
+                    HorizontalAlignment="Left"
+                    Height="74"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Top"
+                    Width="197"
+                    Grid.Column="2"
+                    BorderBrush="Black"
+                    BorderThickness="1.0"
+                    Margin="145,-1,0,0"
+                    Grid.ColumnSpan="2"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsReadOnly="True" />
+            </Grid>
+
+            <Button
+                x:Name="commentButton"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="65"
+                ToolTip="Leave a comment"
+                Grid.Column="2"
+                Margin="264,366,0,0"
+                Click="CommentButton_Click"
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Height="45">
                 <Image Source="icons\comments-512.png" ></Image>
             </Button>
-        </Grid> 
+           
+            
+
+
+
+        </Grid>
     </Viewbox>
 </Window>
-    

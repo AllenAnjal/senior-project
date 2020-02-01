@@ -36,6 +36,7 @@ namespace senior_project
             createFile(file);
            // xmlProcedure = XmlVerification.loadXml(file);
             TestAdmin admin = new TestAdmin(xmlProcedure, true);
+            admin.Show();
 
         }
         private void createFile(string path)
