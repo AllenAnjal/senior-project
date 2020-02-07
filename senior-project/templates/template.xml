@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Test_Procedure xmlns="http://tempuri.org/ProcedureSchema.xsd">
+  <Procedure_Heading>
+    <Name >CAE Testing</Name>
+    <Signature />
+    <Organization />
+    <Date />
+    <Time />
+    <Load_Version />
+    <Description />
+    <System />
+    <Severity />
+    <Revision>1</Revision>
+  </Procedure_Heading>
+  <Procedure_Sections>
+    <Section id="1">
+      <Heading>1.0 IOS DORT TESTS</Heading>
+      <Description>Short Description</Description>
+      <Section_Step id="1">
+        <Station>IOS</Station>
+        <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
+        <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
+        <Pass>False</Pass>
+        <Fail>False</Fail>
+        <Comments />
+        <Image />
+      </Section_Step>
+      <Section_Step id="2">
+        <Station>IOS</Station>
+        <Control_Action>Click the Simulator Maintenance page from the left menu.</Control_Action>
+        <Expected_Result>The Simulator Maintenance page is displayed.</Expected_Result>
+        <Pass>False</Pass>
+        <Fail>False</Fail>
+        <Comments />
+        <Image />
+      </Section_Step>
+      <Section_Step id="3">
+        <Station>Station Orig S1, step 3</Station>
+        <Control_Action>Control Action s1 st3</Control_Action>
+        <Expected_Result>ExpResult s1, st 3</Expected_Result>
+        <Pass>False</Pass>
+        <Fail>False</Fail>
+        <Comments />
+      </Section_Step>
+      <Section_Step id="4">
+        <Station>Station Orig S1, step 4</Station>
+        <Control_Action>ControlAction s1 st3</Control_Action>
+        <Expected_Result>ExpResult s1, st3</Expected_Result>
+        <Pass>False</Pass>
+        <Fail>False</Fail>
+        <Comments />
+      </Section_Step>
+    </Section>
+    <Section id="2">
+      <Heading>New Heading</Heading>
+      <Description>New Desc</Description>
+       <Section_Step id="1">
+        <Station>sec 2 st 1</Station>
+        <Control_Action>S2 Control Action</Control_Action>
+        <Expected_Result>S2 EXp Result</Expected_Result>
+        <Pass>False</Pass>
+        <Fail>False</Fail>
+        <Comments />
+        <Image />
+      </Section_Step>
+       <Section_Step id="2">
+        <Station>sec 2 st 2</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>False</Pass>
+        <Fail>False</Fail>
+        <Comments />
+        <Image />
+      </Section_Step>
+    </Section>
+  </Procedure_Sections>
+  <Procedure_Redlines>RED
+    
+  </Procedure_Redlines>
+
+  <xs:schema id="Procedure_Schema"
+      targetNamespace="http://tempuri.org/ProcedureSchema.xsd"
+      elementFormDefault="qualified"
+      xmlns="http://tempuri.org/ProcedureSchema.xsd"
+      xmlns:mstns="http://tempuri.org/ProcedureSchema.xsd"
+      xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+    <xs:element name="Test_Procedure">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element name="Procedure_Heading" msdata:Ordinal="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Name" type="xs:string"/>
+                <xs:element name="Signature" type="xs:string"/>
+                <xs:element name="Organization" type="xs:string"/>
+                <xs:element name="Date" type="xs:string"/>
+                <xs:element name="Time" type="xs:string"/>
+                <xs:element name="Load_Version" type="xs:string"/>
+                <xs:element name="Description" type="xs:string"/>
+                <xs:element name="System" type="xs:string"/>
+                <xs:element name="Severity" type="xs:string"/>
+                <xs:element name="Revision" type="xs:unsignedShort" default="1"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Procedure_Sections" msdata:Ordinal="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Section" maxOccurs="unbounded" minOccurs="1">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="Heading" type="xs:string"/>
+                      <xs:element name="Description" type="xs:string"/>
+                      <xs:element name="Section_Step" maxOccurs="unbounded" minOccurs="1">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="Station" type="xs:string"/>
+                            <xs:element name="Control_Action" type="xs:string"/>
+                            <xs:element name="Expected_Result" type="xs:string"/>
+                            <xs:element name="Pass" default="false"/>
+                            <xs:element name="Fail" default="false"/>
+                            <xs:element name="Comments" type="xs:string"/>
+                            <xs:element name="Image" minOccurs="0"/>
+                          </xs:sequence>
+                          <xs:attribute name="id" type="xs:unsignedShort" use="required"/>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:unsignedShort" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Procedure_Redlines" maxOccurs="unbounded" msdata:Ordinal="2">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:any maxOccurs="unbounded" minOccurs="0"></xs:any>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+
+  </xs:schema>
+</Test_Procedure>

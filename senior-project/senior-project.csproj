@@ -61,6 +61,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileNameWindow.xaml.cs">
+      <DependentUpon>FileNameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="procedureSchema.cs">
+      <DependentUpon>procedureSchema.xsd</DependentUpon>
+    </Compile>
     <Compile Include="windows\AddSectionWindow.xaml.cs" />
     <Compile Include="windows\AddTestStepWindow.xaml.cs" />
     <Compile Include="windows\askForFilename.xaml.cs">
@@ -75,6 +81,11 @@
     <Compile Include="windows\userInfoPage.xaml.cs" />
     <Compile Include="windows\XmlHelperClass.cs" />
     <Compile Include="windows\xmlVerification.cs" />
+    <Compile Include="XmlSchemaReadWriteExample.cs" />
+    <Page Include="FileNameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -146,6 +157,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="procedureSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -201,6 +215,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Graphicloads-Transport-Airplane-5.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="templates\procedure_template.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="templates\template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

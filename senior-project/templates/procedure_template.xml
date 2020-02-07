@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Test_Procedure>
+<Test_Procedure xmlns="http://tempuri.org/ProcedureSchema.xsd">
   <Procedure_Heading>
     <Name >CAE Testing</Name>
     <Signature />
@@ -10,13 +10,13 @@
     <Description />
     <System />
     <Severity />
-    <Revision>1</Revision>/>
+    <Revision>1</Revision>
   </Procedure_Heading>
-  <Sections>
+  <Procedure_Sections>
     <Section id="1">
       <Heading>1.0 IOS DORT TESTS</Heading>
       <Description>Short Description</Description>
-      <Section_Step id="1">
+      <Test_Step id="1">
         <Station>IOS</Station>
         <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
         <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
@@ -24,8 +24,8 @@
         <Fail>False</Fail>
         <Comments />
         <Image />
-      </Section_Step>
-      <Section_Step id="2">
+      </Test_Step>
+      <Test_Step id="2">
         <Station>IOS</Station>
         <Control_Action>Click the Simulator Maintenance page from the left menu.</Control_Action>
         <Expected_Result>The Simulator Maintenance page is displayed.</Expected_Result>
@@ -33,28 +33,28 @@
         <Fail>False</Fail>
         <Comments />
         <Image />
-      </Section_Step>
-      <Section_Step id="3">
+      </Test_Step>
+      <Test_Step id="3">
         <Station>Station Orig S1, step 3</Station>
         <Control_Action>Control Action s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st 3</Expected_Result>
         <Pass>False</Pass>
         <Fail>False</Fail>
         <Comments />
-      </Section_Step>
-      <Section_Step id="4">
+      </Test_Step>
+      <Test_Step id="4">
         <Station>Station Orig S1, step 4</Station>
         <Control_Action>ControlAction s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st3</Expected_Result>
         <Pass>False</Pass>
         <Fail>False</Fail>
         <Comments />
-      </Section_Step>
+      </Test_Step>
     </Section>
     <Section id="2">
       <Heading>New Heading</Heading>
       <Description>New Desc</Description>
-       <Section_Step id="1">
+       <Test_Step id="1">
         <Station>sec 2 st 1</Station>
         <Control_Action>S2 Control Action</Control_Action>
         <Expected_Result>S2 EXp Result</Expected_Result>
@@ -62,8 +62,8 @@
         <Fail>False</Fail>
         <Comments />
         <Image />
-      </Section_Step>
-       <Section_Step id="2">
+      </Test_Step>
+       <Test_Step id="2">
         <Station>sec 2 st 2</Station>
         <Control_Action>Control Action</Control_Action>
         <Expected_Result>Exp Result</Expected_Result>
@@ -71,10 +71,10 @@
         <Fail>False</Fail>
         <Comments />
         <Image />
-      </Section_Step>
+      </Test_Step>
     </Section>
-  </Sections>
-  <RedlinesList>
+  </Procedure_Sections>
+  <Procedure_Redlines>
     <TextList>
         <RedlineText id="1">
 			<ActionToTake>ExpectedResult</ActionToTake>
@@ -127,5 +127,5 @@
             <ToSection></ToSection> 
         </RedlineSection>
     </SectionList> 
-  </RedlinesList>
-</Tes_tProcedure>
+  </Procedure_Redlines>
+</Test_Procedure>

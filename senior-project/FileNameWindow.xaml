@@ -1,0 +1,32 @@
+﻿<Window x:Class="senior_project.FileNameWindow"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:senior_project"
+      mc:Ignorable="d" 
+      Height="200"
+      Width="300"
+      Title="Enter File Name" FontFamily="Source Code Pro"
+        >
+
+    <Grid Margin="15">
+        
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+       
+            <TextBox Name="txtAnswer" Grid.Column="1" Grid.Row="0" MinWidth="150" MinHeight="24" TextAlignment="Left" FontFamily="Source Code Pro" VerticalContentAlignment="Center" Margin="0,30,0,0">Answer</TextBox>
+            <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+                <Button IsDefault="True" Name="DialogOk" Click="DialogOk_Click" MinWidth="60" Margin="0,0,10,0" FontFamily="Source Code Pro">_Ok</Button>
+                <Button IsCancel="True" MinWidth="60" FontFamily="Source Code Pro">_Cancel</Button>
+            </WrapPanel>
+            
+    </Grid>
+</Window>

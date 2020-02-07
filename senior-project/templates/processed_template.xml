@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<Test_Procedure xmlns="http://tempuri.org/ProcedureSchema.xsd" xsi:schemaLocation="http://tempuri.org/ProcedureSchema.xsd ..\Procedure_Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Procedure_Heading>
+    <Name />
+    <Signature />
+    <Organization />
+    <Date />
+    <Time />
+    <Load_Version />
+    <Description />
+    <System />
+    <Severity />
+    <Revision>1</Revision>
+  </Procedure_Heading>
+  <Procedure_Sections>
+    <Section id="9236">
+      <Heading />
+      <Description />
+      <Section_Step id="5615">
+        <Station />
+        <Control_Action />
+        <Expected_Result />
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+      </Section_Step>
+    </Section>
+  </Procedure_Sections>
+  <Procedure_Redlines />
+</Test_Procedure>
