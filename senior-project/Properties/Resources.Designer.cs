@@ -59,5 +59,14 @@ namespace senior_project.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;http://tempuri.org/ProcedureSchema.xsd&quot;.
+        /// </summary>
+        internal static string xmlNamespace {
+            get {
+                return ResourceManager.GetString("xmlNamespace", resourceCulture);
+            }
+        }
     }
 }

@@ -95,13 +95,13 @@ namespace senior_project
 
             // Create XML Object
             XmlSerializer serializer = new XmlSerializer(typeof(Procedure));
-            Procedure p = new Procedure();
+            Procedure serializableXml = new Procedure();
 
-            TextWriter writer = new StreamWriter(filename);
-
-            serializer.Serialize(writer, p);
-            writer.Close();
-            // Serializer XML Object
+            // Serialize XML Object
+            TextWriter textWriter = new StreamWriter(filename);
+            serializer.Serialize(textWriter, serializableXml);
+            textWriter.Close();
+            
             // Print XML
 
             /* GOOD CODE
@@ -118,29 +118,6 @@ namespace senior_project
                 MessageBoxImage.Information);
             */
 
-            /*
-            string xsdFileName = @"..\..\templates\Procedure_Schema.xsd";
-            string caption = "XML Creation Tool";
-
-            MessageBoxResult result = MessageBox.Show(
-                "Create new XML file?",
-                caption,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Exclamation);
-            switch(result)
-            {
-                case MessageBoxResult.No:
-                    return;
-            }
-            DataSet xsdDataSet = ReadSchemaFromXmlTextReader(xsdFileName);
-            //string path = @"C:\Users\Allen G. Anjal\source\repos\senior-project\senior-project\test2.xml";
-            string messageBoxText = WriteXmlToFile(xsdDataSet);
-            MessageBox.Show(
-                messageBoxText,
-                caption,
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
-            */
             /*
             askForFilename ask = new askForFilename();
             
@@ -172,65 +149,7 @@ namespace senior_project
         }
         #endregion
 
-        private DataSet ReadSchemaFromXmlTextReader(string filename)
-        {
-            // Create the DataSet to read the schema into.
-            DataSet thisDataSet = new DataSet();
-            //thisDataSet.Namespace = "http://tempuri.org/ProcedureSchema.xsd";
-            thisDataSet.Namespace = "http://www.w3.org/2001/XMLSchema";
-            thisDataSet.Prefix = "xs";
-
-            Console.WriteLine("{");
-            Console.WriteLine(thisDataSet.Namespace);
-            Console.WriteLine(thisDataSet.Prefix);
-            Console.WriteLine("}");
-            /*
-            // Create a FileStream object with the file path and name.
-            System.IO.FileStream myFileStream = new System.IO.FileStream
-            (filename, System.IO.FileMode.Open);
-
-
-
-            // Create a new XmlTextReader object with the FileStream.
-            System.Xml.XmlTextReader myXmlTextReader =
-            new System.Xml.XmlTextReader(myFileStream);
-            */
-            // Read the schema into the DataSet and close the reader.
-            //thisDataSet.ReadXmlSchema(myXmlTextReader);
-            thisDataSet.ReadXmlSchema(filename);
-            //myXmlTextReader.Close();
-            //myFileStream.Close();
-
-            
-
-            return thisDataSet;
-        }
-
-        private string WriteXmlToFile(DataSet thisDataSet)
-        {
-            if (thisDataSet == null) { return "Test unsuccessful"; }
-
-            // Create a file name to write to.
-            string filename = "myXmlDoc.xml";
-            // Create the FileStream to write with.
-            System.IO.FileStream myFileStream = new System.IO.FileStream
-            (filename, System.IO.FileMode.Create);
-
-            XmlWriterSettings settings = new XmlWriterSettings
-            {
-                Indent = true,
-                OmitXmlDeclaration = false
-            };
-
-            // Create an XmlTextWriter with the fileStream.
-            System.Xml.XmlWriter myXmlWriter = XmlWriter.Create(myFileStream, settings);
-            // Write to the file with the WriteXml method.
-            thisDataSet.WriteXml(myXmlWriter);
-            myXmlWriter.Close();
-
-            
-            return myFileStream.Name;
-        }
+        
 
         public XmlDocument LoadDocumentWithSchemaValidation(string xmlFilename, string xsdFilename)
         {

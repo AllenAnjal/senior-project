@@ -5,13 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:senior_project"
         mc:Ignorable="d"
-     Title="Test Precodure Launcher"
+        
+        Title="Test Precodure Launcher"
+        
         WindowStartupLocation="CenterScreen"
         Icon="images/splashscreen.png"
         FontSize="14"
         Closing="Window_Closing"
-        Width="360"
+        
         Height="548.495"
+        Width="360"
         ResizeMode="NoResize"
         
         >

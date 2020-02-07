@@ -24,6 +24,9 @@ namespace senior_project
         {
             InitializeComponent();
             txtAnswer.Text = ".xml";
+
+            txtAnswer.SelectAll();
+            txtAnswer.Focus();
         }
 
         private void DialogOk_Click(object sender, RoutedEventArgs e)

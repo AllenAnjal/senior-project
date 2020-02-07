@@ -57,7 +57,7 @@
             </xs:sequence>
           </xs:complexType>  
         </xs:element>
-        <xs:element name="Procedure_Redlines" maxOccurs="unbounded" msdata:Ordinal="2">
+        <xs:element name="Procedure_Redlines" msdata:Ordinal="2" maxOccurs="unbounded" >
           <xs:complexType>
             <xs:sequence>
               <xs:any maxOccurs="unbounded" minOccurs="0"></xs:any>
