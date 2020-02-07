@@ -20,6 +20,7 @@
 
         <Button
             Height="20"
+            IsDefault="True"
             Click="SubmitButton"
             ToolTip="submit to create a new xml file"
             HorizontalAlignment="Right"
@@ -28,6 +29,7 @@
             />
         <Button
             Height="20"
+            IsCancel="True"
             Click="CancelButton"
             
             HorizontalAlignment="Right"
