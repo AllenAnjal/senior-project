@@ -79,9 +79,9 @@ namespace senior_project
             if (xmlProcedure != null)
             {
                 this.Hide();
-                //ask.Show();
-                TestAdmin admin = new TestAdmin(xmlProcedure, true);
-                admin.Show();
+                ask.Show();
+                //TestAdmin admin = new TestAdmin(xmlProcedure, true);
+                //admin.Show();
             }
             else
             {

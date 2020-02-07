@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
-
+using System.Windows.Threading;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.VisualBasic;
@@ -29,6 +29,8 @@ namespace senior_project
         TestProcedure xmlProcedure;
         bool hasCommented = false;
         bool redlineClicked = false;
+        DispatcherTimer t;
+        DateTime start;
 
         public Tester(TestProcedure newProcedure)
         {
@@ -40,8 +42,15 @@ namespace senior_project
 
             XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
             beginTest();
-        }
 
+            t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
+           
+            start = DateTime.Now;
+        }
+        private void t_Tick(object sender, EventArgs e)
+        {
+            timer.Text = Convert.ToString(DateTime.Now - start);
+        }
         #region buttons
 
         private void passAction()
