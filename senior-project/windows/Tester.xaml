@@ -5,6 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:senior_project"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    Icon="icons\splashscreen.png"
     mc:Ignorable="d"
     Title="Tester"
     Height="600"
@@ -26,39 +29,35 @@
             Background="white">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition
-                    Width="101*" />
+                    Width="241*" />
                 <ColumnDefinition
-                    Width="26*" />
+                    Width="0*" />
                 <ColumnDefinition
-                    Width="266*" />
+                    Width="532*" />
             </Grid.ColumnDefinitions>
             <TreeView
                 x:Name="treeView1"
                 IsEnabled="True"
                 Background="#025dba"
                 Opacity=".5"
-                Margin="0,0,37,0"
                 Height="421"
                 VerticalAlignment="Bottom"
                 FontSize="22"
                 PreviewMouseLeftButtonUp="TreeView1_PreviewMouseLeftButtonUp_1"
-                SelectedItemChanged="TreeView1_SelectedItemChanged"
-                Grid.ColumnSpan="2" />
+                SelectedItemChanged="TreeView1_SelectedItemChanged" />
             <Viewbox
                 x:Name="buttonGrid"
-                Width="569"
-                Grid.Column="1"
-                Margin="15,0,0,5"
+                Grid.Column="2"
+                Margin="0,0,-1,5"
                 StretchDirection="Both"
                 VerticalAlignment="Bottom"
-                Stretch="Fill"
-                Grid.ColumnSpan="2" />
+                Stretch="Fill" Height="0" />
             <Button
                 x:Name="passButton"
                 ToolTip="Press to pass step"
                 Click="PassButton_Click"
-                Grid.Column="2" Margin="401,366,80,10"
-                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                Grid.Column="2" Margin="404,366,83,10"
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Height="45" Width="45">
                 <Image Source="icons\checked-checkbox-512.png" ></Image>
             </Button>
             <Button
@@ -67,7 +66,7 @@
                 Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                 
                 Click="FailButton_Click"
-                Grid.Column="2" Margin="460,366,10,10"
+                Grid.Column="2" Margin="468,366,18,10" Height="45" Width="46"
                 >
                 <Image Source="icons\x-mark-5-512.png" ></Image>
             </Button>
@@ -84,155 +83,6 @@
                 Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                 <Image Source="icons\edit-6-512.png"/>
             </Button>
-            <Grid
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Height="34"
-                Margin="45,30,0,0"
-                VerticalAlignment="Top"
-                Width="529"
-                Background="#FF9B9898"
-                Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                        Width="56*" />
-                    <ColumnDefinition
-                        Width="131*" />
-                    <ColumnDefinition
-                        Width="146*" />
-                    <ColumnDefinition
-                        Width="196*" />
-                    <ColumnDefinition
-                        Width="0*" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Content="Step"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Height="34"
-                    Width="56"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center" />
-                <Label
-                    Content="Station"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Height="34"
-                    Width="132"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    Grid.ColumnSpan="2"
-                    Margin="55,0,0,0"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center" />
-                <Label
-                    Content="Control Action"
-                    Grid.Column="1"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Height="34"
-                    Width="147"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    Grid.ColumnSpan="2"
-                    Margin="130,0,0,0"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center" />
-                <Label
-                    Content="Expected Result"
-                    Grid.Column="2"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Height="34"
-                    Width="197"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    Grid.ColumnSpan="2"
-                    Margin="145,0,0,0"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center" />
-            </Grid>
-            <Grid
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Height="73"
-                Margin="45,64,0,0"
-                VerticalAlignment="Top"
-                Width="529"
-                Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                        Width="56*" />
-                    <ColumnDefinition
-                        Width="131*" />
-                    <ColumnDefinition
-                        Width="146*" />
-                    <ColumnDefinition
-                        Width="196*" />
-                    <ColumnDefinition
-                        Width="0*" />
-                </Grid.ColumnDefinitions>
-                <TextBox
-                    x:Name="stepBox"
-                    HorizontalAlignment="Left"
-                    Height="74"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Top"
-                    Width="56"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    Margin="0,-1,0,0"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True" />
-                <TextBox
-                    x:Name="stationBox"
-                    HorizontalAlignment="Left"
-                    Height="74"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Top"
-                    Width="132"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    Margin="55,-1,0,0"
-                    Grid.ColumnSpan="2"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True" />
-                <TextBox
-                    x:Name="controlActionBox"
-                    HorizontalAlignment="Left"
-                    Height="74"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Top"
-                    Width="147"
-                    Grid.Column="1"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    Margin="130,-1,0,0"
-                    Grid.ColumnSpan="2"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True" />
-                <TextBox
-                    x:Name="expectedResultBox"
-                    HorizontalAlignment="Left"
-                    Height="74"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Top"
-                    Width="197"
-                    Grid.Column="2"
-                    BorderBrush="Black"
-                    BorderThickness="1.0"
-                    Margin="145,-1,0,0"
-                    Grid.ColumnSpan="2"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True" />
-            </Grid>
-
             <Button
                 x:Name="commentButton"
                 HorizontalAlignment="Left"
@@ -245,9 +95,94 @@
                 Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Height="45">
                 <Image Source="icons\comments-512.png" ></Image>
             </Button>
-           
-            
-
+            <Label
+                x:Name="step"
+                Content="Step"
+                Grid.Column="2"
+                Background="#025dba"
+                Height="30"
+                VerticalAlignment="Top"
+                TextElement.Foreground="White"
+                BorderBrush="Black"
+                BorderThickness="1"
+             />
+            <Label
+                x:Name="station"
+                Content="Station"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Grid.Column="2"
+                Background="#025dba"
+                Height="30"
+                VerticalAlignment="Top"
+                TextElement.Foreground="White" Margin="0,77,0,0"
+                
+             />
+            <Label
+                    x:Name="control_action"
+                    Content="Control Action"
+                    Background="#025dba"
+                    Height="30"
+                    VerticalAlignment="Top"
+                    TextElement.Foreground="White" Margin="0,160,0,0" Grid.Column="2"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+             />
+            <Label
+                x:Name="expected_result"
+                Content="Expected Result"
+                Background="#025dba"
+                Height="30"
+                BorderBrush="Black"
+                BorderThickness="1"
+                VerticalAlignment="Top"
+                TextElement.Foreground="White" Margin="0,247,0,0" Grid.Column="2"
+             />
+            <TextBox
+                 x:Name="stepBox"
+                 Height="47"
+                Grid.Column="2"
+                VerticalAlignment="Top"
+                IsReadOnly="True"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center" Margin="0,30,-1,0"
+                BorderBrush="Black"
+               TextWrapping="Wrap"
+                 />
+            <TextBox
+                x:Name="stationBox"
+                Height="52"
+                Grid.Column="2"
+                VerticalAlignment="Top"
+                IsReadOnly="True"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center" Margin="0,108,-1,0"
+                BorderBrush="Black"
+               TextWrapping="Wrap"
+                 />
+            <TextBox
+                x:Name="controlActionBox"
+                Height="57"
+                Grid.Column="2"
+                VerticalAlignment="Top"
+                IsReadOnly="True"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center" Margin="0,190,-1,0"
+                BorderBrush="Black"
+               TextWrapping="Wrap"
+                 />
+            <TextBox
+                x:Name="expectedResultBox"
+                Height="72"
+                Grid.Column="2"
+                VerticalAlignment="Top"
+                IsReadOnly="True"
+                TextWrapping="Wrap"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center" Margin="0,277,-1,0"
+                BorderBrush="Black"
+               
+                 />
 
 
         </Grid>

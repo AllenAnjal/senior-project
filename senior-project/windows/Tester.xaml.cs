@@ -28,6 +28,7 @@ namespace senior_project
         String commentDefault = "Leave a comment";
         TestProcedure xmlProcedure;
         bool hasCommented = false;
+        bool redlineClicked = false;
 
         public Tester(TestProcedure newProcedure)
         {
@@ -114,27 +115,31 @@ namespace senior_project
         private void RedlineButton_Click(object sender, RoutedEventArgs e)
         {
             RedlinesTester red = new RedlinesTester(xmlProcedure);
-            red.ShowDialog();
+            redlineClicked = !redlineClicked;
+            if (redlineClicked)
+            {
+              
+                
+                step.Background = new SolidColorBrush(Color.FromRgb(254,1,1));
+                station.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                control_action.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                expected_result.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+            }
+            else
+            {
+                step.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                station.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                control_action.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                expected_result.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+            }
+            //red.ShowDialog();
         }
 
 
         //If there is an image in the XML step, send image to button
         //If no image available, change button to red and image unavailable (or remove button entirely)
         //Change width to 0 to hide. 
-        private void ImageButton_Click(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-
-            if (item?.Tag != null && item.Tag is TestProcedureSectionTest_Step)
-            {
-                String imagePath = ((TestProcedureSectionTest_Step)item.Tag).Image.ToString();
-
-                if (File.Exists(imagePath))
-                {
-                    Process.Start(imagePath);
-                }
-            }
-        }
+     
 
         private void SaveXmlButton_Click(object sender, RoutedEventArgs e)
         {
