@@ -31,6 +31,7 @@ namespace senior_project
         bool redlineClicked = false;
         DispatcherTimer t;
         DateTime start;
+        exportWindow export = new exportWindow();
 
         public Tester(TestProcedure newProcedure)
         {
@@ -232,6 +233,8 @@ namespace senior_project
                 else
                 {
                     MessageBox.Show("Procedure is complete!");
+                    export.Show();
+                    this.Close();
                 }
             }
         }
@@ -254,11 +257,7 @@ namespace senior_project
             }
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            MainWindow t = new MainWindow();
-            t.Show();
-        }
+
 
         private void Exit_Button(object sender, RoutedEventArgs e)
         {

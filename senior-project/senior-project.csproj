@@ -67,6 +67,9 @@
       <DependentUpon>askForFilename.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\commentWindow.xaml.cs" />
+    <Compile Include="windows\exportWindow.xaml.cs">
+      <DependentUpon>exportWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="windows\MoveSectionorStep.xaml.cs" />
     <Compile Include="windows\Redlines.xaml.cs" />
     <Compile Include="windows\RedlinesTester.xaml.cs" />
@@ -102,6 +105,10 @@
     <Page Include="windows\commentWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="windows\exportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="windows\MoveSectionorStep.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -201,6 +208,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Graphicloads-Transport-Airplane-5.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="windows\icons\cae.jpg" />
+    <Resource Include="windows\icons\circle-outline-128 %281%29.png" />
+    <Resource Include="windows\icons\circle-outline-128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="windows\icons\folder-8-128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

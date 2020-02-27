@@ -12,7 +12,7 @@
     Title="Tester"
     Height="600"
     Width="800"
-    Closed="Window_Closed">
+    >
     <Viewbox
         Stretch="Fill">
         <Viewbox.ContextMenu>
@@ -41,6 +41,8 @@
                 Background="#025dba"
                 Opacity=".5"
                 Height="421"
+                BorderBrush="Black"
+                BorderThickness="1"
                 VerticalAlignment="Bottom"
                 FontSize="22"
                 PreviewMouseLeftButtonUp="TreeView1_PreviewMouseLeftButtonUp_1"
@@ -98,6 +100,8 @@
             <Label
                 x:Name="step"
                 Content="Step"
+                FontFamily="Comic Sans MS"
+                FontWeight="UltraBlack"
                 Grid.Column="2"
                 Background="#025dba"
                 Height="30"
@@ -108,6 +112,8 @@
              />
             <Label
                 x:Name="station"
+                FontFamily="Comic Sans MS"
+                FontWeight="UltraBlack"
                 Content="Station"
                 BorderBrush="Black"
                 BorderThickness="1"
@@ -123,6 +129,8 @@
                     Content="Control Action"
                     Background="#025dba"
                     Height="30"
+                    FontWeight="UltraBlack"
+                    
                     VerticalAlignment="Top"
                     TextElement.Foreground="White" Margin="0,160,0,0" Grid.Column="2"
                     BorderBrush="Black"
@@ -130,6 +138,7 @@
              />
             <Label
                 x:Name="expected_result"
+                FontWeight="UltraBlack"
                 Content="Expected Result"
                 Background="#025dba"
                 Height="30"
@@ -151,12 +160,12 @@
                  />
             <TextBox
                 x:Name="stationBox"
-                Height="52"
+                Height="53"
                 Grid.Column="2"
                 VerticalAlignment="Top"
                 IsReadOnly="True"
                 HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center" Margin="0,108,-1,0"
+                VerticalContentAlignment="Center" Margin="0,107,0,0"
                 BorderBrush="Black"
                TextWrapping="Wrap"
                  />
@@ -189,7 +198,8 @@
                  VerticalAlignment="Bottom"
                  HorizontalAlignment="Left"
                 FontSize="20"
-                FontFamily="Comic sans"
+                FontFamily="Comic Sans MS"
+                FontWeight="UltraBlack"
                 Margin="50,0,10,20"
                  />
 
