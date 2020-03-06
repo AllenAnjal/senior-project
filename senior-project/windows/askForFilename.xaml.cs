@@ -23,14 +23,21 @@ namespace senior_project
         public string MyValue { get; set; }
         MainWindow main = new MainWindow();
         TestProcedure xmlProcedure = new TestProcedure();
+        
         public askForFilename()
         {
             InitializeComponent();
             DataContext = this;
+
+            nameBox.Text = ".xml";
+            nameBox.SelectAll();
+            nameBox.Focus();
         }
 
         private void SubmitButton(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = true;
+
             string file = nameBox.Text;
             file += ".xml";
             createFile(file);
@@ -71,6 +78,10 @@ namespace senior_project
         {
             main.Show();
             this.Close();
+        }
+        public string Answer
+        {
+            get { return nameBox.Text; }
         }
 
     }

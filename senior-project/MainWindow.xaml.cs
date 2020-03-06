@@ -79,7 +79,7 @@ namespace senior_project
             if (xmlProcedure != null)
             {
                 this.Hide();
-                ask.Show();
+                ask.ShowDialog();
                 //TestAdmin admin = new TestAdmin(xmlProcedure, true);
                 //admin.Show();
             }
