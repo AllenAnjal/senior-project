@@ -13,11 +13,11 @@
     <Revision>1</Revision> />
   </Procedure_Heading>
   <Sections>
-    <Section id="1">
-      <Heading>1.0 IOS DORT TESTS</Heading>
+    <Section id="73">
+      <Heading>73.0 IOS DORT TESTS</Heading>
       <Description>Short Description</Description>
       <Test_Step id="1">
-        <Station>IOS</Station>
+        <Station>I AM THE TEST FILE</Station>
         <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
         <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
         <Pass>false</Pass>

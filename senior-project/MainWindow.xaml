@@ -1,85 +1,82 @@
-﻿<Window x:Class="senior_project.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:senior_project"
-        mc:Ignorable="d"
-     Title="Test Precodure Launcher"
-        WindowStartupLocation="CenterScreen"
-        Icon="images/splashscreen.png"
-        FontSize="14"
-        Closing="Window_Closing"
-        Width="360"
-        Height="548.495"
-        ResizeMode="NoResize"
-        
-        >
-    
-    <!-- This is a grid. -->
-    <Grid
-            Background="#025DBA"
-            Margin="0,0,0,-1">
+﻿<Window
+    x:Class="senior_project.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:senior_project"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Test Precodure Launcher"
+    Width="360"
+    Height="548.495"
+    Closing="Window_Closing"
+    FontSize="14"
+    Icon="images/splashscreen.png"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <!--  This is a grid.  -->
+    <Grid Margin="0,0,0,-1" Background="#025DBA">
 
         <Grid.RowDefinitions>
-            <RowDefinition
-                    Height="Auto"
-                    MinHeight="402" />
+            <RowDefinition Height="Auto" MinHeight="402" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                    Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Label
-                x:Name="lbl_version"
-                Content="Version (1.0)"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                FontStyle="Italic"
-                Foreground="White" Margin="10,0,0,-104"
-                />
-        <Button Name="StartButton" 
-                    Width="50" Height="50" 
-                    Margin="0,50,-30,0"
-                    Click="start_btn"
-                    ToolTip="Start Test Procedure"
-                    Background="#025DBA" 
-                    BorderThickness="0"
-                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                    >
-            <Image Source="images\play-512.png"></Image>
+            x:Name="lbl_version"
+            Margin="10,0,0,-104"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="Version (1.0)"
+            FontStyle="Italic"
+            Foreground="White" />
+        <Button
+            Name="StartButton"
+            Width="50"
+            Height="50"
+            Margin="0,50,-30,0"
+            Background="#025DBA"
+            BorderThickness="0"
+            Click="start_btn"
+            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+            ToolTip="Start Test Procedure">
+            <Image Source="images\play-512.png" />
         </Button>
-        <Button Name="editButton" 
-                    Width="50" Height="50" 
-                    Margin="0,0,-30,75"
-                    Click="edit_btn"
-                    ToolTip="Edit Test Procedure"
-                    Background="#025DBA" 
-                    VerticalAlignment="Bottom"
-                    BorderThickness="0"
-                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                    >
-            <Image Source="images\edit-12-512.png"></Image>
+        <Button
+            Name="editButton"
+            Width="50"
+            Height="50"
+            Margin="0,0,-30,75"
+            VerticalAlignment="Bottom"
+            Background="#025DBA"
+            BorderThickness="0"
+            Click="edit_btn"
+            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+            ToolTip="Edit Test Procedure">
+            <Image Source="images\edit-12-512.png" />
         </Button>
-        <Button Name="createButton" 
-                    Width="50" Height="50"
-                    Margin="0,0,-30,0"
-                    VerticalAlignment="Bottom"
-                    ToolTip="Create Test Procedure"
-                    Click="create_btn"
-                    Background="#025DBA" 
-                    BorderThickness="0"
-                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                    >
-            <Image Source="images\add-file-512.png"></Image>
+        <Button
+            Name="createButton"
+            Width="50"
+            Height="50"
+            Margin="0,0,-30,0"
+            VerticalAlignment="Bottom"
+            Background="#025DBA"
+            BorderThickness="0"
+            Click="create_btn"
+            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+            ToolTip="Create Test Procedure">
+            <Image Source="images\add-file-512.png" />
         </Button>
         <Image
-                x:Name="image"
-                Height="178"
-                Margin="-31,10,0,0"
-                VerticalAlignment="Top"
-                Source="images/test.png"
-                HorizontalAlignment="Right"
-                Width="341" />
+            x:Name="image"
+            Width="341"
+            Height="178"
+            Margin="-31,10,0,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Source="images/test.png" />
     </Grid>
 </Window>

@@ -18,24 +18,24 @@ using Microsoft.Win32;
 
 namespace senior_project
 {
-
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         #region Initialization
+
         public MainWindow()
         {
             InitializeComponent();
         }
-        TestProcedure xmlProcedure = new TestProcedure();
-        
 
-        #endregion
+        private TestProcedure xmlProcedure = new TestProcedure();
+
+        #endregion Initialization
 
         #region Context Menu Buttons
+
         /// <summary>
         /// Conext Menu from Right Click has Help, About, Exit buttons with corresponding action
         /// </summary>
@@ -43,7 +43,23 @@ namespace senior_project
         /// <param name="e"></param>
         private void start_btn(object sender, RoutedEventArgs e)
         {
-            xmlProcedure = XmlVerification.loadXml();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "XML files|*.xml";
+
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                this.Hide();
+                Tester tester = new Tester(this, openFileDialog.FileName);
+
+                tester.Show();
+            }
+            else
+            {
+                MessageBox.Show("No valid XML has been selected", "Error");
+            }
+
+            return;
+            //xmlProcedure = XmlVerification.loadXml();
             if (xmlProcedure != null)
             {
                 this.Hide();
@@ -74,7 +90,7 @@ namespace senior_project
         private void create_btn(object sender, RoutedEventArgs e)
         {
             askForFilename ask = new askForFilename();
-            
+
             //xmlProcedure = XmlVerification.loadXml();
             if (xmlProcedure != null)
             {
@@ -88,9 +104,11 @@ namespace senior_project
                 MessageBox.Show("No valid XML has been selected", "Error");
             }
         }
-        #endregion
+
+        #endregion Context Menu Buttons
 
         #region Application Shutdown
+
         /// <summary>
         /// This terminates any remaining sub-processes/threads
         /// </summary>
@@ -100,10 +118,7 @@ namespace senior_project
         {
             Application.Current.Shutdown();
         }
-        #endregion
 
-
+        #endregion Application Shutdown
     }
-
-
 }

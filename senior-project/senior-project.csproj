@@ -217,5 +217,8 @@
   <ItemGroup>
     <Resource Include="windows\icons\folder-8-128.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test_5.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

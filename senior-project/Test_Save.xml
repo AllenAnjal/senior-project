@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TestProcedure>
   <Procedure_Heading>
-    <Name >CAE Testing</Name>
+    <Name>CAE Testing</Name>
     <Signature />
     <Organization />
     <Date />
@@ -10,17 +10,17 @@
     <Description />
     <System />
     <Severity />
-    <Revision>1</Revision> />
+    <Revision>1</Revision> /&gt;
   </Procedure_Heading>
   <Sections>
-    <Section id="1">
-      <Heading>1.0 IOS DORT TESTS</Heading>
+    <Section id="73">
+      <Heading>73.0 IOS DORT TESTS</Heading>
       <Description>Short Description</Description>
       <Test_Step id="1">
-        <Station>IOS</Station>
+        <Station>I AM THE TEST FILE</Station>
         <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
         <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
-        <Pass>false</Pass>
+        <Pass>true</Pass>
         <Fail>false</Fail>
         <Comments />
         <Image />
@@ -30,7 +30,7 @@
         <Control_Action>Click the Simulator Maintenance page from the left menu.</Control_Action>
         <Expected_Result>The Simulator Maintenance page is displayed.</Expected_Result>
         <Pass>false</Pass>
-        <Fail>false</Fail>
+        <Fail>true</Fail>
         <Comments />
         <Image />
       </Test_Step>
@@ -111,8 +111,10 @@
         <ActionToTake>RemoveStep</ActionToTake>
         <FromSection>2</FromSection>
         <FromStep>2</FromStep>
-        <ToSection></ToSection>
-        <ToStep></ToStep>
+        <ToSection>
+        </ToSection>
+        <ToStep>
+        </ToStep>
       </RedlineStep>
     </StepsList>
     <SectionList>
@@ -124,7 +126,8 @@
       <RedlineSection id="2">
         <ActionToTake>RemoveSection</ActionToTake>
         <FromSection>2</FromSection>
-        <ToSection></ToSection>
+        <ToSection>
+        </ToSection>
       </RedlineSection>
     </SectionList>
   </RedlinesList>
