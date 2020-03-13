@@ -17,7 +17,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Reflection;
 using System.Xml.Serialization;
-
+using System.ComponentModel;
 
 namespace senior_project
 {
@@ -26,482 +26,277 @@ namespace senior_project
     /// </summary>
     public partial class TestAdmin : Window
     {
+        private MainWindow main;
+        private String commentDefault = "Leave a comment";
+        private TestProcedure xmlProcedure;
+       
 
+        //  XML TreeView Implementation with XmlDataProvider and XmlDocument
+        private XmlDocument _xml;
 
+        private List<XmlElement> listTestSteps;
 
-        #region Initialization
-        TestProcedure xmlProcedure = new TestProcedure();
+        private XmlDataProvider _xmlDataProvider;
+        private TreeView _treeView;
 
-        public TestAdmin()
+        public TestAdmin(MainWindow mw, String xmlFile)
         {
             InitializeComponent();
+            main = mw;
+
+            _xml = new XmlDocument();
+            //listTestSteps = new List<XmlElement>();
+
+            try
+            {
+                _xml.Load(xmlFile);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error");
+            }
+
+            userInfoPage x = new userInfoPage(xmlProcedure);
+            x.ShowDialog();
         }
 
 
-        /// <summary>
-        /// Test Admin Constructor, creates the Xml object from the provided Xml File path location or if NewTp, then creates a new Test Procedure
-        /// </summary>
-        /// <param name="xmlFilePath"></param>
-        public TestAdmin(TestProcedure newProcedure, bool createNew)
+
+        public TestAdmin(TestProcedure newProcedure)
         {
             InitializeComponent();
             xmlProcedure = newProcedure;
-            if (createNew)
-            {
-                CreateNewTP();
-            }
 
-            populateTreeView();
-        }
-        #endregion
+            userInfoPage x = new userInfoPage(xmlProcedure);
+            x.ShowDialog();
 
-        #region Create New Test Procdure
-        /// <summary>
-        /// Creates a new Test Procedure XML object and initializes all elements to empty
-        /// </summary>
-        private void CreateNewTP()
-        {
-            //Create Procedure Heading Node
-            TestProcedureProcedure_Heading Procedure_Heading = new TestProcedureProcedure_Heading();
-
-            Procedure_Heading.Date = " ";
-            Procedure_Heading.Description = " ";
-            Procedure_Heading.Load_Version = " ";
-            Procedure_Heading.Name = " ";
-            Procedure_Heading.Organization = " ";
-            Procedure_Heading.Time = " ";
-            Procedure_Heading.Signature = ""; 
-
-            //Create Empty Sections List
-            List<TestProcedureSection> Sections = new List<TestProcedureSection>();
-
-            //Create Empty Redline Text, Steps, Section Lists
-            List<TestProcedureRedlinesListRedlineText> textList = new List<TestProcedureRedlinesListRedlineText>();
-            List<TestProcedureRedlinesListRedlineStep> stepsList = new List<TestProcedureRedlinesListRedlineStep>();
-            List<TestProcedureRedlinesListRedlineSection> sectionList = new List<TestProcedureRedlinesListRedlineSection>();
-
-            //Add Empty Redline Text, Steps, Section lists to Redline Node
-            TestProcedureRedlinesList RedlinesList = new TestProcedureRedlinesList();
-
-            RedlinesList.SectionList = sectionList;
-            RedlinesList.StepsList = stepsList;
-            RedlinesList.TextList = textList;
-
-            //Add all Empty Nodes to Test Procedure Root Node
-            xmlProcedure.Procedure_Heading = Procedure_Heading;
-            xmlProcedure.Sections = Sections;
-            xmlProcedure.RedlinesList = RedlinesList;
-        }
-        #endregion
-
-        #region De-Serialize XML string
-        /// <summary>
-        /// Turns an XML string file into an XML object that can then be modified
-        /// </summary>
-        /// <param name="xmlFilePath"> the file path where the xml lists </param>
-        /// <returns>XmlData a test procedure object</returns>
-        private TestProcedure DeserializeXML(string xmlFilePath)
-        {
-            XmlSerializer deserializer = new XmlSerializer(typeof(TestProcedure));
-            TextReader reader = new StreamReader(xmlFilePath);
-            object obj = deserializer.Deserialize(reader);
-            TestProcedure XmlData = (TestProcedure) obj;
-            reader.Close();
-
-            return XmlData;
-        }
-        #endregion
-
-        #region Serialize XML
-        /// <summary>
-        /// Takes an XML object and serializes to string and saves to location of XmlSavePath
-        /// </summary>
-        /// <param name="XmlData"></param>
-        /// <param name="XmlSavePath"></param>
-        public void SerializeXML(string XmlSavePath)
-        {
-            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-            ns.Add("", ""); //Gets rid of the serializer xlms tags
-
-            XmlSerializer xs = new XmlSerializer(typeof(TestProcedure));
-            TextWriter txtWriter = new StreamWriter(XmlSavePath);
-            xs.Serialize(txtWriter, xmlProcedure, ns);
-            txtWriter.Close();
-        }
-        #endregion
-        
-
-        #region Remove Section
-        /// <summary>
-        /// Removes the Section from the Test Procedure
-        /// </summary>
-        /// <param name="SectionToRemove"></param>
-        public void RemoveSection(int SectionToRemove)
-        {
-            xmlProcedure.Sections.RemoveAt(SectionToRemove - 1);
-
-            //Need to Give New Id Values to sections since a section was removed
-            for (int i = 0; i < xmlProcedure.Sections.Count; i++)
-            {
-                if (xmlProcedure.Sections[i].id > SectionToRemove)
-                {
-                    xmlProcedure.Sections[i].id = (xmlProcedure.Sections[i].id) - 1;
-                }
-            }
-        }
-        #endregion
-
-        #region Remove Test Step
-        /// <summary>
-        /// Removes a Test Step from a specified Test Section
-        /// </summary>
-        /// <param name="FromSection"></param>
-        /// <param name="SteptoRemove"></param>
-        public void RemoveTestStep(int FromSection, int SteptoRemove)
-        {
-            for (int i = 0; i < xmlProcedure.Sections[FromSection - 1].Test_Step.Count; i++)
-            {
-                if (xmlProcedure.Sections[FromSection - 1].Test_Step[i].id > SteptoRemove)
-                {
-                    xmlProcedure.Sections[FromSection - 1].Test_Step[i].id = xmlProcedure.Sections[FromSection - 1].Test_Step[i].id - 1;
-                }
-            }
-            xmlProcedure.Sections[FromSection - 1].Test_Step.RemoveAt(SteptoRemove - 1);
-        }
-        #endregion
+            //XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
+            //beginTest();
 
 
-        #region Populate Tree
-        public void populateTreeView()
-        {
-            XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
-        }
-        #endregion
-
-        #region Tree Event handling
-        private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            updateTextBoxes();
-        }
-        #endregion
-
-        #region Validation
-        // Display any validation errors.
-        private static void ValidationCallBack(object sender, ValidationEventArgs e)
-        {
-            Console.WriteLine($"Validation Error:\n   {e.Message}\n");
-        }
-        #endregion
-
-
-        //Action of a button press
-        #region Actions
-        private void addSectionAction()
-        {
-            AddSectionWindow newWindow = new AddSectionWindow(ref xmlProcedure, this);
-            newWindow.Show();
         }
 
-        private void removeAction()
-        {
-            int stepID = 1;
-            int sectID = 1;
 
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
+        #region buttons
 
-            if (item?.Tag is TestProcedureSectionTest_Step)
-            {
-                TestProcedureSectionTest_Step step = (TestProcedureSectionTest_Step)item.Tag;
-                stepID = step.id;
 
-                TreeViewItem parentItem = item?.Parent as TreeViewItem;
-                TestProcedureSection section = (TestProcedureSection)parentItem.Tag;
-                sectID = section.id;
-            }
 
-            RemoveTestStep(sectID, stepID);
-            populateTreeView();
-            XmlVerification.writeXmltoFile(xmlProcedure, "tmpAdmin.xml");
-        }
-
-        private void addStepAction()
-        {
-            int currentSectionID = 1; //Prob need to find a better default
-
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-            if (item?.Tag is TestProcedureSection)
-            {
-                TestProcedureSection section = (TestProcedureSection)item.Tag;
-                currentSectionID = section.id;
-            }
-            else if (item?.Tag is TestProcedureSectionTest_Step)
-            {
-                TreeViewItem parentItem = item?.Parent as TreeViewItem;
-                TestProcedureSection section = (TestProcedureSection)parentItem.Tag;
-                currentSectionID = section.id;
-            }
-
-            AddTestStepWindow newTestStepWindow = new AddTestStepWindow(ref xmlProcedure, this, currentSectionID);
-            newTestStepWindow.Show();
-        }
-
-        private void removeSectionAction()
-        {
-            int currentSectionID = 1; //Prob need to find a better default
-
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-            if (item?.Tag is TestProcedureSection)
-            {
-                TestProcedureSection section = (TestProcedureSection)item.Tag;
-                currentSectionID = section.id;
-            }
-            else if (item?.Tag is TestProcedureSectionTest_Step)
-            {
-                TreeViewItem parentItem = item?.Parent as TreeViewItem;
-                TestProcedureSection section = (TestProcedureSection)parentItem.Tag;
-                currentSectionID = section.id;
-            }
-
-            RemoveSection(currentSectionID);
-            populateTreeView();
-            XmlVerification.writeXmltoFile(xmlProcedure, "tmpAdmin.xml");
-        }
-
-        private void moveSectionAction()
-        {
-            MoveSectionorStep moveSectorStep = new MoveSectionorStep(ref xmlProcedure, this);
-            moveSectorStep.Show();
-        }
-
-        private void saveXmlAction()
+        private void SaveXmlButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
 
             saveFile.Filter = "XML Documents (.xml)|*.xml";
             saveFile.FileName = "XMLSave";
 
-            Nullable<bool> result = saveFile.ShowDialog();
-
-            if (result == true)
+            if (saveFile.ShowDialog().GetValueOrDefault())
             {
                 Console.WriteLine(saveFile.FileName);
             }
-            try
-            {
-                if(xmlProcedure.Procedure_Heading.Revision != null)
-                {
-                    int x = Int32.Parse(xmlProcedure.Procedure_Heading.Revision.ToString());
-                    xmlProcedure.Procedure_Heading.Revision = (x + 1).ToString();
-                }
-                else
-                {
-                    xmlProcedure.Procedure_Heading.Revision = "1";
-                }
 
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
             XmlVerification.writeXmltoFile(xmlProcedure, saveFile.FileName);
         }
-        #endregion
 
-        //Try a button press and catch exceptions
-        #region Buttons
-        private void Btn_add_section_Click(object sender, RoutedEventArgs e)
+        #endregion buttons
+
+        #region TreeView
+
+        private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            try
+            string section = String.Empty, step = String.Empty;
+            XmlElement pos = _treeView.SelectedItem as XmlElement;
+            if (pos != null)
             {
-                addSectionAction();
+                if (pos.Name == "Test_Step")
+                {
+                    step = pos.SelectSingleNode("@id").Value;
+                    section = pos.ParentNode.SelectSingleNode("@id").Value;
+                    lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
+                }
+                else if (pos.Name == "Section")
+                {
+                    section = pos.SelectSingleNode("@id").Value;
+                    lblProcedurePosition.Text = String.Format("Section {0}", section);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Exception Handled: {ex.Message}");
+                lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
             }
         }
 
-        private void Btn_remove_step_Click(object sender, RoutedEventArgs e)
+        private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
-            try
-            {
-                removeAction();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show($"Exception Handled: {ex.Message}");
-            }
         }
 
-        private void Btn_add_step_Click(object sender, RoutedEventArgs e)
+        //Initialize the treeView to section 0, step 0
+
+        //Navigate to next step in test procedure
+
+        #endregion TreeView
+
+        #region Test Steps
+
+        /*
+    private void forwardStep()
+    {
+        NextStep();
+    }
+
+    private void beginTest()
+    {
+        TreeViewItem beginSection = (treeView1?.Items[0] as TreeViewItem);
+        if (beginSection != null && beginSection.HasItems)
         {
-            try
+            beginSection.IsExpanded = true;
+            (beginSection.Items[0] as TreeViewItem).IsSelected = true;
+        }
+    }
+
+    private void NextStep()
+    {
+        TreeViewItem selectedItem = treeView1?.SelectedItem as TreeViewItem;
+        TreeViewItem parentItem = selectedItem?.Parent as TreeViewItem;
+
+        //If parent is Section, grab current ids and iterate to the next step or section
+        if (selectedItem?.Tag is TestProcedureSectionTest_Step)
+        {
+            TestProcedureSectionTest_Step currStep = (TestProcedureSectionTest_Step)selectedItem?.Tag;
+            TestProcedureSection currSection = (TestProcedureSection)parentItem?.Tag;
+
+            int stepIndex = currStep.id - 1;
+            int sectionIndex = currSection.id - 1;
+
+            //Move to next step in same section
+            if (stepIndex < currSection.Test_Step.Count - 1)
             {
-                addStepAction();
+                (parentItem.Items[stepIndex + 1] as TreeViewItem).IsSelected = true;
             }
-            catch (Exception ex)
+            //Move to first step in next section
+            else if (sectionIndex < treeView1.Items.Count - 1)
             {
-                MessageBox.Show($"Exception Handled: {ex.Message}");
+                TreeViewItem nextSection = treeView1?.Items[sectionIndex + 1] as TreeViewItem;
+                if (nextSection.HasItems)
+                {
+                    nextSection.IsExpanded = true;
+                    (nextSection.Items[0] as TreeViewItem).IsSelected = true;
+                }
+            }
+            //No more steps or sections
+            else
+            {
+                MessageBox.Show("Procedure is complete!");
+                export.Show();
+                this.Close();
             }
         }
+    }*/
 
-        private void Btn_remove_section_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                removeSectionAction();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Exception Handled: {ex.Message}");
-            }
-        }
+        #endregion Test Steps
 
-        private void Move_section_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                moveSectionAction();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Exception Handled: {ex.Message}");
-            }
-        }
-
-        private void SaveXmlButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                saveXmlAction();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Exception Handled: {ex.Message}");
-            }
-        }
-        #endregion
-
-
-
-
-
-        #region Refresh Text Boxes
         private void updateTextBoxes()
         {
-            TreeViewItem item = (TreeViewItem) treeView1.SelectedItem;
+            //_treeView.Items.Refresh();
+            //_treeView.UpdateLayout();
+            return;
+            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
             if (item?.Tag is TestProcedureSectionTest_Step)
             {
-                TestProcedureSectionTest_Step step = (TestProcedureSectionTest_Step) item.Tag;
+                TestProcedureSectionTest_Step step = (TestProcedureSectionTest_Step)item.Tag;
 
-                stepBox.Text = step.id.ToString();
-                stationBox.Text = step.Station.ToString();
-                controlActionBox.Text = step.Control_Action.ToString();
-                expectedResultBox.Text = step.Expected_Result.ToString();
+                tbStep.Text = step.id.ToString();
+                tbStation.Text = step.Station.ToString();
+                tbControlAction.Text = step.Control_Action.ToString();
+                tbExpectedResult.Text = step.Expected_Result.ToString();
             }
         }
-        #endregion
 
-        #region Context Menu
-        /// <summary>
-        /// Right Click Menu Exit Button causes window to close
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void Exit_Button(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-        #endregion
 
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string resourceKeyName = "xmlData";
+            string treeViewName = "treeView1";
 
+            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(TreeView));
+            if (dpd != null)
+            {
+                dpd.AddValueChanged(treeView1, ThisIsCalledWhenPropertyIsChanged);
+            }
 
-        #region Window Close
-        /// <summary>
-        /// Launches Main Window Launcher when Test Admin window is closed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+            _xmlDataProvider = FindResource(resourceKeyName) as XmlDataProvider;
+            _treeView = FindName(treeViewName) as TreeView;
+
+            _xmlDataProvider.Document = _xml;
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
-            MainWindow t = new MainWindow();
-            t.Show();
-        }
-        #endregion
-
-        #region Change Heading
-        /// <summary>
-        /// Changes the Heading for a Test Procedure
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EditHeading_Click(object sender, RoutedEventArgs e)
-        {
-           
-        }
-        #endregion
-
-        #region Change Description
-        /// <summary>
-        /// Changes the Description for a Test Procedure
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EditDescription_Click(object sender, RoutedEventArgs e)
-        {
-
+            main.Show();
         }
 
-
-
-
-
-
-
-        #endregion
-
-        private void StepBox_KeyDown(object sender, KeyEventArgs e)
+        private void ThisIsCalledWhenPropertyIsChanged(object sender, EventArgs e)
         {
-
+            //MessageBox.Show("WOAH");
+            pbProcedureProgress.Value = getProcedureProgress(null);
+            _treeView.Items.Refresh();
+            _treeView.UpdateLayout();
         }
 
-        private void StationBox_KeyDown(object sender, KeyEventArgs e)
+        private void ftn_Open_File()
         {
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "XML files|*.xml";
 
-            if (e.Key == Key.Enter && item.Tag is TestProcedureSectionTest_Step)
+            if ((bool)openFileDialog.ShowDialog())
             {
-                TestProcedureSectionTest_Step step = ((TestProcedureSectionTest_Step)item.Tag);
-                step.Station = stationBox.Text;
-                XmlVerification.writeXmltoFile(xmlProcedure, "tmpAdmin.xml");
+                _xml = new XmlDocument();
+
+                try
+                {
+                    _xml.Load(openFileDialog.FileName);
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error");
+                }
+
+                _xmlDataProvider.Document = _xml;
             }
+
+            MessageBox.Show(openFileDialog.FileName);
+            _treeView.Items.Refresh();
+            _treeView.UpdateLayout();
         }
 
-        private void ControlActionBox_KeyDown(object sender, KeyEventArgs e)
+        private double getProcedureProgress(XmlElement searchRoot)
         {
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-
-            if (e.Key == Key.Enter && item.Tag is TestProcedureSectionTest_Step)
+            XmlNodeList nList = _xml.GetElementsByTagName("Test_Step");
+            int o = 0;
+            foreach (XmlNode n in nList)
             {
-                TestProcedureSectionTest_Step step = ((TestProcedureSectionTest_Step)item.Tag);
-                step.Control_Action = controlActionBox.Text;
-                XmlVerification.writeXmltoFile(xmlProcedure, "tmpAdmin.xml");
-
+                if (XmlConvert.ToBoolean(n["Pass"].InnerText) || XmlConvert.ToBoolean(n["Fail"].InnerText)) o++;
             }
+            return (((double)o / nList.Count) * 100);
         }
 
-        private void ExpectedResultBox_KeyDown(object sender, KeyEventArgs e)
+        private void mnuSave_Click(object sender, RoutedEventArgs e)
         {
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-
-            if (e.Key == Key.Enter && item.Tag is TestProcedureSectionTest_Step)
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "XML files|*.xml";
+            if ((bool)saveFileDialog.ShowDialog())
             {
-                TestProcedureSectionTest_Step step = ((TestProcedureSectionTest_Step)item.Tag);
-                step.Expected_Result = expectedResultBox.Text;
-                XmlVerification.writeXmltoFile(xmlProcedure, "tmpAdmin.xml");
-
+                try
+                {
+                    _xml.Save(saveFileDialog.FileName);
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error");
+                }
             }
         }
 
