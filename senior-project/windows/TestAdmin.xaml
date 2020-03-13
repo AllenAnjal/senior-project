@@ -6,294 +6,281 @@
     xmlns:local="clr-namespace:senior_project"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="TestAdmin"
-    HorizontalContentAlignment="Center"
-    VerticalContentAlignment="Center"
-    Background="#FF858181"
+  Width="800"
+    Height="600"
     Closed="Window_Closed"
-    Icon="../images/splashscreen.png"
-    SizeToContent="Width"
+    Icon="icons\splashscreen.png"
+    Loaded="Window_Loaded"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Window.ContextMenu>
-        <ContextMenu>
-            <MenuItem Click="MenuItem_Click" Header="Exit" />
-        </ContextMenu>
-    </Window.ContextMenu>
-    <Viewbox Width="Auto" Height="Auto">
-        <Grid Width="Auto" Height="Auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="204*" />
-                <ColumnDefinition Width="589*" />
-            </Grid.ColumnDefinitions>
-            <TreeView
-                x:Name="treeView1"
-                Height="339"
-                Margin="10,0,10,83"
-                VerticalAlignment="Bottom"
-                Background="White"
-                SelectedItemChanged="TreeView1_SelectedItemChanged" />
-            <Expander
-                Width="Auto"
-                Height="Auto"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                ExpandDirection="Down"
-                Header="Menu">
-                <Grid Margin="0,0,126,0" Background="LightSlateGray">
-                    <Button
-                        x:Name="saveXmlButton"
-                        Margin="0,0,0,-2"
-                        HorizontalAlignment="Left"
+	<Window.Resources>
+		<ContextMenu x:Key="contextMenu">
+			<MenuItem Click="Exit_Button" Header="Exit" />
+		</ContextMenu>
+
+		<XmlDataProvider x:Key="xmlData" XPath="/TestProcedure/Sections/Section" />
+
+		<HierarchicalDataTemplate DataType="Sections" ItemsSource="{Binding XPath=Section}">
+			<TextBlock Text="{Binding XPath=Sections}" />
+		</HierarchicalDataTemplate>
+
+		<HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Test_Step}">
+			<TextBlock Text="{Binding XPath=Heading}" />
+		</HierarchicalDataTemplate>
+
+		<HierarchicalDataTemplate DataType="Test_Step">
+			<TextBlock Text="{Binding XPath=@id}" />
+		</HierarchicalDataTemplate>
+	</Window.Resources>
+
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_File">
+				<MenuItem Click="mnuSave_Click" Header="_Save" />
+				<Separator />
+				<MenuItem Click="Exit_Button" Header="_Exit" />
+			</MenuItem>
+		</Menu>
+		<StatusBar DockPanel.Dock="Bottom">
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="100" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="100" />
+						</Grid.ColumnDefinitions>
+					</Grid>
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+			<StatusBarItem>
+				<TextBlock Name="lblProcedurePosition" />
+			</StatusBarItem>
+			<Separator Grid.Column="1" />
+			<Separator Grid.Column="3" />
+			<StatusBarItem Grid.Column="4">
+				<ProgressBar
+                    Name="pbProcedureProgress"
+                    Width="90"
+                    Height="16"
+                    Value="0" />
+			</StatusBarItem>
+		</StatusBar>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="3*" />
+				<ColumnDefinition Width="5" />
+				<ColumnDefinition Width="7*" />
+			</Grid.ColumnDefinitions>
+
+			<DockPanel
+                Grid.Column="0"
+                Margin="5"
+                VerticalAlignment="Stretch">
+				<TreeView
+                    x:Name="treeView1"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    IsEnabled="True"
+                    ItemsSource="{Binding Source={StaticResource xmlData}, UpdateSourceTrigger=PropertyChanged}"
+                    Opacity=".5"
+                    SelectedItemChanged="TreeView1_SelectedItemChanged">
+					<TreeView.ItemContainerStyle>
+						<Style TargetType="TreeViewItem">
+							<EventSetter Event="PreviewMouseDoubleClick" Handler="TreeView1_PreviewMouseLeftButtonUp_1" />
+							<Setter Property="Foreground" Value="Black" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding XPath=Pass}" Value="true">
+									<Setter Property="Background" Value="Yellow" />
+								</DataTrigger>
+								<DataTrigger Binding="{Binding XPath=Fail}" Value="true">
+									<Setter Property="Background" Value="Red" />
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Path=Name}" Value="Section">
+									<Setter Property="IsSelected" Value="False" />
+									<Setter Property="Focusable" Value="False" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TreeView.ItemContainerStyle>
+					<TreeView.Resources>
+						<Style TargetType="{x:Type TreeViewItem}">
+							<Setter Property="HeaderTemplate">
+								<Setter.Value>
+									<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock VerticalAlignment="Center" Text="{Binding}"/>
+											<StackPanel Orientation="Vertical">
+												<Button x:Name="Move_Up_Btn">
+													Up
+												</Button>
+												<Button x:Name="Move_Down_Btn">
+													Down
+												</Button>
+											</StackPanel>
+										</StackPanel>
+									</DataTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</TreeView.Resources>
+				</TreeView>
+				<Button
+					HorizontalAlignment="Left"
+					VerticalAlignment="Bottom"
+					x:Name="moveUpButton"
+					Click="move_up"
+					Height="40"
+					Width="112"
+					Background="#025dba"
+					Content="Move Up"
+					BorderThickness="2"
+					BorderBrush="Black"
+					Foreground="White"
+					ToolTip="Move the current step above in the Table of Contents"
+					/>
+				<Button
+					HorizontalAlignment="Right"
+					VerticalAlignment="Bottom"
+					x:Name="moveDownButton"
+					BorderThickness="2"
+					BorderBrush="Black"
+					Click="move_down"
+					Height="40"
+					Width="112"
+					Background="#025dba"
+					Content="Move Up"
+					Foreground="White"
+					ToolTip="Move the current step below in the Table of Contents"
+					/>
+			</DockPanel>
+			<StackPanel Grid.Column="2">
+				<StackPanel.Resources>
+					<Style TargetType="Label">
+						<Setter Property="DockPanel.Dock" Value="Top" />
+					</Style>
+				</StackPanel.Resources>
+				<DockPanel Margin="5">
+					<Label
+                        x:Name="lblStep"
+                        Height="30"
+                        Background="#025dba"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Content="Step"
+                        FontFamily="Comic Sans MS"
+                        FontWeight="UltraBlack"
+                        TextElement.Foreground="White" />
+					<TextBox
+                        x:Name="tbStep"
+                        Height="60"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        BorderBrush="Black"
+                        DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
+                        IsReadOnly="True"
+                        Text="{Binding XPath=@id, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+				</DockPanel>
+				<DockPanel Margin="5">
+					<Label
+                        x:Name="lblStation"
+                        Height="30"
                         VerticalAlignment="Top"
-                        Background="#FF9B9898"
-                        Click="SaveXmlButton_Click"
-                        Content="Save XML" />
-                </Grid>
-            </Expander>
-            <Button
-                x:Name="btn_add_section"
-                Grid.Column="1"
-                Width="124"
-                Height="47"
-                Margin="10,393,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="White"
-                Click="Btn_add_section_Click"
-                Content="Add New Section"
-                FontSize="14"
-                FontWeight="Bold" />
-            <Button
-                x:Name="btn_remove_section"
-                Grid.Column="1"
-                Width="124"
-                Height="47"
-                Margin="165,393,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="White"
-                Click="Btn_remove_section_Click"
-                Content="Remove Section"
-                FontSize="14"
-                FontWeight="Bold" />
-            <Button
-                x:Name="btn_add_step"
-                Grid.Column="1"
-                Width="124"
-                Height="47"
-                Margin="310,393,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="White"
-                Click="Btn_add_step_Click"
-                Content="Add New Step"
-                FontSize="14"
-                FontWeight="Bold" />
-            <Button
-                x:Name="btn_remove_step"
-                Grid.Column="1"
-                Width="124"
-                Height="47"
-                Margin="460,393,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="White"
-                Click="Btn_remove_step_Click"
-                Content="Remove Step"
-                FontSize="14"
-                FontWeight="Bold" />
-
-            <Grid
-                Grid.Column="1"
-                Margin="58,83,27,83"
-                Background="LightGray"
-                ShowGridLines="False">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" MinWidth="64" />
-                    <ColumnDefinition Width="auto" MinWidth="94" />
-                    <ColumnDefinition Width="auto" MinWidth="177" />
-                    <ColumnDefinition Width="auto" MinWidth="144" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="111" />
-                    <RowDefinition Height="auto" MinHeight="21" />
-                </Grid.RowDefinitions>
-
-                <Rectangle
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="0,-1,2,0"
-                    Fill="Transparent"
-                    Stroke="Black" />
-                <Rectangle
-                    Grid.Row="0"
-                    Grid.ColumnSpan="2"
-                    Margin="66,-1,0,0"
-                    Fill="Transparent"
-                    Stroke="Black" />
-                <Rectangle
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Margin="0,-1,0,0"
-                    Fill="Transparent"
-                    Stroke="Black" />
-                <Rectangle
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Height="112"
-                    Margin="0,-1,0,0"
+                        Background="#025dba"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Content="Station"
+                        FontFamily="Comic Sans MS"
+                        FontWeight="UltraBlack"
+                        TextElement.Foreground="White" />
+					<TextBox
+                        x:Name="tbStation"
+                        Height="60"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        BorderBrush="Black"
+                        DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
+                        IsReadOnly="True"
+                        Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+				</DockPanel>
+				<DockPanel Margin="5">
+					<Label
+                        x:Name="lblControlAction"
+                        Grid.Column="2"
+                        Height="30"
+                        VerticalAlignment="Top"
+                        Background="#025dba"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Content="Control Action"
+                        FontWeight="UltraBlack"
+                        TextElement.Foreground="White" />
+					<TextBox
+                        x:Name="tbControlAction"
+                        Height="60"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        BorderBrush="Black"
+                        DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
+                        IsReadOnly="True"
+                        Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+				</DockPanel>
+				<DockPanel Margin="5">
+					<Label
+                        x:Name="lblExpectedResult"
+                        Height="30"
+                        Background="#025dba"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Content="Expected Result"
+                        FontWeight="UltraBlack"
+                        TextElement.Foreground="White" />
+					<TextBox
+                        x:Name="tbExpectedResult"
+                        Height="60"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        BorderBrush="Black"
+                        DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
+                        IsReadOnly="True"
+                        Text="{Binding XPath=Expected_Result, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+				</DockPanel>
+				<DockPanel
+                    Margin="5,5,50,5"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom"
-                    Fill="Transparent"
-                    Stroke="Black" />
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Width="65"
-                    Height="26"
-                    Margin="2,0,1,85"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    Text="Step" />
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Width="94"
-                    Height="27"
-                    Margin="1,0,0,85"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    Text="Station" />
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Width="174"
-                    Height="26"
-                    Margin="5,0,0,85"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    Text="Control Action" />
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Width="156"
-                    Height="24"
-                    Margin="5,-1,7,88"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    Text="Expected Result" />
-
-                <TextBox
-                    x:Name="stepBox"
-                    Grid.Row="1"
-                    Grid.ColumnSpan="2"
-                    Width="66"
-                    Height="173"
-                    Margin="0,0,0,-1"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    KeyDown="StepBox_KeyDown"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    x:Name="stationBox"
-                    Grid.Row="1"
-                    Grid.ColumnSpan="2"
-                    Width="97"
-                    Height="172"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    KeyDown="StationBox_KeyDown"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    x:Name="controlActionBox"
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Width="179"
-                    Height="172"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    KeyDown="ControlActionBox_KeyDown"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    x:Name="expectedResultBox"
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    Width="168"
-                    Height="172"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    KeyDown="ExpectedResultBox_KeyDown"
-                    TextWrapping="Wrap" />
-            </Grid>
-            <Button
-                x:Name="btn_add_section_Copy"
-                Width="135"
-                Height="47"
-                Margin="0,393,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="White"
-                Click="Move_section_Click"
-                Content="Move Section/Step"
-                FontSize="14"
-                FontWeight="Bold"
-                RenderTransformOrigin="0.454,0.48" />
-            <Label
-                Grid.Column="1"
-                Width="324"
-                Height="41"
-                Margin="149,25,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Test Procedure Editor"
-                FontSize="28"
-                FontWeight="ExtraBold" />
-            <Expander
-                Grid.Column="1"
-                Width="222"
-                Height="100"
-                Margin="0,0,372,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Top"
-                Header="Heading and Description"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                Visibility="Hidden">
-                <Grid
-                    Height="398"
-                    Margin="0,0,0,0"
-                    Background="LightSlateGray">
-                    <Button
-                        x:Name="EditHeading"
-                        Width="220"
-                        Height="38"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Background="#FF9B9898"
-                        Click="EditHeading_Click"
-                        Content="Edit Heading" />
-                    <Button
-                        x:Name="EditDescription"
-                        Width="220"
-                        Height="39"
-                        Margin="0,37,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Background="#FF9B9898"
-                        Click="EditDescription_Click"
-                        Content="Edit Description" />
-                </Grid>
-            </Expander>
-        </Grid>
-    </Viewbox>
+                    >
+					<Button
+                        x:Name="addStepButton"
+                        Width="150"
+                        Height="45"
+						Content="Add Procedural Step"
+						Foreground="White"
+						Margin="0,0,40,0"
+                        Click="addStepButton_Click"
+                        DockPanel.Dock="Right"
+                        Background="#024DBA"
+                        ToolTip="Add a new step below the current one"/>
+					<Button
+                        x:Name="removeStepButton"
+                        Width="150"
+                        Height="45"
+						Content="Remove Procedural Step"
+						Foreground="White"
+                        Click="removeStepButton_Click"
+                        DockPanel.Dock="Right"
+                        Background="#024DBA"
+                        ToolTip="Remove the current step"/>
+				</DockPanel>
+			</StackPanel>
+		</Grid>
+	</DockPanel>
 </Window>
