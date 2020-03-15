@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://tempuri.org/ProcedureSchema.xsd" xmlns:mstns="http://tempuri.org/ProcedureSchema.xsd" elementFormDefault="qualified" targetNamespace="http://tempuri.org/ProcedureSchema.xsd" id="Procedure_Schema" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Procedure">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Procedure_Heading">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" />
+              <xs:element name="Signature" type="xs:string" />
+              <xs:element name="Organization" type="xs:string" />
+              <xs:element name="Date" type="xs:date" />
+              <xs:element name="Time" type="xs:time" />
+              <xs:element name="Load_Version" type="xs:string" />
+              <xs:element name="Description" type="xs:string" />
+              <xs:element name="System" type="xs:string" />
+              <xs:element name="Severity" type="xs:string" />
+              <xs:element default="1" name="Revision" type="xs:unsignedShort" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Procedure_Sections">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="unbounded" name="Section">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Heading" type="xs:string" />
+                    <xs:element name="Description" type="xs:string" />
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="Section_Step">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Station" type="xs:string" />
+                          <xs:element name="Control_Action" type="xs:string" />
+                          <xs:element name="Expected_Result" type="xs:string" />
+                          <xs:element name="Pass" type="xs:boolean" default="false" />
+                          <xs:element name="Fail" type="xs:boolean" default="false" />
+                          <xs:element name="Comments" type="xs:string" />
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:unsignedShort" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:unsignedShort" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Procedure_Redlines">
+          <xs:complexType />
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

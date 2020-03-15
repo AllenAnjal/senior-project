@@ -9,8 +9,8 @@
     Width="800"
     Height="600"
     Closed="Window_Closed"
+    ContentRendered="Window_ContentRendered"
     Icon="icons\splashscreen.png"
-    Loaded="Window_Loaded"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -19,17 +19,17 @@
             <MenuItem Click="Exit_Button" Header="Exit" />
         </ContextMenu>
 
-        <XmlDataProvider x:Key="xmlData" XPath="/TestProcedure/Sections/Section" />
+        <XmlDataProvider x:Key="xmlData" XPath="/Procedure/Procedure_Sections/Section" />
 
-        <HierarchicalDataTemplate DataType="Sections" ItemsSource="{Binding XPath=Section}">
-            <TextBlock Text="{Binding XPath=Sections}" />
+        <HierarchicalDataTemplate DataType="Procedure_Sections" ItemsSource="{Binding XPath=Section}">
+            <TextBlock Text="{Binding XPath=Procedure_Sections}" />
         </HierarchicalDataTemplate>
 
-        <HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Test_Step}">
+        <HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Section_Step}">
             <TextBlock Text="{Binding XPath=Heading}" />
         </HierarchicalDataTemplate>
 
-        <HierarchicalDataTemplate DataType="Test_Step">
+        <HierarchicalDataTemplate DataType="Section_Step">
             <TextBlock Text="{Binding XPath=@id}" />
         </HierarchicalDataTemplate>
     </Window.Resources>
@@ -91,8 +91,10 @@
                     SelectedItemChanged="TreeView1_SelectedItemChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
-                            <EventSetter Event="PreviewMouseDoubleClick" Handler="TreeView1_PreviewMouseLeftButtonUp_1" />
+
+                            <EventSetter Event="Collapsed" Handler="TreeViewItem_Collapsed" />
                             <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="IsExpanded" Value="True" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding XPath=Pass}" Value="true">
                                     <Setter Property="Background" Value="Yellow" />
@@ -123,7 +125,6 @@
                         BorderBrush="Black"
                         BorderThickness="1"
                         Content="Step"
-                        FontFamily="Comic Sans MS"
                         FontWeight="UltraBlack"
                         TextElement.Foreground="White" />
                     <TextBox
@@ -146,7 +147,6 @@
                         BorderBrush="Black"
                         BorderThickness="1"
                         Content="Station"
-                        FontFamily="Comic Sans MS"
                         FontWeight="UltraBlack"
                         TextElement.Foreground="White" />
                     <TextBox
