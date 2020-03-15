@@ -74,17 +74,21 @@ namespace senior_project
 
         private void edit_btn(object sender, RoutedEventArgs e)
         {
-            xmlProcedure = XmlVerification.loadXml();
-            if (xmlProcedure != null)
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "XML files|*.xml";
+
+            if ((bool)openFileDialog.ShowDialog())
             {
                 this.Hide();
-                TestAdmin admin = new TestAdmin(xmlProcedure, false);
+                TestAdmin admin = new TestAdmin(this, openFileDialog.FileName);
+
                 admin.Show();
             }
             else
             {
                 MessageBox.Show("No valid XML has been selected", "Error");
             }
+
         }
 
         private void create_btn(object sender, RoutedEventArgs e)

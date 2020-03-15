@@ -39,18 +39,7 @@ namespace senior_project
 
         private void saveClickAction()
         {
-            if (MoveStep.IsChecked == true)
-            {
-                MoveTestStep(Convert.ToInt32(FromSectBox.Text), Convert.ToInt32(ToSectBox.Text), Convert.ToInt32(FromStepBox.Text), Convert.ToInt32(ToStepBox.Text));
-                XmlVerification.writeXmltoFile(xmlProcedure, "tmpAdmin.xml");
-                newInst.populateTreeView();
-            }
-            else
-            {
-                moveSection(Convert.ToInt32(FromSectBox.Text), Convert.ToInt32(ToSectBox.Text));
-                XmlVerification.writeXmltoFile(xmlProcedure, "tmpAdmin.xml");
-                newInst.populateTreeView();
-            }
+
         }
 
         private void save1_Click(object sender, RoutedEventArgs e)

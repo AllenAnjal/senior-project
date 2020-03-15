@@ -56,28 +56,31 @@ namespace senior_project
                 MessageBox.Show(err.Message, "Error");
             }
 
-            userInfoPage x = new userInfoPage(xmlProcedure);
-            x.ShowDialog();
         }
 
 
-
-        public TestAdmin(TestProcedure newProcedure)
-        {
-            InitializeComponent();
-            xmlProcedure = newProcedure;
-
-            userInfoPage x = new userInfoPage(xmlProcedure);
-            x.ShowDialog();
-
-            //XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
-            //beginTest();
-
-
-        }
 
 
         #region buttons
+
+        private void removeStepButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void addStepButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void move_down(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void move_up(object sender, RoutedEventArgs e)
+        {
+
+        }
 
 
 
@@ -99,7 +102,7 @@ namespace senior_project
         #endregion buttons
 
         #region TreeView
-
+        
         private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             string section = String.Empty, step = String.Empty;
@@ -127,7 +130,7 @@ namespace senior_project
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
         }
-
+        /*
         //Initialize the treeView to section 0, step 0
 
         //Navigate to next step in test procedure
@@ -136,7 +139,7 @@ namespace senior_project
 
         #region Test Steps
 
-        /*
+        
     private void forwardStep()
     {
         NextStep();
@@ -197,7 +200,7 @@ namespace senior_project
         {
             //_treeView.Items.Refresh();
             //_treeView.UpdateLayout();
-            return;
+            
             TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
             if (item?.Tag is TestProcedureSectionTest_Step)
             {
@@ -208,6 +211,7 @@ namespace senior_project
                 tbControlAction.Text = step.Control_Action.ToString();
                 tbExpectedResult.Text = step.Expected_Result.ToString();
             }
+            return;
         }
 
         private void Exit_Button(object sender, RoutedEventArgs e)
@@ -241,7 +245,7 @@ namespace senior_project
         private void ThisIsCalledWhenPropertyIsChanged(object sender, EventArgs e)
         {
             //MessageBox.Show("WOAH");
-            pbProcedureProgress.Value = getProcedureProgress(null);
+           // pbProcedureProgress.Value = getProcedureProgress(null);
             _treeView.Items.Refresh();
             _treeView.UpdateLayout();
         }

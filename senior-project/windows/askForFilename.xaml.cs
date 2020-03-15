@@ -42,7 +42,7 @@ namespace senior_project
             file += ".xml";
             createFile(file);
            // xmlProcedure = XmlVerification.loadXml(file);
-            TestAdmin admin = new TestAdmin(xmlProcedure, true);
+            TestAdmin admin = new TestAdmin(main, file);
             admin.Show();
 
         }

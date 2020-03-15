@@ -55,7 +55,7 @@ namespace senior_project
             {
                 AddSection(SectionHeadingBox.Text, SectionDescriptionBox.Text);
                 XmlVerification.writeXmltoFile(toAdd, "tmp.xml");
-                newInst.populateTreeView();
+                //newInst.populateTreeView();
                 initilizeTextBoxes();
             }
         }

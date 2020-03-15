@@ -62,17 +62,24 @@
             Background="White"
             Height="50" Margin="122,23,21,82"
             />
-        <Button
-            Grid.Row="1"
-            Height="30"
-            Width="116"
-            Content="Export"
-            Background="White"
-            VerticalAlignment="Bottom"
-            HorizontalAlignment="Center"
-            Click="Submit_btn" 
-            Margin="62,0,147,-92"
-            />
+        <Border Background="White" 
+                CornerRadius="7" 
+                Grid.Row="1" 
+                Margin="62,0,147,-92"
+                BorderThickness="2"
+                BorderBrush="White"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Center">
+            <Button
+                Grid.Row="1"
+                Height="30"
+                Width="116"
+                Content="Export"
+                BorderBrush="White"
+                Background="White"
+                Click="Submit_btn" 
+                />
+        </Border>
         <Button Name="checkDocx"
                 Grid.Row="1"
                 Width="50"
@@ -121,17 +128,27 @@
             Background="White"
             Height="50" Margin="122,147,21,-42"
             />
-        <Button
+        <Border Background="White" 
+                CornerRadius="7" 
+                Grid.Row="1" 
+                Margin="187,0,21,-92"
+                BorderThickness="2"
+                BorderBrush="White"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Center">
+            <Button
             Grid.Row="1"
             Height="30"
             Width="116"
             Content="Close"
             Background="White"
+            BorderBrush="White"
             VerticalAlignment="Bottom"
             HorizontalAlignment="Center"
             Click="Submit_btn" 
-            Margin="187,0,21,-92"
+            
             />
+        </Border>
 
     </Grid>
 </Window>

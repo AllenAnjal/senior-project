@@ -27,6 +27,7 @@ namespace senior_project
     public partial class Redlines : Window
     {
         #region Initilization 
+        MainWindow mw = new MainWindow();
         TestProcedure tmp = new TestProcedure();
         TestAdmin testAdmin;
         string redlineTypeLoaded;
@@ -35,7 +36,7 @@ namespace senior_project
         {
             InitializeComponent();
             tmp = newProcedure;
-            testAdmin = new TestAdmin(tmp, false); //creates the test admin object with the pre-existing test procedure
+            testAdmin = new TestAdmin(mw, "tmp.xml"); //creates the test admin object with the pre-existing test procedure
         }
         #endregion
 
@@ -60,8 +61,9 @@ namespace senior_project
             //MainWindow t = new MainWindow();
             //t.Show();
             XmlVerification.writeXmltoFile(tmp, "tmp.xml");
+            
             this.Close();
-            TestAdmin t = new TestAdmin(tmp, false);
+            TestAdmin t = new TestAdmin(mw, "tmp.xml");
             t.Show();
         }
         #endregion

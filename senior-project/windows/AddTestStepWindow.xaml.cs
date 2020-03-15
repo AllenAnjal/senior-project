@@ -71,7 +71,7 @@ namespace senior_project
             {
                 AddTestStep(sectionId, StationBox.Text, ControlActionBox.Text, ExpResultBox.Text);
                 XmlVerification.writeXmltoFile(xml, "tmp.xml");
-                newInst.populateTreeView();
+               // newInst.populateTreeView();
                 initializeTextBoxes();
             }
         }

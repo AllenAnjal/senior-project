@@ -116,7 +116,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" Padding="0"
+                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
         HorizontalAlignment="Center" VerticalAlignment="Top" Width="534" Height="100" Background="#025dba" DockPanel.Dock="Top">
                     <DockPanel Margin="5" >
                         <Label
@@ -173,7 +173,7 @@
                         </Border>
                     </DockPanel>
                 </Border>
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5" Padding="0"
+                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
                     HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
                     <DockPanel Margin="5">
                         <Label
@@ -200,7 +200,7 @@
                         </Border>
                     </DockPanel>
                 </Border>
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="15" Padding="0"
+                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
                     HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
                     <DockPanel Margin="5">
                         <Label
