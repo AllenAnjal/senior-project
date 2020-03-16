@@ -5,11 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:senior_project"
         mc:Ignorable="d"
+        Background="#025dba"
         Icon="icons\splashscreen.png"
         Title="Comment" Height="250" Width="500">
     <Grid>
-        <TextBox x:Name="commentBox" HorizontalAlignment="Left" Height="67" TextWrapping="Wrap"  VerticalAlignment="Top" Width="421" Margin="38,22,0,0" PreviewMouseDown="CommentBox_PreviewMouseDown"/>
-        <Button x:Name="submitButton" IsDefault="True" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="206,178,0,0" Click="SubmitButton_Click"/>
-
+        <Border BorderThickness="2" Background="White" BorderBrush="Black" CornerRadius="10" VerticalAlignment="Center" Width="422"  HorizontalAlignment="Center" Height="123" Margin="40,29,30,67">
+            <TextBox x:Name="commentBox"  
+                     TextWrapping="Wrap"   
+                     ToolTip="Leave a comment about the step or failure"
+                     Margin="3,3,4,3"
+                     BorderBrush="White"/>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="74" Height="30" Background="White" CornerRadius="10" Margin="208,0,210,20">
+            <Button x:Name="submitButton" 
+                    IsDefault="True" 
+                    Content="Submit"  
+                    Click="SubmitButton_Click"
+                    Height="25"
+                    BorderThickness="0"
+                    Background="White"
+                    BorderBrush="White"
+                    Width="60"
+                    />
+        </Border>
     </Grid>
 </Window>

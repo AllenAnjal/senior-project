@@ -9,32 +9,38 @@
         Background="#025dba"
         WindowStartupLocation="CenterScreen"
         Icon="icons\splashscreen.png"
-        Title="File Creation" Height="150" Width="250">
+        Title="File Creation" Height="180" Width="247">
     <Grid>
         <Label
             Foreground="White"
-            Content="Enter in xml filename to be created" Margin="18,10,10,35"
+            Content="Enter in xml filename to be created" Margin="18,24,10,21"
             />
 
         <TextBox x:Name="nameBox" HorizontalAlignment="Center" Height="20" TextWrapping="Wrap"  VerticalAlignment="Center" Width="200" Margin="0,0,0,0" />
-
+        <Border BorderBrush="Black" BorderThickness="1" Background="White" CornerRadius="10" Margin="0,0,31,15" Width="80" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right">
         <Button
-            Height="20"
+            
             IsDefault="True"
             Click="SubmitButton"
+            Background="White"
+            BorderBrush="White"
             ToolTip="submit to create a new xml file"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Content="Submit" RenderTransformOrigin="0.226,-0.4" Margin="0,0,50,15" Width="68"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="Submit" Margin="0,0,0,0" 
             />
-        <Button
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" Background="White" CornerRadius="10" Margin="34,0,0,15" Width="80" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <Button
             Height="20"
             IsCancel="True"
             Click="CancelButton"
-            
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Content="Cancel" RenderTransformOrigin="0.226,-0.4" Margin="0,0,124,15" Width="68"
+            BorderBrush="White"
+            Background="White"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="Cancel" RenderTransformOrigin="0.226,-0.4" 
             />
+        </Border>
     </Grid>
 </Window>

@@ -61,11 +61,11 @@ namespace senior_project
                 MessageBox.Show(err.Message, "Error");
             }
 
-            t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 75), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
+         //   t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 75), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
 
         }
 
-
+        /*
         private void t_Tick(object sender, EventArgs e)
         {
             lblStep.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
@@ -73,6 +73,7 @@ namespace senior_project
             lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
             lblControlAction.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
         }
+        */
         #region buttons
 
         private void removeStepButton_Click(object sender, RoutedEventArgs e)

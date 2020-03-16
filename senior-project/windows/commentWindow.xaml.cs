@@ -21,6 +21,12 @@ namespace senior_project
     {
         String defaultText = "Leave a comment";
         TestProcedureSectionTest_Step newStep;
+        public commentWindow()
+        {
+            InitializeComponent();
+            commentBox.Text = defaultText;
+            
+        }
         public commentWindow(ref TestProcedureSectionTest_Step step)
         {
             InitializeComponent();

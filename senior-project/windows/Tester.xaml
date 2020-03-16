@@ -116,7 +116,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                <Border Name="borderStep" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
         HorizontalAlignment="Center" VerticalAlignment="Top" Width="534" Height="100" Background="#025dba" DockPanel.Dock="Top">
                     <DockPanel Margin="5" >
                         <Label
@@ -145,7 +145,7 @@
 
                     </DockPanel>
                 </Border>
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                <Border Name="borderStation" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
                     HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
 
                     <DockPanel Margin="5">
@@ -173,7 +173,7 @@
                         </Border>
                     </DockPanel>
                 </Border>
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                <Border Name="borderControl" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
                     HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
                     <DockPanel Margin="5">
                         <Label
@@ -200,7 +200,7 @@
                         </Border>
                     </DockPanel>
                 </Border>
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                <Border Name="borderExp" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
                     HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
                     <DockPanel Margin="5">
                         <Label

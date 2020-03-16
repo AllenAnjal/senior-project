@@ -25,6 +25,7 @@ namespace senior_project
         private DispatcherTimer t;
         private DateTime start;
         private exportWindow export = new exportWindow();
+        private commentWindow cmt = new commentWindow();
 
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDocument _xml;
@@ -103,10 +104,12 @@ namespace senior_project
             if (_treeView.SelectedItem == null) return;
             hasCommented = false;
             XmlElement sel = _treeView.SelectedItem as XmlElement;
+            
             if (sel.Name == "Test_Step")
             {
                 sel["Pass"].InnerText = "false";
                 sel["Fail"].InnerText = "true";
+                cmt.Show();
             }
             //loadComment();
             //hasCommented = false;
@@ -171,6 +174,10 @@ namespace senior_project
                 lblStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
                 lblControlAction.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
                 lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                borderStep.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                borderStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                borderControl.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                borderExp.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
             }
             else
             {
@@ -178,6 +185,10 @@ namespace senior_project
                 lblStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
                 lblControlAction.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
                 lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                borderStep.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                borderStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                borderControl.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                borderExp.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
             }
             //red.ShowDialog();
 
@@ -335,6 +346,7 @@ namespace senior_project
                 if (x.Name == "Test_Step")
                 {
                     //MessageBox.Show(x["Pass"].InnerText + "\n" + x["Pass"].Value);
+                    cmt.Show();
                     MessageBox.Show(String.Format("{0}", getProcedureProgress(x.ParentNode as XmlElement)));
                 }
 

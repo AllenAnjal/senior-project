@@ -28,7 +28,7 @@
         <Button Name="selectFolder"
                 Width="50"
                 Height="50"
-                Margin="58,198,207,4"
+                Margin="70,165,215,38"
                 Click="folder_btn"
                 Background="#025dba"
                 BorderThickness="0"
@@ -38,12 +38,12 @@
         </Button>
         <Image
                 x:Name="image"
-                Height="178"
-                Margin="-17,11,-9,0"
+                Height="154"
+                Margin="-30,0,23,0"
                 VerticalAlignment="Top"
                 Source="icons/cae.jpg"
                 HorizontalAlignment="Right"
-                Width="341" />
+                Width="340" />
         <TextBox
             x:Name="txtbx_load_test_pro"
             IsEnabled="False"
@@ -54,7 +54,7 @@
             
             VerticalAlignment="Center"
             FontSize="20"
-            Padding="2" Margin="116,206,17,6" RenderTransformOrigin="0.5,0.5" Width="182" >
+            Padding="2" Margin="130,173,23,40" RenderTransformOrigin="0.5,0.5" Width="182" >
         </TextBox>
         <Border Background="White" 
                 CornerRadius="7" 
