@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         FontSize="14"
         Width="360"
-        Height="548.495"
+        Height="443.162"
         ResizeMode="NoResize"
         >
     <Grid
@@ -56,16 +56,10 @@
             FontSize="20"
             Padding="2" Margin="116,206,17,6" RenderTransformOrigin="0.5,0.5" Width="182" >
         </TextBox>
-        <Label
-            Grid.Row="1"
-            Content="Export to Docx"
-            Background="White"
-            Height="50" Margin="122,23,21,82"
-            />
         <Border Background="White" 
                 CornerRadius="7" 
                 Grid.Row="1" 
-                Margin="62,0,147,-92"
+                Margin="64,0,146,23"
                 BorderThickness="2"
                 BorderBrush="White"
                 VerticalAlignment="Bottom"
@@ -80,7 +74,16 @@
                 Click="Submit_btn" 
                 />
         </Border>
-        <Button Name="checkDocx"
+        <Border
+            x:Name="doxcBorder"
+            Background="#025dba"
+            CornerRadius="70"
+            BorderThickness="3"
+            Grid.Row="1"
+            BorderBrush="White"
+            Margin="48,1,204,79"
+            >
+            <Button Name="checkDocx"
                 Grid.Row="1"
                 Width="50"
                 Height="50"
@@ -88,11 +91,20 @@
                 Click="docx_btn"
                 Background="#025dba"
                 BorderThickness="0"
-                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="59,23,209,82"
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
                 >
-            <Image Source="icons\circle-outline-128.png"></Image>
-        </Button>
-        <Button x:Name="checkXML"
+                <Image Source="icons\word.png"></Image>
+            </Button>
+        </Border>
+        <Border
+            x:Name="xmlBorder"
+            Background="#025dba"
+            CornerRadius="70"
+            BorderThickness="3"
+            BorderBrush="White"
+             Margin="141,0,111,79" Grid.Row="1"
+            >
+            <Button x:Name="checkXML"
             Grid.Row="1"
             Width="50"
             Height="50"
@@ -100,38 +112,35 @@
             Click="xml_btn"
             Background="#025dba"
             BorderThickness="0"
-            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="59,70,209,0"
-                >
-            <Image Source="icons/circle-outline-128.png"/>
-        </Button>
-        <Button x:Name="checkCSV"
+            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="icons/xml.png"/>
+            </Button>
+        </Border>
+        <Border
+            x:Name="csvBorder"
+            Background="#025dba"
+            CornerRadius="70"
+            BorderThickness="3"
+            BorderBrush="White"
+            Margin="229,1,23,79" Grid.Row="1" 
+            >
+            <Button x:Name="checkCSV"
             Grid.Row="1"
-            Width="50"
-            Height="50"
-  
+               Width="50"
+               Height="50"
             Click="csv_btn"
             Background="#025dba"
             BorderThickness="0"
-            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="60,147,209,-42" 
+            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
                 >
-            <Image Source="icons/circle-outline-128.png"/>
-        </Button>
-        <Label
-            Grid.Row="1"
-            Content="Export to XML"
-            Background="White"
-            Height="50" Margin="122,87,21,18"
-            />
-        <Label
-            Grid.Row="1"
-            Content="Export to CSV"
-            Background="White"
-            Height="50" Margin="122,147,21,-42"
-            />
+                <Image Source="icons/icons8-csv-64.png"/>
+            </Button>
+        </Border>
+
         <Border Background="White" 
                 CornerRadius="7" 
                 Grid.Row="1" 
-                Margin="187,0,21,-92"
+                Margin="189,0,21,23"
                 BorderThickness="2"
                 BorderBrush="White"
                 VerticalAlignment="Bottom"

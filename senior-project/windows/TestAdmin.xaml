@@ -129,34 +129,6 @@
                         </Style>
                     </TreeView.Resources>
                 </TreeView>
-                <Button
-					HorizontalAlignment="Right"
-					VerticalAlignment="Bottom"
-					x:Name="moveDownButton"
-					BorderThickness="2"
-					BorderBrush="Black"
-					Click="move_down"
-					Height="40"
-					Width="112"
-					Background="#025dba"
-					Content="Move Up"
-					Foreground="White"
-					ToolTip="Move the current step below in the Table of Contents"
-					/>
-                <Button
-					HorizontalAlignment="Left"
-					VerticalAlignment="Bottom"
-					x:Name="moveUpButton"
-					Click="move_up"
-					Height="40"
-					Width="112"
-					Background="#025dba"
-					Content="Move Up"
-					BorderThickness="2"
-					BorderBrush="Black"
-					Foreground="White"
-					ToolTip="Move the current step above in the Table of Contents"
-					/>
             </DockPanel>
             <StackPanel Grid.Column="2">
                 <StackPanel.Resources>

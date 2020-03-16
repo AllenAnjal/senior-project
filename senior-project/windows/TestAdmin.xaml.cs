@@ -18,23 +18,28 @@ using Microsoft.Win32;
 using System.Reflection;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using System.Windows.Threading;
+using System.Timers;
 
 namespace senior_project
 {
     /// <summary>
     /// Interaction logic for TestAdmin.xaml
     /// </summary>
+    /// 
     public partial class TestAdmin : Window
     {
         private MainWindow main;
         private String commentDefault = "Leave a comment";
         private TestProcedure xmlProcedure;
-       
+        Random rand = new Random();
+
 
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDocument _xml;
 
         private List<XmlElement> listTestSteps;
+        private DispatcherTimer t;
 
         private XmlDataProvider _xmlDataProvider;
         private TreeView _treeView;
@@ -56,21 +61,30 @@ namespace senior_project
                 MessageBox.Show(err.Message, "Error");
             }
 
+            t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 75), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
+
         }
 
 
-
-
+        private void t_Tick(object sender, EventArgs e)
+        {
+            lblStep.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
+            lblStation.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
+            lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
+            lblControlAction.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
+        }
         #region buttons
 
         private void removeStepButton_Click(object sender, RoutedEventArgs e)
         {
-
+            lblStep.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
         }
 
         private void addStepButton_Click(object sender, RoutedEventArgs e)
         {
-
+            exportWindow ep = new exportWindow();
+            ep.Show();
+            this.Close();
         }
         private void move_down(object sender, RoutedEventArgs e)
         {

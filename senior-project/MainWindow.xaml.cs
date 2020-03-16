@@ -83,6 +83,7 @@ namespace senior_project
                 TestAdmin admin = new TestAdmin(this, openFileDialog.FileName);
 
                 admin.Show();
+               // this.Close();
             }
             else
             {

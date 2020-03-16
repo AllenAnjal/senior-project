@@ -19,6 +19,9 @@ namespace senior_project
     /// </summary>
     public partial class exportWindow : Window
     {
+        private bool docxToggle = false;
+        private bool xmlToggle = false;
+        private bool csvToggle = false;
         public exportWindow()
         {
             InitializeComponent();
@@ -35,15 +38,39 @@ namespace senior_project
         }
         private void docx_btn(object sender, RoutedEventArgs e)
         {
-           
+            docxToggle = !docxToggle;
+            if (docxToggle)
+            {
+                doxcBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            }
+            else
+            {
+                doxcBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            }
         }
         private void xml_btn(object sender, RoutedEventArgs e)
         {
-
+            xmlToggle = !xmlToggle;
+            if (xmlToggle)
+            {
+                xmlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            }
+            else
+            {
+                xmlBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            }
         }
         private void csv_btn(object sender, RoutedEventArgs e)
         {
-
+            csvToggle = !csvToggle;
+            if (csvToggle)
+            {
+                csvBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            }
+            else
+            {
+                csvBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            }
         }
     }
 }
