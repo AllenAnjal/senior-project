@@ -18,13 +18,12 @@ namespace senior_project
     /// </summary>
     public partial class Tester : Window
     {
-        private MainWindow main;
-        private String commentDefault = "Leave a comment";
-        private TestProcedure xmlProcedure;
+        private readonly MainWindow main;
+        private const String commentDefault = "Leave a comment";
         private bool hasCommented = false;
         private bool redlineClicked = false;
         private DispatcherTimer t;
-        private DateTime start;
+        private readonly DateTime start;
         private exportWindow export = new exportWindow();
 
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
@@ -73,22 +72,6 @@ namespace senior_project
             _nList = _xml.GetElementsByTagName(StepName);    //  Used to update Progress Bar
 
             //  END TEST EDIT
-
-            t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
-
-            start = DateTime.Now;
-        }
-
-        public Tester(TestProcedure newProcedure)
-        {
-            InitializeComponent();
-            xmlProcedure = newProcedure;
-
-            userInfoPage x = new userInfoPage(xmlProcedure);
-            x.ShowDialog();
-
-            //XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
-            //beginTest();
 
             t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
 
@@ -373,18 +356,6 @@ namespace senior_project
                 }
             }
         }
-
-        /*
-         * functions to create:
-         *      stepForward()
-         *      stepForward(unsigned n)
-         *
-         *      stepBackwards()
-         *      stepBackwards(unsigned n)
-         *
-         *      updateProgressBar()
-         *
-         */
 
         #region Window Event Handlers
 
