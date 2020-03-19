@@ -136,121 +136,158 @@
                         <Setter Property="DockPanel.Dock" Value="Top" />
                     </Style>
                 </StackPanel.Resources>
-                <DockPanel Margin="5">
-                    <Label
+                <Border Name="borderStep" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+        HorizontalAlignment="Center" VerticalAlignment="Top" Width="534" Height="100" Background="#025dba" DockPanel.Dock="Top">
+                    <DockPanel Margin="5" >
+                        <Label
+                         
                         x:Name="lblStep"
                         Height="30"
+                        VerticalAlignment="Top"
                         Background="#025dba"
-                        BorderBrush="Black"
                         BorderThickness="1"
                         Content="Step"
                         FontFamily="Comic Sans MS"
                         FontWeight="UltraBlack"
                         TextElement.Foreground="White" />
-                    <TextBox
+                        <Border BorderBrush="Black" BorderThickness="1" Height="60" Width="520" CornerRadius="3" HorizontalAlignment="Center" Background="White">
+                            <TextBox
                         x:Name="tbStep"
-                        Height="60"
-                        HorizontalContentAlignment="Left"
+                        HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
-                        BorderBrush="Black"
-                        DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
+                        BorderBrush="white"
+                        
+                        DataContext="{Binding SelectedItem, ElementName=treeView1}"
                         IsReadOnly="True"
-                        Text="{Binding XPath=@id, UpdateSourceTrigger=PropertyChanged}"
-                        TextWrapping="Wrap" />
-                </DockPanel>
-                <DockPanel Margin="5">
-                    <Label
+                        Text="{Binding UpdateSourceTrigger=PropertyChanged, XPath=@id}"
+                        TextWrapping="Wrap" Margin="1" />
+                        </Border>
+
+                    </DockPanel>
+                </Border>
+                <Border Name="borderStation" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                    HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
+
+                    <DockPanel Margin="5">
+                        <Label
                         x:Name="lblStation"
                         Height="30"
                         VerticalAlignment="Top"
                         Background="#025dba"
-                        BorderBrush="Black"
+                        
                         BorderThickness="1"
                         Content="Station"
                         FontFamily="Comic Sans MS"
                         FontWeight="UltraBlack"
                         TextElement.Foreground="White" />
-                    <TextBox
-                        x:Name="tbStation"
-                        Height="60"
-                        HorizontalContentAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        BorderBrush="Black"
-                        DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                        IsReadOnly="True"
-                        Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
-                        TextWrapping="Wrap" />
-                </DockPanel>
-                <DockPanel Margin="5">
-                    <Label
+                        <Border BorderBrush="Black" BorderThickness="1" Height="60" Width="520" CornerRadius="3" HorizontalAlignment="Center" Background="White">
+                            <TextBox
+                            x:Name="tbStation"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            BorderBrush="White"
+                            DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
+                            IsReadOnly="True"
+                            Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap" Margin="1" />
+                        </Border>
+                    </DockPanel>
+                </Border>
+                <Border Name="borderControl" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                    HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
+                    <DockPanel Margin="5">
+                        <Label
                         x:Name="lblControlAction"
                         Grid.Column="2"
                         Height="30"
                         VerticalAlignment="Top"
                         Background="#025dba"
-                        BorderBrush="Black"
+                      
                         BorderThickness="1"
                         Content="Control Action"
                         FontWeight="UltraBlack"
                         TextElement.Foreground="White" />
-                    <TextBox
-                        x:Name="tbControlAction"
-                        Height="60"
-                        HorizontalContentAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        BorderBrush="Black"
-                        DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                        IsReadOnly="True"
-                        Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
-                        TextWrapping="Wrap" />
-                </DockPanel>
-                <DockPanel Margin="5">
-                    <Label
+                        <Border BorderBrush="Black" BorderThickness="1" Height="60" Width="520" CornerRadius="3" HorizontalAlignment="Center" Background="White">
+                            <TextBox
+                            x:Name="tbControlAction"
+                            HorizontalContentAlignment="Left"
+                            VerticalContentAlignment="Center"
+                            BorderBrush="White"
+                            DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
+                            IsReadOnly="True"
+                            Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap" Margin="1" />
+                        </Border>
+                    </DockPanel>
+                </Border>
+                <Border Name="borderExp" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                    HorizontalAlignment="Center" VerticalAlignment="Top" Width="534"  Background="#025dba" DockPanel.Dock="Top">
+                    <DockPanel Margin="5">
+                        <Label
                         x:Name="lblExpectedResult"
                         Height="30"
                         Background="#025dba"
-                        BorderBrush="Black"
+                        
                         BorderThickness="1"
                         Content="Expected Result"
                         FontWeight="UltraBlack"
                         TextElement.Foreground="White" />
-                    <TextBox
+                        <Border BorderBrush="Black" BorderThickness="1" Height="60" Width="520" CornerRadius="3" HorizontalAlignment="Center" Background="White">
+                            <TextBox
                         x:Name="tbExpectedResult"
-                        Height="60"
                         HorizontalContentAlignment="Left"
                         VerticalContentAlignment="Center"
-                        BorderBrush="Black"
+                        BorderBrush="White"
                         DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                         IsReadOnly="True"
                         Text="{Binding XPath=Expected_Result, UpdateSourceTrigger=PropertyChanged}"
-                        TextWrapping="Wrap" />
-                </DockPanel>
+                        TextWrapping="Wrap" Margin="1,1,1,2" />
+                        </Border>
+                    </DockPanel>
+                </Border>
                 <DockPanel
-                    Margin="5,5,50,5"
+                    Margin="0,40,50,0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom"
                     >
-                    <Button
-                        x:Name="addStepButton"
-                        Width="150"
-                        Height="45"
-						Content="Add Procedural Step"
-						Foreground="White"
-						Margin="0,0,40,0"
-                        Click="addStepButton_Click"
-                        DockPanel.Dock="Right"
+                    <Border BorderBrush="Black" 
+                        CornerRadius="10" 
+                        BorderThickness="1" 
                         Background="#024DBA"
-                        ToolTip="Add a new step below the current one"/>
-                    <Button
-                        x:Name="removeStepButton"
-                        Width="150"
+                        Width="145"
                         Height="45"
-						Content="Remove Procedural Step"
-						Foreground="White"
-                        Click="removeStepButton_Click"
                         DockPanel.Dock="Right"
+                        Margin="0,0,0,0">
+                        <Button
+                            x:Name="removeStepButton"
+						    Content="Remove Procedural Step"
+						    Foreground="White"
+                            Click="removeStepButton_Click"
+                            DockPanel.Dock="Right"
+                            Background="#024DBA"
+                            BorderBrush="#024DBA"
+                            ToolTip="Remove the current step" Margin="3,2,2,3"/>
+                    </Border>
+                    <Border BorderBrush="Black" 
+                        CornerRadius="10" 
+                        BorderThickness="1" 
+                            
                         Background="#024DBA"
-                        ToolTip="Remove the current step"/>
+                        Width="145"
+                        Height="45"
+                            
+                        Margin="0,0,0,0">
+                        <Button
+                            x:Name="addStepButton1"
+                            BorderBrush="#024DBA"
+                            Content="Add Procedural Step"
+                            Foreground="White"
+						
+                            Click="addStepButton_Click"
+                            DockPanel.Dock="Right"
+                            Background="#024DBA"
+                            ToolTip="Add a new step below the current one" RenderTransformOrigin="0.977,0.659" Margin="4,2,3,2"/>
+                    </Border>
                 </DockPanel>
             </StackPanel>
         </Grid>

@@ -222,8 +222,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="windows\icons\icons8-csv-64.png" />
-    <Resource Include="windows\icons\pause-256.png" />
-    <Resource Include="windows\icons\play-256.png" />
     <Resource Include="windows\icons\word.png" />
     <Resource Include="windows\icons\xml.png" />
   </ItemGroup>
