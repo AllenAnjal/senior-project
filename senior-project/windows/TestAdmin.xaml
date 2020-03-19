@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Tester"
     Width="800"
-    MinWidth="350"
     Height="600"
+    MinWidth="350"
     MinHeight="600"
     Closed="Window_Closed"
     Icon="icons\splashscreen.png"
@@ -72,7 +72,7 @@
         </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" MaxWidth="250"/>
+                <ColumnDefinition Width="3*" MaxWidth="250" />
                 <ColumnDefinition Width="7*" />
             </Grid.ColumnDefinitions>
 
@@ -112,64 +112,103 @@
 
             <Grid Grid.Column="2" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*" MaxHeight="50"/>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" MaxHeight="50" />
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                     <Style TargetType="Label">
                         <Setter Property="DockPanel.Dock" Value="Top" />
                     </Style>
                     <Style TargetType="Border">
-                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Margin" Value="5" />
                     </Style>
                 </Grid.Resources>
 
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="0">
+                <Border
+                    Grid.Row="0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
                     <Border.Effect>
-                        <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Direction="275"
+                            Opacity=".5"
+                            RenderingBias="Performance"
+                            ShadowDepth="2" />
                     </Border.Effect>
                 </Border>
-                <Border Name="borderStep" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="0">
-                    <DockPanel Margin="5" >
+                <Border
+                    Name="borderStep"
+                    Grid.Row="0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
+                    <DockPanel Margin="5">
                         <Label
                             x:Name="lblStep"
-                            VerticalContentAlignment="Top"
                             Height="30"
+                            VerticalContentAlignment="Top"
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Step"
-                            FontFamily="Comic Sans MS"
-                            FontWeight="UltraBlack"
+                            FontFamily="Verdana"
                             FontSize="15"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbStep"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
-                            Margin="5 0 5 0"
-                            VerticalAlignment="Stretch"
-                            
                             DataContext="{Binding SelectedItem, ElementName=treeView1}"
                             IsReadOnly="True"
                             IsReadOnlyCaretVisible="False"
                             Text="{Binding UpdateSourceTrigger=PropertyChanged, XPath=@id}"
-                            TextWrapping="Wrap"/>
+                            TextWrapping="Wrap" />
                     </DockPanel>
                 </Border>
 
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="1">
+                <Border
+                    Grid.Row="1"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
                     <Border.Effect>
-                        <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Direction="275"
+                            Opacity=".5"
+                            RenderingBias="Performance"
+                            ShadowDepth="2" />
                     </Border.Effect>
                 </Border>
-                <Border Name="borderStation" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="1">
+                <Border
+                    Name="borderStation"
+                    Grid.Row="1"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
                     <DockPanel Margin="5">
                         <Label
                             x:Name="lblStation"
@@ -177,33 +216,52 @@
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Station"
-                            FontFamily="Comic Sans MS"
+                            FontFamily="Verdana"
                             FontSize="15"
-                            FontWeight="UltraBlack"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbStation"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
-                            Margin="5 0 5 0"
-                            VerticalAlignment="Stretch"
-                            
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap"/>
+                            TextWrapping="Wrap" />
                     </DockPanel>
                 </Border>
 
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="2">
+                <Border
+                    Grid.Row="2"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
                     <Border.Effect>
-                        <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Direction="275"
+                            Opacity=".5"
+                            RenderingBias="Performance"
+                            ShadowDepth="2" />
                     </Border.Effect>
                 </Border>
-                <Border Name="borderControl" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="2">
+                <Border
+                    Name="borderControl"
+                    Grid.Row="2"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
                     <DockPanel Margin="5">
                         <Label
                             x:Name="lblControlAction"
@@ -211,18 +269,17 @@
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Control Action"
-                            FontFamily="Comic Sans MS"
-                            FontWeight="UltraBlack"
+                            FontFamily="Verdana"
                             FontSize="15"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbControlAction"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Left"
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
-                            Margin="5 0 5 0"
-                            VerticalAlignment="Stretch"
-                            
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
@@ -230,14 +287,34 @@
                     </DockPanel>
                 </Border>
 
-                <Border BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="3">
+                <Border
+                    Grid.Row="3"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
                     <Border.Effect>
-                        <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Direction="275"
+                            Opacity=".5"
+                            RenderingBias="Performance"
+                            ShadowDepth="2" />
                     </Border.Effect>
                 </Border>
-                <Border Name="borderExp" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="3">
+                <Border
+                    Name="borderExp"
+                    Grid.Row="3"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#025dba"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="7">
                     <DockPanel Margin="5">
                         <Label
                             x:Name="lblExpectedResult"
@@ -245,18 +322,17 @@
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Expected Result"
-                            FontFamily="Comic Sans MS"
-                            FontWeight="UltraBlack"
+                            FontFamily="Verdana"
                             FontSize="15"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbExpectedResult"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Left"
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
-                            Margin="5 0 5 0"
-                            VerticalAlignment="Stretch"
-                            
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Expected_Result, UpdateSourceTrigger=PropertyChanged}"
@@ -264,82 +340,87 @@
                     </DockPanel>
                 </Border>
                 <DockPanel
+                    Grid.Row="4"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Bottom"
-                    Grid.Row="4"
-                    >
-                    <Border BorderBrush="Black" 
-                        CornerRadius="10" 
-                        BorderThickness="1" 
-                        Background="Crimson"
+                    VerticalAlignment="Bottom">
+                    <Border
                         Width="145"
                         Height="45"
-                        DockPanel.Dock="Right"
-                        Margin="0,0,15,0">
+                        Margin="0,0,15,0"
+                        Background="Crimson"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        DockPanel.Dock="Right">
                         <Button
                             x:Name="removeStepButton"
-						    Content="Remove Procedural Step"
-						    Foreground="White"
-                            Click="removeStepButton_Click"
-                            DockPanel.Dock="Right"
+                            Margin="3,2,2,3"
                             Background="Crimson"
                             BorderBrush="Crimson"
-                            ToolTip="Remove the current step" Margin="3,2,2,3"/>
+                            Click="removeStepButton_Click"
+                            Content="Remove Procedural Step"
+                            DockPanel.Dock="Right"
+                            Foreground="White"
+                            ToolTip="Remove the current step" />
                     </Border>
-                    <Border BorderBrush="Black" 
-                        CornerRadius="10" 
-                        BorderThickness="1" 
-                        Background="#024DBA"
+                    <Border
                         Width="90"
                         Height="45"
-                        DockPanel.Dock="Left"
-                        Margin="0,0,20,0">
+                        Margin="0,0,20,0"
+                        Background="#024DBA"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        DockPanel.Dock="Left">
                         <Button
                             x:Name="moveDown"
-						    Content="Move down"
-						    Foreground="White"
-                            Click="move_down"
+                            Margin="3,2,2,3"
                             Background="#024DBA"
                             BorderBrush="#024DBA"
-                            ToolTip="Move the current procedure down in the TOC" Margin="3,2,2,3"/>
+                            Click="move_down"
+                            Content="Move down"
+                            Foreground="White"
+                            ToolTip="Move the current procedure down in the TOC" />
                     </Border>
-                    <Border BorderBrush="Black" 
-                        CornerRadius="10" 
-                        BorderThickness="1" 
-                        Background="#024DBA"
+                    <Border
                         Width="90"
                         Height="45"
-                        DockPanel.Dock="Left"
-                        Margin="0,0,0,0">
+                        Margin="0,0,0,0"
+                        Background="#024DBA"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        DockPanel.Dock="Left">
                         <Button
                             x:Name="moveUp"
-						    Content="Move up"
-						    Foreground="White"
-                            Click="move_up"
+                            Margin="3,2,2,3"
                             Background="#024DBA"
                             BorderBrush="#024DBA"
-                            ToolTip="Move the current procedure up in the TOC" Margin="3,2,2,3"/>
+                            Click="move_up"
+                            Content="Move up"
+                            Foreground="White"
+                            ToolTip="Move the current procedure up in the TOC" />
                     </Border>
-                    <Border BorderBrush="Black" 
-                        CornerRadius="10" 
-                        BorderThickness="1" 
-                        DockPanel.Dock="Right"
-                        Background="#024DBA"
+                    <Border
                         Width="145"
                         Height="45"
-                            
-                        Margin="0,0,0,0">
+                        Margin="0,0,0,0"
+                        Background="#024DBA"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        DockPanel.Dock="Right">
                         <Button
                             x:Name="addStepButton1"
-                            BorderBrush="#024DBA"
-                            Content="Add Procedural Step"
-                            Foreground="White"
-						
-                            Click="addStepButton_Click"
-                            DockPanel.Dock="Right"
+                            Margin="4,2,3,2"
                             Background="#024DBA"
-                            ToolTip="Add a new step below the current one"  Margin="4,2,3,2"/>
+                            BorderBrush="#024DBA"
+                            Click="addStepButton_Click"
+                            Content="Add Procedural Step"
+                            DockPanel.Dock="Right"
+                            Foreground="White"
+                            ToolTip="Add a new step below the current one" />
                     </Border>
                 </DockPanel>
             </Grid>
