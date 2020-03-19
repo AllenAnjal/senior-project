@@ -432,6 +432,7 @@
                         FontFamily="Comic Sans MS"
                         FontSize="20"
                         FontWeight="UltraBlack"
+                        MouseLeftButtonUp="timer_MouseLeftButtonUp"
                         TextAlignment="Center" />
                 </DockPanel>
             </Grid>

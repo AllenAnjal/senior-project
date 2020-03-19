@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
 
 namespace senior_project
@@ -26,6 +27,7 @@ namespace senior_project
         private bool redlineClicked = false;
         private DispatcherTimer t;
         private DateTime start;
+        private Stopwatch stopWatch;
         private exportWindow export = new exportWindow();
         private commentWindow cmt = new commentWindow();
 
@@ -63,9 +65,13 @@ namespace senior_project
             _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
             _xmlDataProvider.Document = _xml;
 
-            t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
+            stopWatch = new Stopwatch();
+            stopWatch.Start();
 
-            start = DateTime.Now;
+            t = new DispatcherTimer();// new TimeSpan(0, 0, 0, 0, 1), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
+            t.Interval = TimeSpan.FromMilliseconds(1);
+            t.Tick += t_Tick;
+            t.Start();
         }
 
         public Tester(TestProcedure newProcedure)
@@ -79,14 +85,15 @@ namespace senior_project
             //XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
             //beginTest();
 
-            t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
+            //t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 500), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
 
-            start = DateTime.Now;
+            //start = DateTime.Now;
         }
 
         private void t_Tick(object sender, EventArgs e)
         {
-            timer.Text = Convert.ToString(DateTime.Now - start);
+            //timer.Text = Convert.ToString(DateTime.Now - start);
+            timer.Text = stopWatch.Elapsed.ToString(@"hh\:mm\:ss\.ff");
         }
 
         #region buttons
@@ -521,6 +528,12 @@ namespace senior_project
             Console.WriteLine(tItems.Count);
 
             tItems[0].IsSelected = true;
+        }
+
+        private void timer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (stopWatch.IsRunning) stopWatch.Stop();
+            else stopWatch.Start();
         }
     }
 }
