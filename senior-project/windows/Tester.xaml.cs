@@ -17,6 +17,8 @@ namespace senior_project
     /// </summary>
     public partial class Tester : Window
     {
+        //  Begin Declarations
+
         private MainWindow main;
         private String commentDefault = "Leave a comment";
         private TestProcedure xmlProcedure;
@@ -30,10 +32,13 @@ namespace senior_project
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDocument _xml;
 
-        private List<XmlElement> listTestSteps;
+        private List<TreeViewItem> tItems;
+        private int pos = 0;
 
         private XmlDataProvider _xmlDataProvider;
         private TreeView _treeView;
+        private string SectionName = "Section";
+        private string StepName = "Test_Step";
 
         public Tester(MainWindow mw, String xmlFile)
         {
@@ -41,7 +46,7 @@ namespace senior_project
             main = mw;
 
             _xml = new XmlDocument();
-            //listTestSteps = new List<XmlElement>();
+            tItems = new List<TreeViewItem>();
 
             try
             {
@@ -54,6 +59,9 @@ namespace senior_project
 
             userInfoPage x = new userInfoPage(xmlProcedure);
             x.ShowDialog();
+            _treeView = FindName("treeView1") as TreeView;
+            _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
+            _xmlDataProvider.Document = _xml;
 
             t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
 
@@ -104,7 +112,7 @@ namespace senior_project
             if (_treeView.SelectedItem == null) return;
             hasCommented = false;
             XmlElement sel = _treeView.SelectedItem as XmlElement;
-            
+
             if (sel.Name == "Test_Step")
             {
                 sel["Pass"].InnerText = "false";
@@ -166,12 +174,13 @@ namespace senior_project
 
         private void move_down(object sender, RoutedEventArgs e)
         {
-
+            StepForward();
         }
 
         private void move_up(object sender, RoutedEventArgs e)
         {
-
+            //  BEGIN TEMPORARY TEST CODE
+            StepBackwards();
         }
 
         private void RedlineButton_Click(object sender, RoutedEventArgs e)
@@ -180,7 +189,6 @@ namespace senior_project
             redlineClicked = !redlineClicked;
             if (redlineClicked)
             {
-   
                 lblStep.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
                 lblStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
                 lblControlAction.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
@@ -192,7 +200,6 @@ namespace senior_project
             }
             else
             {
-              
                 lblStep.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
                 lblStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
                 lblControlAction.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
@@ -228,8 +235,6 @@ namespace senior_project
 
             XmlVerification.writeXmltoFile(xmlProcedure, saveFile.FileName);
         }
-
-
 
         #endregion buttons
 
@@ -397,11 +402,6 @@ namespace senior_project
             {
                 dpd.AddValueChanged(treeView1, ThisIsCalledWhenPropertyIsChanged);
             }
-
-            _xmlDataProvider = FindResource(resourceKeyName) as XmlDataProvider;
-            _treeView = FindName(treeViewName) as TreeView;
-
-            _xmlDataProvider.Document = _xml;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -469,6 +469,58 @@ namespace senior_project
                     MessageBox.Show(err.Message, "Error");
                 }
             }
+        }
+
+        private void LoadListRecursive(ItemsControl ic, List<TreeViewItem> steps)
+        {
+            //Search for the object model in first level children (recursively)
+
+            if (ic == null)//&& ((XmlElement)tvi.Header).Name == "Test_Steps")
+            {
+                return;
+            }
+
+            if (ic.GetType().Equals(typeof(TreeViewItem)))
+            {
+                TreeViewItem tvi = ic as TreeViewItem;
+                XmlElement element = tvi.Header as XmlElement;
+
+                if (element.Name.Equals(StepName))
+                {
+                    steps.Add(tvi);
+                }
+            }
+
+            foreach (object i in ic.Items)
+            {
+                TreeViewItem extraction = ic.ItemContainerGenerator.ContainerFromItem(i) as TreeViewItem;
+                LoadListRecursive(extraction, steps);
+            }
+        }
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            LoadListRecursive(_treeView, tItems);
+            StepToStart();
+        }
+
+        private void StepForward()
+        {
+            pos = (pos < tItems.Count - 1) ? pos + 1 : 0;
+            tItems[pos].IsSelected = true;
+        }
+
+        private void StepBackwards()
+        {
+            pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
+            tItems[pos].IsSelected = true;
+        }
+
+        private void StepToStart()
+        {
+            Console.WriteLine(tItems.Count);
+
+            tItems[0].IsSelected = true;
         }
     }
 }
