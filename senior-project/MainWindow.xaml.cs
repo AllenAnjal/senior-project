@@ -60,16 +60,7 @@ namespace senior_project
 
             return;
             //xmlProcedure = XmlVerification.loadXml();
-            if (xmlProcedure != null)
-            {
-                this.Hide();
-                Tester tester = new Tester(xmlProcedure);
-                tester.Show();
-            }
-            else
-            {
-                MessageBox.Show("No valid XML has been selected", "Error");
-            }
+   
         }
 
         private void edit_btn(object sender, RoutedEventArgs e)

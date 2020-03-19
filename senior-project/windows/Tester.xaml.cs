@@ -52,7 +52,7 @@ namespace senior_project
                 MessageBox.Show(err.Message, "Error");
             }
 
-            userInfoPage x = new userInfoPage(xmlProcedure);
+            userInfoPage x = new userInfoPage(xmlFile);
             x.ShowDialog();
 
             t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
@@ -60,6 +60,7 @@ namespace senior_project
             start = DateTime.Now;
         }
 
+        /*
         public Tester(TestProcedure newProcedure)
         {
             InitializeComponent();
@@ -75,6 +76,7 @@ namespace senior_project
 
             start = DateTime.Now;
         }
+        */
 
         private void t_Tick(object sender, EventArgs e)
         {
