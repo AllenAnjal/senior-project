@@ -78,17 +78,51 @@
 
             <DockPanel
                 Grid.Column="0"
-                Margin="5"
+                Margin="5,5,5,0"
                 VerticalAlignment="Stretch">
+                <DockPanel
+                    x:Name="stack"
+                    Grid.Column="0"
+                    
+                    DockPanel.Dock="Bottom"
+                    >
+                    <Button
+                        x:Name="up"
+                        Width="45"
+                        Height="45"
+                        Click="move_up"
+                        Margin="50,0,10,0"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Left"
+                        
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to pass step">
+                    <Image Source="icons\up.png" />
+                    </Button>
+                    <Button
+                        x:Name="down"
+                        Width="45"
+                        Height="45"
+                        Click="move_down"
+                        Grid.Column="0"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Center"
+                        DockPanel.Dock="Left"
+                        Margin="0,0,60,0"
+                        
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to pass step">
+                        <Image Source="icons\down.png" />
+                    </Button>
+                </DockPanel>
                 <TreeView
                     x:Name="treeView1"
-                    VerticalAlignment="Stretch"
                     BorderBrush="Black"
                     BorderThickness="1"
                     IsEnabled="True"
                     ItemsSource="{Binding Source={StaticResource xmlData}, UpdateSourceTrigger=PropertyChanged}"
                     Opacity=".5"
-                    SelectedItemChanged="TreeView1_SelectedItemChanged">
+                    SelectedItemChanged="TreeView1_SelectedItemChanged" Height="470" VerticalAlignment="Top">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <EventSetter Event="PreviewMouseDoubleClick" Handler="TreeView1_PreviewMouseLeftButtonUp_1" />
@@ -202,7 +236,7 @@
                         <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
                     </Border.Effect>
                 </Border>
-                <Border Name="borderControl" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                <Border x:Name="borderControl" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="2">
                     <DockPanel Margin="5">
                         <Label
@@ -236,7 +270,7 @@
                         <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
                     </Border.Effect>
                 </Border>
-                <Border Name="borderExp" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
+                <Border x:Name="borderExp" BorderThickness="1" BorderBrush="Black" CornerRadius="7" Padding="0"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#025dba" Grid.Row="3">
                     <DockPanel Margin="5">
                         <Label
@@ -270,6 +304,26 @@
                     VerticalAlignment="Bottom"
                     Grid.Row="4">
                     <Button
+                        x:Name="passButton"
+                        Width="46"
+                        Height="45"
+                        Click="PassButton_Click"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to fail step and leave comment">
+                        <Image Source="icons\checked-checkbox-512.png" />
+                    </Button>
+                    <Button
+                        x:Name="failButton"
+                        Width="46"
+                        Height="45"
+                        Click="FailButton_Click"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to fail step and leave comment">
+                        <Image Source="icons\x-mark-5-512.png" />
+                    </Button>
+                    <Button
                         x:Name="commentButton"
                         Width="65"
                         Height="45"
@@ -289,26 +343,9 @@
                         ToolTip="Leave a redline suggestion">
                         <Image Source="icons\edit-6-512.png" />
                     </Button>
-                    <Button
-                        x:Name="failButton"
-                        Width="46"
-                        Height="45"
-                        Click="FailButton_Click"
-                        DockPanel.Dock="Right"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        ToolTip="Press to fail step and leave comment">
-                        <Image Source="icons\x-mark-5-512.png" />
-                    </Button>
-                    <Button
-                        x:Name="passButton"
-                        Width="45"
-                        Height="45"
-                        Click="PassButton_Click"
-                        DockPanel.Dock="Right"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        ToolTip="Press to pass step">
-                        <Image Source="icons\checked-checkbox-512.png" />
-                    </Button>
+
+
+
                     <TextBlock
                         x:Name="timer"
                         Margin="5"
@@ -318,7 +355,9 @@
                         FontSize="20"
                         FontWeight="UltraBlack"
                         TextAlignment="Center" />
+
                 </DockPanel>
+
             </Grid>
         </Grid>
     </DockPanel>

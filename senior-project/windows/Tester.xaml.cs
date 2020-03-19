@@ -164,12 +164,23 @@ namespace senior_project
             }
         }
 
+        private void move_down(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void move_up(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void RedlineButton_Click(object sender, RoutedEventArgs e)
         {
             RedlinesTester red = new RedlinesTester(xmlProcedure);
             redlineClicked = !redlineClicked;
             if (redlineClicked)
             {
+   
                 lblStep.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
                 lblStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
                 lblControlAction.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
@@ -181,6 +192,7 @@ namespace senior_project
             }
             else
             {
+              
                 lblStep.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
                 lblStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
                 lblControlAction.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));

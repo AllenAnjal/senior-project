@@ -225,5 +225,11 @@
     <Resource Include="windows\icons\word.png" />
     <Resource Include="windows\icons\xml.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="windows\icons\down.png" />
+    <Resource Include="windows\icons\downPress.png" />
+    <Resource Include="windows\icons\up.png" />
+    <Resource Include="windows\icons\uppress.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
