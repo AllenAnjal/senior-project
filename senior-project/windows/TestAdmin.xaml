@@ -163,9 +163,9 @@
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Step"
-                            FontFamily="Comic Sans MS"
+                            FontFamily="Verdana"
                             FontSize="15"
-                            FontWeight="UltraBlack"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbStep"
@@ -216,9 +216,9 @@
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Station"
-                            FontFamily="Comic Sans MS"
+                            FontFamily="Verdana"
                             FontSize="15"
-                            FontWeight="UltraBlack"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbStation"
@@ -269,9 +269,9 @@
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Control Action"
-                            FontFamily="Comic Sans MS"
+                            FontFamily="Verdana"
                             FontSize="15"
-                            FontWeight="UltraBlack"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbControlAction"
@@ -322,9 +322,9 @@
                             Background="#025dba"
                             BorderThickness="1"
                             Content="Expected Result"
-                            FontFamily="Comic Sans MS"
+                            FontFamily="Verdana"
                             FontSize="15"
-                            FontWeight="UltraBlack"
+                            FontWeight="DemiBold"
                             TextElement.Foreground="White" />
                         <TextBox
                             x:Name="tbExpectedResult"
