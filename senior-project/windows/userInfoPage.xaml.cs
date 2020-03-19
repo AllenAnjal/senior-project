@@ -25,10 +25,10 @@ namespace senior_project
     public partial class userInfoPage : Window
     {
         TestProcedure newProcedure;
-        public userInfoPage(TestProcedure xmlProcedure)
+        public userInfoPage(string xmlFile)
         {
             InitializeComponent();
-            newProcedure = xmlProcedure;
+            
         }
 
 
@@ -37,6 +37,7 @@ namespace senior_project
         private void pullData()
         {
             //Save Data to xml procedure
+            /*
             TestProcedureProcedure_Heading head = newProcedure.Procedure_Heading;
 
             head.Date = DateTime.Now.ToShortDateString();
@@ -46,6 +47,7 @@ namespace senior_project
             head.Organization = orgBox.Text;
             //Close and enable Tester window
             XmlVerification.writeXmltoFile(newProcedure, "tmp.xml");
+            */
             this.Close();
         }
 

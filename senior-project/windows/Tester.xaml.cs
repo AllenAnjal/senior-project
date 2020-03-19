@@ -59,7 +59,7 @@ namespace senior_project
                 MessageBox.Show(err.Message, "Error");
             }
 
-            userInfoPage x = new userInfoPage(xmlProcedure);
+            userInfoPage x = new userInfoPage(xmlFile);
             x.ShowDialog();
             _treeView = FindName("treeView1") as TreeView;
             _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
@@ -74,6 +74,7 @@ namespace senior_project
             t.Start();
         }
 
+        /*
         public Tester(TestProcedure newProcedure)
         {
             InitializeComponent();
@@ -89,6 +90,7 @@ namespace senior_project
 
             //start = DateTime.Now;
         }
+        */
 
         private void t_Tick(object sender, EventArgs e)
         {

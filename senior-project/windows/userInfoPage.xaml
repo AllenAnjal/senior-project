@@ -7,28 +7,97 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         mc:Ignorable="d"
+        Background="#024DBA"
         Icon="icons\splashscreen.png"
         Title="Enter Info" Height="300" Width="450">
     <Grid>
-        <Label Content="User Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="226,20,0,0" Height="31" Width="102"/>
-        <Label Content="Organization" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="226,84,0,0" Height="31" Width="102"/>
-        
-        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="148" RenderTransformOrigin="0.617,0.104" Margin="44,0,0,29">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="18*"/>
+            <ColumnDefinition Width="19*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="White"
+                Background="White"
+                BorderThickness="3" CornerRadius="10" Grid.Column="1"
+                Height="250"
+                Margin="7">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
+            <DockPanel
+            HorizontalAlignment="Right"
+            Height="250"
+            Grid.Column="1"
+            Width="200"
+            >
+
+                <Label Content="User Name" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" 
+                   
+                   Height="31" 
+                   Width="102"
+                   DockPanel.Dock="Top"/>
+                <TextBox x:Name="userNameBox" 
+                     HorizontalAlignment="Left" 
+                     Height="23" TextWrapping="Wrap" Text="" 
+                     VerticalAlignment="Top" 
+                     Width="185" 
+                     DockPanel.Dock="Top"
+                     />
+                <Label Content="Organization" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" 
+                   
+                   Height="31" 
+                   Width="102"
+                   DockPanel.Dock="Top"/>
+
+                <TextBox x:Name="orgBox" 
+                     DockPanel.Dock="Top"
+                     HorizontalAlignment="Left"
+                         Height="23" 
+                         TextWrapping="Wrap" 
+                         Text="" 
+                         VerticalAlignment="Top" 
+                         Width="185" />
+                <Label Content="System"
+                   DockPanel.Dock="Top"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"  Height="31" Width="102"/>
+                <TextBox x:Name="systemBox" 
+                     DockPanel.Dock="Top"
+                     HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="185" />
+
+                <Border CornerRadius="10" BorderBrush="LightGreen"  Width="185" Height="35" 
+                        BorderThickness="2" Background="LightGreen"
+                        HorizontalAlignment="Left">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+                    </Border.Effect>
+                    <Button Content="Submit" 
+                    DockPanel.Dock="Top"
+                    Background="LightGreen"
+                    Foreground="White"
+                    FontWeight="Medium"
+                         Width="176" 
+                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        BorderBrush="LightGreen"
+                    BorderThickness="2" Click="Button_Click"
+                        HorizontalAlignment="Left" Margin="3,1,0,1"/>
+                </Border>
+            </DockPanel>
+        </Border>
+        <Image
+            Source="icons\userWhite.png"
+            Height="150"
+            HorizontalAlignment="Left" Margin="42,66,0,55"
+            />
+        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   Width="148" 
+                    Margin="44,0,0,29"
+                   Foreground="White">
             Note: Timer will start once submit has been entered
         </TextBlock>
-        
-        <TextBox x:Name="userNameBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="199" Margin="226,56,0,0"/>
-        <TextBox x:Name="orgBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="199" Margin="226,113,0,0"/>
-        <TextBox x:Name="systemBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="199" Margin="226,172,0,0"/>
-        <Label Content="System" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="226,141,0,0" Height="31" Width="102"/>
-
-        <Button Content="Submit"  Width="170" Margin="226,214,46,20" Height="35" BorderThickness="2" Click="Button_Click"/>
-        <Image
-            Source="icons\add-user-512.png"
-            Height="150"
-            HorizontalAlignment="Left" Margin="42,65,0,54"
-            />
-
 
 
     </Grid>

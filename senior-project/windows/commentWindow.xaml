@@ -9,7 +9,10 @@
         Icon="icons\splashscreen.png"
         Title="Comment" Height="250" Width="500">
     <Grid>
-        <Border BorderThickness="2" Background="White" BorderBrush="Black" CornerRadius="10" VerticalAlignment="Center" Width="422"  HorizontalAlignment="Center" Height="123" Margin="40,29,30,67">
+        <Border BorderThickness="2" Background="White"  CornerRadius="10" VerticalAlignment="Center" Width="422"  HorizontalAlignment="Center" Height="123" Margin="40,29,30,67">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <TextBox x:Name="commentBox"  
                      TextWrapping="Wrap"   
                      ToolTip="Leave a comment about the step or failure"
@@ -17,6 +20,9 @@
                      BorderBrush="White"/>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="74" Height="30" Background="White" CornerRadius="10" Margin="208,0,210,20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <Button x:Name="submitButton" 
                     IsDefault="True" 
                     Content="Submit"  
