@@ -21,9 +21,8 @@ namespace senior_project
     public partial class askForFilename : Window
     {
         public string MyValue { get; set; }
-        MainWindow main = new MainWindow();
-        TestProcedure xmlProcedure = new TestProcedure();
-        
+        private MainWindow main = new MainWindow();
+
         public askForFilename()
         {
             InitializeComponent();
@@ -41,11 +40,11 @@ namespace senior_project
             string file = nameBox.Text;
             file += ".xml";
             createFile(file);
-           // xmlProcedure = XmlVerification.loadXml(file);
+            // xmlProcedure = XmlVerification.loadXml(file);
             TestAdmin admin = new TestAdmin(main, file);
             admin.Show();
-
         }
+
         private void createFile(string path)
         {
             try
@@ -68,21 +67,21 @@ namespace senior_project
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
         }
+
         private void CancelButton(object sender, RoutedEventArgs e)
         {
             main.Show();
             this.Close();
         }
+
         public string Answer
         {
             get { return nameBox.Text; }
         }
-
     }
 }

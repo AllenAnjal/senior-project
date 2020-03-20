@@ -30,8 +30,6 @@ namespace senior_project
             InitializeComponent();
         }
 
-        private TestProcedure xmlProcedure = new TestProcedure();
-
         #endregion Initialization
 
         #region Context Menu Buttons
@@ -60,7 +58,6 @@ namespace senior_project
 
             return;
             //xmlProcedure = XmlVerification.loadXml();
-   
         }
 
         private void edit_btn(object sender, RoutedEventArgs e)
@@ -74,31 +71,19 @@ namespace senior_project
                 TestAdmin admin = new TestAdmin(this, openFileDialog.FileName);
 
                 admin.Show();
-               // this.Close();
+                // this.Close();
             }
             else
             {
                 MessageBox.Show("No valid XML has been selected", "Error");
             }
-
         }
 
         private void create_btn(object sender, RoutedEventArgs e)
         {
             askForFilename ask = new askForFilename();
 
-            //xmlProcedure = XmlVerification.loadXml();
-            if (xmlProcedure != null)
-            {
-                this.Hide();
-                ask.ShowDialog();
-                //TestAdmin admin = new TestAdmin(xmlProcedure, true);
-                //admin.Show();
-            }
-            else
-            {
-                MessageBox.Show("No valid XML has been selected", "Error");
-            }
+            MessageBox.Show("No valid XML has been selected", "Error");
         }
 
         #endregion Context Menu Buttons

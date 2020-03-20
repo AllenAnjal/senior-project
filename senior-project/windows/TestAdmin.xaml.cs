@@ -26,14 +26,13 @@ namespace senior_project
     /// <summary>
     /// Interaction logic for TestAdmin.xaml
     /// </summary>
-    /// 
+    ///
     public partial class TestAdmin : Window
     {
         private MainWindow main;
         private String commentDefault = "Leave a comment";
-        private TestProcedure xmlProcedure;
-        Random rand = new Random();
 
+        private Random rand = new Random();
 
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDocument _xml;
@@ -61,8 +60,7 @@ namespace senior_project
                 MessageBox.Show(err.Message, "Error");
             }
 
-         //   t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 75), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
-
+            //   t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 75), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
         }
 
         /*
@@ -74,6 +72,7 @@ namespace senior_project
             lblControlAction.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
         }
         */
+
         #region buttons
 
         private void removeStepButton_Click(object sender, RoutedEventArgs e)
@@ -87,17 +86,14 @@ namespace senior_project
             ep.Show();
             this.Close();
         }
+
         private void move_down(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void move_up(object sender, RoutedEventArgs e)
         {
-
         }
-
-
 
         private void SaveXmlButton_Click(object sender, RoutedEventArgs e)
         {
@@ -110,14 +106,12 @@ namespace senior_project
             {
                 Console.WriteLine(saveFile.FileName);
             }
-
-            XmlVerification.writeXmltoFile(xmlProcedure, saveFile.FileName);
         }
 
         #endregion buttons
 
         #region TreeView
-        
+
         private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             string section = String.Empty, step = String.Empty;
@@ -145,6 +139,7 @@ namespace senior_project
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
         }
+
         /*
         //Initialize the treeView to section 0, step 0
 
@@ -154,7 +149,6 @@ namespace senior_project
 
         #region Test Steps
 
-        
     private void forwardStep()
     {
         NextStep();
@@ -211,29 +205,10 @@ namespace senior_project
 
         #endregion Test Steps
 
-        private void updateTextBoxes()
-        {
-            //_treeView.Items.Refresh();
-            //_treeView.UpdateLayout();
-            
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-            if (item?.Tag is TestProcedureSectionTest_Step)
-            {
-                TestProcedureSectionTest_Step step = (TestProcedureSectionTest_Step)item.Tag;
-
-                tbStep.Text = step.id.ToString();
-                tbStation.Text = step.Station.ToString();
-                tbControlAction.Text = step.Control_Action.ToString();
-                tbExpectedResult.Text = step.Expected_Result.ToString();
-            }
-            return;
-        }
-
         private void Exit_Button(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -260,7 +235,7 @@ namespace senior_project
         private void ThisIsCalledWhenPropertyIsChanged(object sender, EventArgs e)
         {
             //MessageBox.Show("WOAH");
-           // pbProcedureProgress.Value = getProcedureProgress(null);
+            // pbProcedureProgress.Value = getProcedureProgress(null);
             _treeView.Items.Refresh();
             _treeView.UpdateLayout();
         }
@@ -318,6 +293,5 @@ namespace senior_project
                 }
             }
         }
-
     }
 }

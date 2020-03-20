@@ -61,8 +61,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="windows\AddSectionWindow.xaml.cs" />
-    <Compile Include="windows\AddTestStepWindow.xaml.cs" />
     <Compile Include="windows\askForFilename.xaml.cs">
       <DependentUpon>askForFilename.xaml</DependentUpon>
     </Compile>
@@ -70,14 +68,11 @@
     <Compile Include="windows\exportWindow.xaml.cs">
       <DependentUpon>exportWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\MoveSectionorStep.xaml.cs" />
     <Compile Include="windows\Redlines.xaml.cs" />
     <Compile Include="windows\RedlinesTester.xaml.cs" />
     <Compile Include="windows\TestAdmin.xaml.cs" />
     <Compile Include="windows\Tester.xaml.cs" />
     <Compile Include="windows\userInfoPage.xaml.cs" />
-    <Compile Include="windows\XmlHelperClass.cs" />
-    <Compile Include="windows\xmlVerification.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,14 +85,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="windows\AddSectionWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="windows\AddTestStepWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="windows\askForFilename.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,10 +96,6 @@
     <Page Include="windows\exportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="windows\MoveSectionorStep.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="windows\Redlines.xaml">
       <Generator>MSBuild:Compile</Generator>

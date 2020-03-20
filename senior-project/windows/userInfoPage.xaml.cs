@@ -16,7 +16,6 @@ using System.IO;
 using System.Drawing;
 using System.Diagnostics;
 
-
 namespace senior_project
 {
     /// <summary>
@@ -24,14 +23,10 @@ namespace senior_project
     /// </summary>
     public partial class userInfoPage : Window
     {
-        TestProcedure newProcedure;
         public userInfoPage(string xmlFile)
         {
             InitializeComponent();
-            
         }
-
-
 
         //Pull data from the window and store in XML
         private void pullData()
@@ -51,7 +46,6 @@ namespace senior_project
             this.Close();
         }
 
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -63,7 +57,5 @@ namespace senior_project
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
-
-
     }
 }

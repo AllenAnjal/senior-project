@@ -22,7 +22,7 @@ namespace senior_project
 
         private MainWindow main;
         private String commentDefault = "Leave a comment";
-        private TestProcedure xmlProcedure;
+
         private bool hasCommented = false;
         private bool redlineClicked = false;
         private DispatcherTimer t;
@@ -73,24 +73,6 @@ namespace senior_project
             t.Tick += t_Tick;
             t.Start();
         }
-
-        /*
-        public Tester(TestProcedure newProcedure)
-        {
-            InitializeComponent();
-            xmlProcedure = newProcedure;
-
-            userInfoPage x = new userInfoPage(xmlProcedure);
-            x.ShowDialog();
-
-            //XmlVerification.xmltoTreeView(xmlProcedure, ref treeView1);
-            //beginTest();
-
-            //t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 500), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
-
-            //start = DateTime.Now;
-        }
-        */
 
         private void t_Tick(object sender, EventArgs e)
         {
@@ -161,26 +143,6 @@ namespace senior_project
             }
         }
 
-        public void writeStep(bool pass)
-        {
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-
-            if (item?.Tag != null && item?.Tag is TestProcedureSectionTest_Step)
-            {
-                TestProcedureSectionTest_Step step = ((TestProcedureSectionTest_Step)item.Tag);
-                if (pass)
-                {
-                    step.Pass = "True";
-                    step.Fail = "False";
-                }
-                else
-                {
-                    step.Fail = "True";
-                    step.Pass = "False";
-                }
-            }
-        }
-
         private void move_down(object sender, RoutedEventArgs e)
         {
             StepForward();
@@ -194,7 +156,6 @@ namespace senior_project
 
         private void RedlineButton_Click(object sender, RoutedEventArgs e)
         {
-            RedlinesTester red = new RedlinesTester(xmlProcedure);
             redlineClicked = !redlineClicked;
             if (redlineClicked)
             {
@@ -241,8 +202,6 @@ namespace senior_project
             {
                 Console.WriteLine(saveFile.FileName);
             }
-
-            XmlVerification.writeXmltoFile(xmlProcedure, saveFile.FileName);
         }
 
         #endregion buttons
@@ -283,82 +242,6 @@ namespace senior_project
 
         #endregion TreeView
 
-        #region Test Steps
-
-        /*
-    private void forwardStep()
-    {
-        NextStep();
-    }
-
-    private void beginTest()
-    {
-        TreeViewItem beginSection = (treeView1?.Items[0] as TreeViewItem);
-        if (beginSection != null && beginSection.HasItems)
-        {
-            beginSection.IsExpanded = true;
-            (beginSection.Items[0] as TreeViewItem).IsSelected = true;
-        }
-    }
-
-    private void NextStep()
-    {
-        TreeViewItem selectedItem = treeView1?.SelectedItem as TreeViewItem;
-        TreeViewItem parentItem = selectedItem?.Parent as TreeViewItem;
-
-        //If parent is Section, grab current ids and iterate to the next step or section
-        if (selectedItem?.Tag is TestProcedureSectionTest_Step)
-        {
-            TestProcedureSectionTest_Step currStep = (TestProcedureSectionTest_Step)selectedItem?.Tag;
-            TestProcedureSection currSection = (TestProcedureSection)parentItem?.Tag;
-
-            int stepIndex = currStep.id - 1;
-            int sectionIndex = currSection.id - 1;
-
-            //Move to next step in same section
-            if (stepIndex < currSection.Test_Step.Count - 1)
-            {
-                (parentItem.Items[stepIndex + 1] as TreeViewItem).IsSelected = true;
-            }
-            //Move to first step in next section
-            else if (sectionIndex < treeView1.Items.Count - 1)
-            {
-                TreeViewItem nextSection = treeView1?.Items[sectionIndex + 1] as TreeViewItem;
-                if (nextSection.HasItems)
-                {
-                    nextSection.IsExpanded = true;
-                    (nextSection.Items[0] as TreeViewItem).IsSelected = true;
-                }
-            }
-            //No more steps or sections
-            else
-            {
-                MessageBox.Show("Procedure is complete!");
-                export.Show();
-                this.Close();
-            }
-        }
-    }*/
-
-        #endregion Test Steps
-
-        private void updateTextBoxes()
-        {
-            //_treeView.Items.Refresh();
-            //_treeView.UpdateLayout();
-            return;
-            TreeViewItem item = (TreeViewItem)treeView1.SelectedItem;
-            if (item?.Tag is TestProcedureSectionTest_Step)
-            {
-                TestProcedureSectionTest_Step step = (TestProcedureSectionTest_Step)item.Tag;
-
-                tbStep.Text = step.id.ToString();
-                tbStation.Text = step.Station.ToString();
-                tbControlAction.Text = step.Control_Action.ToString();
-                tbExpectedResult.Text = step.Expected_Result.ToString();
-            }
-        }
-
         private void Exit_Button(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -386,26 +269,8 @@ namespace senior_project
             }
         }
 
-        private void loadComment()
-        {
-            TestProcedureSectionTest_Step step = XmlVerification.getCurrentStep(ref treeView1);
-            if (step != null && !hasCommented)
-            {
-                commentWindow newWindow = new commentWindow(ref step);
-                newWindow.ShowDialog();
-                if (step.Comments != commentDefault)
-                {
-                    hasCommented = true;
-                    XmlVerification.writeXmltoFile(xmlProcedure, "tmp.xml");
-                }
-            }
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            string resourceKeyName = "xmlData";
-            string treeViewName = "treeView1";
-
             var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(TreeView));
             if (dpd != null)
             {

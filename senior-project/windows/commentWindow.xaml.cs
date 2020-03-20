@@ -19,19 +19,12 @@ namespace senior_project
     /// </summary>
     public partial class commentWindow : Window
     {
-        String defaultText = "Leave a comment";
-        TestProcedureSectionTest_Step newStep;
+        private String defaultText = "Leave a comment";
+
         public commentWindow()
         {
             InitializeComponent();
             commentBox.Text = defaultText;
-            
-        }
-        public commentWindow(ref TestProcedureSectionTest_Step step)
-        {
-            InitializeComponent();
-            commentBox.Text = defaultText;
-            newStep = step;
         }
 
         private void submitAction()
@@ -42,7 +35,6 @@ namespace senior_project
             }
             else
             {
-                newStep.Comments = commentBox.Text;
                 this.Close();
             }
         }
@@ -53,7 +45,7 @@ namespace senior_project
             {
                 submitAction();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Exception Handled: {ex.Message}");
             }
@@ -61,7 +53,6 @@ namespace senior_project
 
         private void CommentBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            XmlVerification.textBoxClear(ref commentBox, defaultText);
         }
     }
 }
