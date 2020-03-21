@@ -19,7 +19,8 @@
         <ContextMenu x:Key="contextMenu">
             <MenuItem Click="Exit_Button" Header="Exit" />
         </ContextMenu>
-
+        <Image x:Key="Stop" Source="icons\pause-256.png" Height="46"  Width="45"/>
+        <Image x:Key="Resume" Source="icons\play-3-256.png" Height="46" Width="45"/>
         <XmlDataProvider x:Key="xmlData" XPath="/TestProcedure/Sections/Section" />
 
         <HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Test_Step}">
@@ -380,9 +381,9 @@
 
                 <DockPanel
                     Grid.Row="4"
-                    Margin="5"
+                    Margin="5,0"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Bottom">
+                    VerticalAlignment="Bottom" Height="45">
                     <Button
                         x:Name="passButton"
                         Width="46"
@@ -422,6 +423,15 @@
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         ToolTip="Leave a redline suggestion">
                         <Image Source="icons\edit-6-512.png" />
+                    </Button>
+                    <Button
+                        x:Name="timerButton"
+                        Margin="0,-5,125,0"
+                        Click="timerClick"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        DockPanel.Dock="Right" Height="50" Width="51" VerticalAlignment="Top"
+                        >
+                        <DynamicResource ResourceKey="Resume"/>
                     </Button>
 
                     <TextBlock

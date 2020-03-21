@@ -217,5 +217,9 @@
   <ItemGroup>
     <Resource Include="windows\icons\userWhite.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="windows\icons\pause-256.png" />
+    <Resource Include="windows\icons\play-3-256.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

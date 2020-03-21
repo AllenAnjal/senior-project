@@ -22,7 +22,7 @@ namespace senior_project
 
         private MainWindow main;
         private String commentDefault = "Leave a comment";
-
+        private bool pausePlay = false;
         private bool hasCommented = false;
         private bool redlineClicked = false;
         private DispatcherTimer t;
@@ -101,7 +101,7 @@ namespace senior_project
         private void failAction()
         {
             if (_treeView.SelectedItem == null) return;
-            hasCommented = false;
+            hasCommented = true;
             XmlElement sel = _treeView.SelectedItem as XmlElement;
 
             if (sel.Name == "Test_Step")
@@ -109,7 +109,9 @@ namespace senior_project
                 sel["Pass"].InnerText = "false";
                 sel["Fail"].InnerText = "true";
                 cmt.Show();
+                
             }
+
             //loadComment();
             //hasCommented = false;
             //writeStep(false);
@@ -124,6 +126,7 @@ namespace senior_project
             try
             {
                 passAction();
+                LastStep();
             }
             catch (Exception ex)
             {
@@ -136,6 +139,9 @@ namespace senior_project
             try
             {
                 failAction();
+                if (!cmt.IsActive)
+                    LastStep();
+                
             }
             catch (Exception ex)
             {
@@ -269,6 +275,20 @@ namespace senior_project
             }
         }
 
+        private void timerClick(object sender, RoutedEventArgs e)
+        {
+            if (stopWatch.IsRunning)
+            {
+                stopWatch.Stop();
+                timerButton.Content = FindResource("Stop");
+            }
+            else
+            {
+                stopWatch.Start();
+                timerButton.Content = FindResource("Resume");
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(TreeView));
@@ -397,10 +417,28 @@ namespace senior_project
             tItems[0].IsSelected = true;
         }
 
+        private void LastStep()
+        {
+            if (pos == tItems.Count - 1)
+            {
+                MessageBox.Show("Test Procedure is Done! Export window will now display");
+                export.ShowDialog();
+                this.Hide();
+            }
+        }
+
         private void timer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (stopWatch.IsRunning) stopWatch.Stop();
-            else stopWatch.Start();
+            if (stopWatch.IsRunning)
+            {
+                stopWatch.Stop();
+                timerButton.Content = FindResource("Stop");
+            }
+            else
+            {
+                stopWatch.Start();
+                timerButton.Content = FindResource("Resume");
+            }
         }
     }
 }
