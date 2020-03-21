@@ -11,6 +11,7 @@
         Icon="icons\splashscreen.png"
         Title="File Creation" Height="180" Width="247">
     <Grid>
+        
         <Label
             Foreground="White"
             Content="Enter in xml filename to be created" Margin="18,24,10,21"
@@ -18,7 +19,10 @@
 
         <TextBox x:Name="nameBox" HorizontalAlignment="Center" Height="20" TextWrapping="Wrap"  VerticalAlignment="Center" Width="200" Margin="0,0,0,0" />
         <Border BorderBrush="Black" BorderThickness="1" Background="White" CornerRadius="10" Margin="0,0,31,15" Width="80" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-        <Button
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
+            <Button
             
             IsDefault="True"
             Click="SubmitButton"
@@ -31,6 +35,9 @@
             />
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Background="White" CornerRadius="10" Margin="34,0,0,15" Width="80" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <Button
             Height="20"
             IsCancel="True"

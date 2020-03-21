@@ -25,10 +25,11 @@
             <ColumnDefinition
                     Width="Auto" />
         </Grid.ColumnDefinitions>
+
         <Button Name="selectFolder"
                 Width="50"
                 Height="50"
-                Margin="70,165,215,38"
+                Margin="70, 165, 215, 38"
                 Click="folder_btn"
                 Background="#025dba"
                 BorderThickness="0"
@@ -44,18 +45,33 @@
                 Source="icons/cae.jpg"
                 HorizontalAlignment="Right"
                 Width="340" />
-        <TextBox
+        <Border
+            BorderBrush="White"
+            BorderThickness="1"
+            
+            Height="40"
+            Margin="130,173,23,40"
+            CornerRadius="7"
+            Background="White"
+            Opacity=".8"
+            Width="182"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            >
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
+            <TextBox
             x:Name="txtbx_load_test_pro"
             IsEnabled="False"
             IsReadOnly="True"
-            HorizontalAlignment="Center"
-            Height="40"
+                BorderThickness="0"
             Text="     Save Location"
-            
-            VerticalAlignment="Center"
+            Foreground="Black"
+            Background="Transparent"
             FontSize="20"
-            Padding="2" Margin="130,173,23,40" RenderTransformOrigin="0.5,0.5" Width="182" >
-        </TextBox>
+            Padding="2"  RenderTransformOrigin="0.5,0.5" Margin="1"  />
+        </Border>
         <Border Background="White" 
                 CornerRadius="7" 
                 Grid.Row="1" 
@@ -64,6 +80,9 @@
                 BorderBrush="White"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <Button
                 Grid.Row="1"
                 Height="30"
@@ -73,6 +92,7 @@
                 Background="White"
                 Click="Submit_btn" 
                 />
+
         </Border>
         <Border
             x:Name="doxcBorder"
@@ -83,6 +103,9 @@
             BorderBrush="White"
             Margin="48,1,204,79"
             >
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <Button Name="checkDocx"
                 Grid.Row="1"
                 Width="50"
@@ -104,6 +127,9 @@
             BorderBrush="White"
              Margin="141,0,111,79" Grid.Row="1"
             >
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <Button x:Name="checkXML"
             Grid.Row="1"
             Width="50"
@@ -124,6 +150,9 @@
             BorderBrush="White"
             Margin="229,1,23,79" Grid.Row="1" 
             >
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <Button x:Name="checkCSV"
             Grid.Row="1"
                Width="50"
@@ -145,6 +174,9 @@
                 BorderBrush="White"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
+            </Border.Effect>
             <Button
             Grid.Row="1"
             Height="30"
