@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.ComponentModel;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,6 +11,7 @@ using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
+using System.IO;
 
 namespace senior_project
 {
@@ -31,11 +33,22 @@ namespace senior_project
         private exportWindow export = new exportWindow();
         private commentWindow cmt = new commentWindow();
 
+        //strings to store text from user 
+        private string stepTxt; 
+        private string stationTxt;
+        private string controlTxt;
+        private string expectedTxt;
+
+        //arraylist to store change
+        private ArrayList changes = new ArrayList();
+
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDocument _xml;
+        private string xmlFile;
 
         private List<TreeViewItem> tItems;
         private int pos = 0;
+        private int count = 0;
 
         private XmlDataProvider _xmlDataProvider;
         private TreeView _treeView;
@@ -47,12 +60,29 @@ namespace senior_project
             InitializeComponent();
             main = mw;
 
+            this.xmlFile = xmlFile;
+
             _xml = new XmlDocument();
             tItems = new List<TreeViewItem>();
+
+            
+
+            //storing initial txt from textbox
+            
+            
+
+            //creates a copy of the test procedure and writes it to a copy and modified file
+            string path = Directory.GetCurrentDirectory();
+            path = path.Substring(0, path.Length - 9);
+            string copyfile = xmlFile.Substring(0, xmlFile.Length - 4) + "_copy.xml";
+            File.Copy(Path.Combine(path,xmlFile), Path.Combine(path,copyfile), true);
+            string newfile = xmlFile.Substring(0, xmlFile.Length - 4) + "_new.xml";
+            File.Copy(Path.Combine(path, xmlFile), Path.Combine(path, newfile), true);
 
             try
             {
                 _xml.Load(xmlFile);
+
             }
             catch (Exception err)
             {
@@ -119,7 +149,7 @@ namespace senior_project
             //XmlVerification.exportCsv(xmlProcedure, treeView1);
             //forwardStep();
         }
-
+        
         //Update XML tmp file, forward step
         private void PassButton_Click(object sender, RoutedEventArgs e)
         {
@@ -127,6 +157,7 @@ namespace senior_project
             {
                 passAction();
                 LastStep();
+                StepForward();
             }
             catch (Exception ex)
             {
@@ -138,6 +169,7 @@ namespace senior_project
         {
             try
             {
+                StepForward();
                 failAction();
                 if (!cmt.IsActive)
                     LastStep();
@@ -165,25 +197,15 @@ namespace senior_project
             redlineClicked = !redlineClicked;
             if (redlineClicked)
             {
-                lblStep.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                lblStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                lblControlAction.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderStep.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderControl.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderExp.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                setTextboxWrite(false);
+                changeColors((byte)254, (byte)1, (byte)1);
+                addRedlineChanges();
             }
             else
             {
-                lblStep.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                lblStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                lblControlAction.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderStep.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderControl.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderExp.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                addRedlineChanges();
+                setTextboxWrite(true);
+                changeColors((byte)2, (byte)93, (byte)186);
             }
             //red.ShowDialog();
 
@@ -207,6 +229,47 @@ namespace senior_project
             if (saveFile.ShowDialog().GetValueOrDefault())
             {
                 Console.WriteLine(saveFile.FileName);
+            }
+        }
+
+        private void Exit_Button(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //  TESTING
+                if (_treeView.SelectedItem == null) return;
+                XmlElement x = _treeView.SelectedItem as XmlElement;
+                if (x.Name == "Test_Step")
+                {
+                    //MessageBox.Show(x["Pass"].InnerText + "\n" + x["Pass"].Value);
+                    cmt.Show();
+                    //MessageBox.Show(String.Format("{0}", getProcedureProgress(x.ParentNode as XmlElement)));
+                }
+
+                //  TESTING
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        private void timerClick(object sender, RoutedEventArgs e)
+        {
+            if (stopWatch.IsRunning)
+            {
+                stopWatch.Stop();
+                timerButton.Content = FindResource("Stop");
+            }
+            else
+            {
+                stopWatch.Start();
+                timerButton.Content = FindResource("Resume");
             }
         }
 
@@ -236,6 +299,11 @@ namespace senior_project
             {
                 lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
             }
+            
+            stepTxt = tbStep.Text;
+            stationTxt = tbStation.Text;
+            controlTxt = tbControlAction.Text;
+            expectedTxt = tbExpectedResult.Text;
         }
 
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
@@ -248,46 +316,7 @@ namespace senior_project
 
         #endregion TreeView
 
-        private void Exit_Button(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void CommentButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //  TESTING
-                if (_treeView.SelectedItem == null) return;
-                XmlElement x = _treeView.SelectedItem as XmlElement;
-                if (x.Name == "Test_Step")
-                {
-                    //MessageBox.Show(x["Pass"].InnerText + "\n" + x["Pass"].Value);
-                    cmt.Show();
-                    MessageBox.Show(String.Format("{0}", getProcedureProgress(x.ParentNode as XmlElement)));
-                }
-
-                //  TESTING
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
-        }
-
-        private void timerClick(object sender, RoutedEventArgs e)
-        {
-            if (stopWatch.IsRunning)
-            {
-                stopWatch.Stop();
-                timerButton.Content = FindResource("Stop");
-            }
-            else
-            {
-                stopWatch.Start();
-                timerButton.Content = FindResource("Resume");
-            }
-        }
+       
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -306,11 +335,12 @@ namespace senior_project
         private void ThisIsCalledWhenPropertyIsChanged(object sender, EventArgs e)
         {
             //MessageBox.Show("WOAH");
-            pbProcedureProgress.Value = getProcedureProgress(null);
+            //pbProcedureProgress.Value = getProcedureProgress(null);
             _treeView.Items.Refresh();
             _treeView.UpdateLayout();
         }
 
+        #region otherFunctions
         private void ftn_Open_File()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -337,15 +367,17 @@ namespace senior_project
             _treeView.UpdateLayout();
         }
 
-        private double getProcedureProgress(XmlElement searchRoot)
+        private double getProcedureProgress()//XmlElement searchRoot)
         {
             XmlNodeList nList = _xml.GetElementsByTagName("Test_Step");
             int o = 0;
             foreach (XmlNode n in nList)
             {
-                if (XmlConvert.ToBoolean(n["Pass"].InnerText) || XmlConvert.ToBoolean(n["Fail"].InnerText)) o++;
+                o++;
+                //if (XmlConvert.ToBoolean(n["Pass"].InnerText) || XmlConvert.ToBoolean(n["Fail"].InnerText)) o++;
             }
-            return (((double)o / nList.Count) * 100);
+            return o;
+            // return (((double)o / nList.Count) * 100);
         }
 
         private void mnuSave_Click(object sender, RoutedEventArgs e)
@@ -416,13 +448,23 @@ namespace senior_project
 
             tItems[0].IsSelected = true;
         }
-
+        
         private void LastStep()
         {
             if (pos == tItems.Count - 1)
             {
                 MessageBox.Show("Test Procedure is Done! Export window will now display");
                 export.ShowDialog();
+                string newfile = xmlFile.Substring(0, xmlFile.Length - 4) + "_new.xml";
+                using (StreamWriter sw = File.AppendText(newfile))
+                {
+                    sw.WriteLine("\n<redline>\n");
+                    foreach(string change in changes)
+                    {
+                        sw.WriteLine(change);
+                    }
+                    sw.WriteLine("</redline>\n");
+                }
                 this.Hide();
             }
         }
@@ -440,5 +482,51 @@ namespace senior_project
                 timerButton.Content = FindResource("Resume");
             }
         }
+
+        private void changeColors(byte r, byte g, byte b)
+        {
+            lblStep.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+            lblStation.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+            lblControlAction.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+            lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+            borderStep.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+            borderStation.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+            borderControl.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+            borderExp.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
+        }
+
+        private void setTextboxWrite(bool value)
+        {
+            tbControlAction.IsReadOnly = value;
+            tbStep.IsReadOnly = value;
+            tbExpectedResult.IsReadOnly = value;
+            tbStation.IsReadOnly = value;
+        }
+
+        private void pbProcedureProgress_ValueChanged()
+        {
+            pbProcedureProgress.Value = getProcedureProgress();
+        }
+
+        private void addRedlineChanges()
+        {
+            if (tbStep.Text.Length != stepTxt.Length)
+            {
+                changes.Add("Original: " + stepTxt + " \nModified: " + tbStep.Text + "\n\n");
+            }
+            if (tbStation.Text.Length != stationTxt.Length)
+            {
+                changes.Add("Original: " + stationTxt + " \nModified: " + tbStation.Text + "\n\n");
+            }
+            if (tbControlAction.Text.Length != controlTxt.Length)
+            {
+                changes.Add("Original: " + controlTxt + " \nModified: " + tbControlAction.Text + "\n\n");
+            }
+            if (tbExpectedResult.Text.Length != expectedTxt.Length)
+            {
+                changes.Add("Original: " + expectedTxt + " \nModified: " + tbExpectedResult.Text + "\n\n");
+            }
+        }
     }
+    #endregion otherFunctions
 }

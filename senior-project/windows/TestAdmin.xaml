@@ -174,7 +174,7 @@
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             DataContext="{Binding SelectedItem, ElementName=treeView1}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             IsReadOnlyCaretVisible="False"
                             Text="{Binding UpdateSourceTrigger=PropertyChanged, XPath=@id}"
                             TextWrapping="Wrap" />
@@ -228,7 +228,7 @@
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap" />
                     </DockPanel>
@@ -281,7 +281,7 @@
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap" />
                     </DockPanel>
@@ -334,7 +334,7 @@
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             Text="{Binding XPath=Expected_Result, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap" />
                     </DockPanel>
