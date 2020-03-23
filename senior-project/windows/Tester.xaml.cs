@@ -49,6 +49,7 @@ namespace senior_project
         private List<TreeViewItem> tItems;
         private int pos = 0;
         private int count = 0;
+        private int tmp = 0;
 
         private XmlDataProvider _xmlDataProvider;
         private TreeView _treeView;
@@ -95,6 +96,8 @@ namespace senior_project
             _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
             _xmlDataProvider.Document = _xml;
 
+            count = getTotalSteps();
+
             stopWatch = new Stopwatch();
             stopWatch.Start();
 
@@ -114,6 +117,7 @@ namespace senior_project
 
         private void passAction()
         {
+            
             if (_treeView.SelectedItem == null) return;
             hasCommented = false;
             XmlElement sel = _treeView.SelectedItem as XmlElement;
@@ -122,6 +126,9 @@ namespace senior_project
                 sel["Pass"].InnerText = "true";
                 sel["Fail"].InnerText = "false";
             }
+            tmp++;
+            pbProcedureProgress.Maximum = count;
+            pbProcedureProgress.Value = (double)tmp;
 
             //writeStep(true);
             //XmlVerification.writeXmltoFile(xmlProcedure, "tmp.xml");
@@ -141,6 +148,10 @@ namespace senior_project
                 cmt.Show();
                 
             }
+
+            tmp++;
+            pbProcedureProgress.Maximum = count;
+            pbProcedureProgress.Value = (double)tmp;
 
             //loadComment();
             //hasCommented = false;
@@ -294,6 +305,8 @@ namespace senior_project
                     section = pos.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}", section);
                 }
+                
+
             }
             else
             {
@@ -367,7 +380,7 @@ namespace senior_project
             _treeView.UpdateLayout();
         }
 
-        private double getProcedureProgress()//XmlElement searchRoot)
+        private int getTotalSteps()//XmlElement searchRoot)
         {
             XmlNodeList nList = _xml.GetElementsByTagName("Test_Step");
             int o = 0;
@@ -503,10 +516,7 @@ namespace senior_project
             tbStation.IsReadOnly = value;
         }
 
-        private void pbProcedureProgress_ValueChanged()
-        {
-            pbProcedureProgress.Value = getProcedureProgress();
-        }
+     
 
         private void addRedlineChanges()
         {
@@ -526,6 +536,11 @@ namespace senior_project
             {
                 changes.Add("Original: " + expectedTxt + " \nModified: " + tbExpectedResult.Text + "\n\n");
             }
+        }
+
+        private void pbProcedureProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //do nothing
         }
     }
     #endregion otherFunctions

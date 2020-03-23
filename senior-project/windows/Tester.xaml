@@ -73,7 +73,7 @@
                     Name="pbProcedureProgress"
                     Width="90"
                     Height="16"
-                    Value="0"  />
+                    Value="0" ValueChanged="pbProcedureProgress_ValueChanged"  />
             </StatusBarItem>
         </StatusBar>
         <Grid>
