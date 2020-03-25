@@ -1,111 +1,153 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using System;
+using System.ComponentModel;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml;
-using System.Xml.Schema;
-using System.IO;
-using Microsoft.Win32;
-using System.Reflection;
-using System.Xml.Serialization;
-using System.ComponentModel;
 using System.Windows.Threading;
-using System.Timers;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Xml;
+using System.IO;
 
 namespace senior_project
 {
     /// <summary>
-    /// Interaction logic for TestAdmin.xaml
+    /// Interaction logic for Tester.xaml
     /// </summary>
-    ///
     public partial class TestAdmin : Window
     {
+        //  Begin Declarations
+
         private MainWindow main;
         private String commentDefault = "Leave a comment";
+        private bool pausePlay = false;
+        private bool hasCommented = false;
+        private bool redlineClicked = false;
+        private DispatcherTimer t;
+        private DateTime start;
+        private Stopwatch stopWatch;
+        private exportWindow export = new exportWindow();
+        private commentWindow cmt = new commentWindow();
 
-        private Random rand = new Random();
+        //strings to store text from user 
+        private string stepTxt;
+        private string stationTxt;
+        private string controlTxt;
+        private string expectedTxt;
+
+        //arraylist to store change
+        private ArrayList changes = new ArrayList();
 
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDocument _xml;
+        private string xmlFile;
 
-        private List<XmlElement> listTestSteps;
-        private DispatcherTimer t;
+        private List<TreeViewItem> tItems;
+        private int pos = 0;
+        private int count = 0;
+        private int tmp = 0;
 
         private XmlDataProvider _xmlDataProvider;
         private TreeView _treeView;
+        private string SectionName = "Section";
+        private string StepName = "Test_Step";
 
         public TestAdmin(MainWindow mw, String xmlFile)
         {
             InitializeComponent();
             main = mw;
 
-            _xml = new XmlDocument();
-            //listTestSteps = new List<XmlElement>();
+            this.xmlFile = xmlFile;
 
+            _xml = new XmlDocument();
+            tItems = new List<TreeViewItem>();
             try
             {
                 _xml.Load(xmlFile);
+
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "Error");
             }
 
-            //   t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 75), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
-        }
+            _treeView = FindName("treeView1") as TreeView;
+            _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
+            _xmlDataProvider.Document = _xml;
 
-        /*
-        private void t_Tick(object sender, EventArgs e)
-        {
-            lblStep.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
-            lblStation.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
-            lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
-            lblControlAction.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
+            
         }
-        */
 
         #region buttons
 
-        private void removeStepButton_Click(object sender, RoutedEventArgs e)
-        {
-            lblStep.Background = new SolidColorBrush(Color.FromRgb((byte)rand.Next(0, 255), (byte)rand.Next(0, 255), (byte)rand.Next(0, 255)));
-        }
-
-        private void addStepButton_Click(object sender, RoutedEventArgs e)
-        {
-            exportWindow ep = new exportWindow();
-            ep.Show();
-            this.Close();
-        }
-
         private void move_down(object sender, RoutedEventArgs e)
         {
+            StepForward();
         }
 
         private void move_up(object sender, RoutedEventArgs e)
         {
+            //  BEGIN TEMPORARY TEST CODE
+            StepBackwards();
         }
 
-        private void SaveXmlButton_Click(object sender, RoutedEventArgs e)
+        private void removeStepButton_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFile = new SaveFileDialog();
+           
+            XmlNode root = _xml.SelectSingleNode("//Sections");
 
-            saveFile.Filter = "XML Documents (.xml)|*.xml";
-            saveFile.FileName = "XMLSave";
+            
+            string xpath = "//Test_Step id=" + (pos+1);
+            MessageBox.Show(xpath);
+            XmlNode currentNode = root.SelectSingleNode(xpath);
 
-            if (saveFile.ShowDialog().GetValueOrDefault())
+            if (currentNode != null)
             {
-                Console.WriteLine(saveFile.FileName);
+                root.RemoveChild(currentNode);
             }
+            else
+            {
+                MessageBox.Show("Error");
+            }
+            /*
+             * 
+             *             string section = String.Empty, step = String.Empty;
+            XmlElement pos = _treeView.SelectedItem as XmlElement;
+            if (pos != null)
+            {
+                if (pos.Name == "Test_Step")
+                {
+                    step = pos.SelectSingleNode("@id").Value;
+                    section = pos.ParentNode.SelectSingleNode("@id").Value;
+                    lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
+                }
+                else if (pos.Name == "Section")
+                {
+                    section = pos.SelectSingleNode("@id").Value;
+                    lblProcedurePosition.Text = String.Format("Section {0}", section);
+                }
+
+
+            }
+            else
+            {
+                lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
+            }
+             */
+        }
+
+        private void addStepButton_Click(object sender, RoutedEventArgs e)
+        {
+            XmlNode root = _xml.SelectSingleNode("//Section");
+
+        }
+        private void Exit_Button(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         #endregion buttons
@@ -129,102 +171,36 @@ namespace senior_project
                     section = pos.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}", section);
                 }
+
+
             }
             else
             {
                 lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
             }
+
+
         }
 
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
         }
 
-        /*
         //Initialize the treeView to section 0, step 0
 
         //Navigate to next step in test procedure
 
         #endregion TreeView
 
-        #region Test Steps
 
-    private void forwardStep()
-    {
-        NextStep();
-    }
-
-    private void beginTest()
-    {
-        TreeViewItem beginSection = (treeView1?.Items[0] as TreeViewItem);
-        if (beginSection != null && beginSection.HasItems)
-        {
-            beginSection.IsExpanded = true;
-            (beginSection.Items[0] as TreeViewItem).IsSelected = true;
-        }
-    }
-
-    private void NextStep()
-    {
-        TreeViewItem selectedItem = treeView1?.SelectedItem as TreeViewItem;
-        TreeViewItem parentItem = selectedItem?.Parent as TreeViewItem;
-
-        //If parent is Section, grab current ids and iterate to the next step or section
-        if (selectedItem?.Tag is TestProcedureSectionTest_Step)
-        {
-            TestProcedureSectionTest_Step currStep = (TestProcedureSectionTest_Step)selectedItem?.Tag;
-            TestProcedureSection currSection = (TestProcedureSection)parentItem?.Tag;
-
-            int stepIndex = currStep.id - 1;
-            int sectionIndex = currSection.id - 1;
-
-            //Move to next step in same section
-            if (stepIndex < currSection.Test_Step.Count - 1)
-            {
-                (parentItem.Items[stepIndex + 1] as TreeViewItem).IsSelected = true;
-            }
-            //Move to first step in next section
-            else if (sectionIndex < treeView1.Items.Count - 1)
-            {
-                TreeViewItem nextSection = treeView1?.Items[sectionIndex + 1] as TreeViewItem;
-                if (nextSection.HasItems)
-                {
-                    nextSection.IsExpanded = true;
-                    (nextSection.Items[0] as TreeViewItem).IsSelected = true;
-                }
-            }
-            //No more steps or sections
-            else
-            {
-                MessageBox.Show("Procedure is complete!");
-                export.Show();
-                this.Close();
-            }
-        }
-    }*/
-
-        #endregion Test Steps
-
-        private void Exit_Button(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            string resourceKeyName = "xmlData";
-            string treeViewName = "treeView1";
-
             var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(TreeView));
             if (dpd != null)
             {
                 dpd.AddValueChanged(treeView1, ThisIsCalledWhenPropertyIsChanged);
             }
-
-            _xmlDataProvider = FindResource(resourceKeyName) as XmlDataProvider;
-            _treeView = FindName(treeViewName) as TreeView;
-
-            _xmlDataProvider.Document = _xml;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -235,11 +211,12 @@ namespace senior_project
         private void ThisIsCalledWhenPropertyIsChanged(object sender, EventArgs e)
         {
             //MessageBox.Show("WOAH");
-            // pbProcedureProgress.Value = getProcedureProgress(null);
+            //pbProcedureProgress.Value = getProcedureProgress(null);
             _treeView.Items.Refresh();
             _treeView.UpdateLayout();
         }
 
+        #region otherFunctions
         private void ftn_Open_File()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -266,15 +243,17 @@ namespace senior_project
             _treeView.UpdateLayout();
         }
 
-        private double getProcedureProgress(XmlElement searchRoot)
+        private int getTotalSteps()//XmlElement searchRoot)
         {
             XmlNodeList nList = _xml.GetElementsByTagName("Test_Step");
             int o = 0;
             foreach (XmlNode n in nList)
             {
-                if (XmlConvert.ToBoolean(n["Pass"].InnerText) || XmlConvert.ToBoolean(n["Fail"].InnerText)) o++;
+                o++;
+                //if (XmlConvert.ToBoolean(n["Pass"].InnerText) || XmlConvert.ToBoolean(n["Fail"].InnerText)) o++;
             }
-            return (((double)o / nList.Count) * 100);
+            return o;
+            // return (((double)o / nList.Count) * 100);
         }
 
         private void mnuSave_Click(object sender, RoutedEventArgs e)
@@ -293,5 +272,65 @@ namespace senior_project
                 }
             }
         }
+
+        private void LoadListRecursive(ItemsControl ic, List<TreeViewItem> steps)
+        {
+            //Search for the object model in first level children (recursively)
+
+            if (ic == null)//&& ((XmlElement)tvi.Header).Name == "Test_Steps")
+            {
+                return;
+            }
+
+            if (ic.GetType().Equals(typeof(TreeViewItem)))
+            {
+                TreeViewItem tvi = ic as TreeViewItem;
+                XmlElement element = tvi.Header as XmlElement;
+
+                if (element.Name.Equals(StepName))
+                {
+                    steps.Add(tvi);
+                }
+            }
+
+            foreach (object i in ic.Items)
+            {
+                TreeViewItem extraction = ic.ItemContainerGenerator.ContainerFromItem(i) as TreeViewItem;
+                LoadListRecursive(extraction, steps);
+            }
+        }
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            LoadListRecursive(_treeView, tItems);
+            StepToStart();
+        }
+
+        private void StepForward()
+        {
+            pos = (pos < tItems.Count - 1) ? pos + 1 : 0;
+            tItems[pos].IsSelected = true;
+        }
+
+        private void StepBackwards()
+        {
+            pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
+            tItems[pos].IsSelected = true;
+        }
+
+        private void StepToStart()
+        {
+            Console.WriteLine(tItems.Count);
+
+            tItems[0].IsSelected = true;
+        }
+
+     
+
+        private void pbProcedureProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //do nothing
+        }
     }
+    #endregion otherFunctions
 }

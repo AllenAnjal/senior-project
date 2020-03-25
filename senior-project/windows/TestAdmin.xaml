@@ -11,6 +11,7 @@
     MinWidth="350"
     MinHeight="600"
     Closed="Window_Closed"
+    ContentRendered="Window_ContentRendered"
     Icon="icons\splashscreen.png"
     Loaded="Window_Loaded"
     WindowStartupLocation="CenterScreen"
@@ -22,16 +23,21 @@
 
         <XmlDataProvider x:Key="xmlData" XPath="/TestProcedure/Sections/Section" />
 
-        <HierarchicalDataTemplate DataType="Sections" ItemsSource="{Binding XPath=Section}">
-            <TextBlock Text="{Binding XPath=Sections}" />
-        </HierarchicalDataTemplate>
-
         <HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Test_Step}">
-            <TextBlock Text="{Binding XPath=Heading}" />
+            <TextBlock>
+                <Run Text="{Binding XPath=@id}" />
+                <Run Text=") " />
+                <Run Text="{Binding XPath=Heading}" />
+            </TextBlock>
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate DataType="Test_Step">
-            <TextBlock Text="{Binding XPath=@id}" />
+            <TextBlock>
+                <Run Text="Step " />
+                <Run Text="{Binding XPath=../@id}" />
+                <Run Text="." />
+                <Run Text="{Binding XPath=@id}" />
+            </TextBlock>
         </HierarchicalDataTemplate>
     </Window.Resources>
 
@@ -93,13 +99,9 @@
                         <Style TargetType="{x:Type TreeViewItem}">
                             <EventSetter Event="PreviewMouseDoubleClick" Handler="TreeView1_PreviewMouseLeftButtonUp_1" />
                             <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="IsExpanded" Value="True"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding XPath=Pass}" Value="true">
-                                    <Setter Property="Background" Value="Green" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding XPath=Fail}" Value="true">
-                                    <Setter Property="Background" Value="Red" />
-                                </DataTrigger>
+                               
                                 <DataTrigger Binding="{Binding Path=Name}" Value="Section">
                                     <Setter Property="IsSelected" Value="False" />
                                     <Setter Property="Focusable" Value="False" />
