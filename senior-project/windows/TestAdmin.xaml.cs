@@ -91,7 +91,7 @@ namespace senior_project
 
         private void move_up(object sender, RoutedEventArgs e)
         {
-            //  BEGIN TEMPORARY TEST CODE
+            
             StepBackwards();
         }
 
@@ -100,7 +100,8 @@ namespace senior_project
             
             XmlNode currentNode = _treeView.SelectedItem as XmlNode;
             XmlNode root = currentNode.ParentNode;
-            
+            LoadListRecursive(_treeView, tItems);
+            StepBackwards();
             if (currentNode != null)
             {
                 root.RemoveChild(currentNode);
@@ -109,21 +110,90 @@ namespace senior_project
             {
                 MessageBox.Show("Error");
             }
+
+            
+            tItems[pos].IsSelected = true;
+
+            _xml.Save(xmlFile);
         }
 
-        private void addStepButton_Click(object sender, RoutedEventArgs e)
+        private void addSectionButton_Click(object sender, RoutedEventArgs e)
         {
             XmlElement root = _treeView.SelectedItem as XmlElement;
             if (root.Name == "Test_Step")
+                root = root.ParentNode.ParentNode as XmlElement;
+            else if (root.Name == "Section")
                 root = root.ParentNode as XmlElement;
-            int count = 0;
-            foreach(XmlElement x in root)
+            int count = 1;
+            foreach (XmlElement x in root)
             {
-                count++;
+                if (x.Name == "Section")
+                    count++;
             }
-            count--;
             string id = "" + count;
-            //creating elements to add to test_step 
+
+            //creating a new section
+            XmlElement newSection = _xml.CreateElement("Section");
+            newSection.SetAttribute("id", id);
+
+            //creating a new test step within a newly created section
+            XmlElement newTestStep = _xml.CreateElement("Test_Step");
+            newTestStep.SetAttribute("id", "1");
+            XmlElement newStation = _xml.CreateElement("Station");
+            XmlElement newExpResult = _xml.CreateElement("Expected_Result");
+            XmlElement newControlAction = _xml.CreateElement("Control_Action");
+            XmlElement newPass = _xml.CreateElement("Pass");
+            XmlElement newFail = _xml.CreateElement("Fail");
+            XmlElement newComments = _xml.CreateElement("Comments");
+            XmlElement newImage = _xml.CreateElement("Image");
+
+            newTestStep.InnerText = tbStep.Text;
+            newStation.InnerText = tbStation.Text;
+            newExpResult.InnerText = tbExpectedResult.Text;
+            newControlAction.InnerText = tbControlAction.Text;
+
+            //appending the subsections to test_step
+            newTestStep.AppendChild(newStation);
+            newTestStep.AppendChild(newControlAction);
+            newTestStep.AppendChild(newExpResult);
+            newTestStep.AppendChild(newPass);
+            newTestStep.AppendChild(newFail);
+            newTestStep.AppendChild(newComments);
+            newTestStep.AppendChild(newImage);
+
+            //adding test step to section
+            newSection.AppendChild(newTestStep);
+
+            //adding section to root
+            root.AppendChild(newSection);
+
+            LoadListRecursive(_treeView, tItems);
+            _xml.Save(xmlFile);
+
+        }
+        private void addStepButton_Click(object sender, RoutedEventArgs e)
+        {
+            string id ="";
+            XmlElement root = _treeView.SelectedItem as XmlElement;
+            XmlElement refChild = root;
+            if (root.Name == "Test_Step")
+            {
+                id = root.GetAttribute("id");
+                int x = Int32.Parse(id) + 1;
+                root = root.ParentNode as XmlElement;
+                id = "" + x;
+            }
+            else if (root.Name == "Section")
+            { 
+                XmlElement tmp = root.LastChild as XmlElement;
+                id = tmp.GetAttribute("id");
+                int x = Int32.Parse(id) + 1;
+                id = "" + x;
+            }
+            
+
+
+                //creating elements to add to test_step 
             XmlElement newTestStep = _xml.CreateElement("Test_Step");
             newTestStep.SetAttribute("id", id);
             XmlElement newStation = _xml.CreateElement("Station");
@@ -149,8 +219,25 @@ namespace senior_project
             newTestStep.AppendChild(newComments);
             newTestStep.AppendChild(newImage);
 
-            if (root.Name == "Section")
-                root.AppendChild(newTestStep);
+
+            //root.AppendChild(newTestStep);
+            root.InsertAfter(newTestStep, refChild);
+            LoadListRecursive(_treeView, tItems);
+            foreach ( XmlElement child in root)
+            {
+                if (child.Name == "Test_Step")
+                {
+                    int child_id = Int32.Parse(child.GetAttribute("id"));
+                    if (child_id > Int32.Parse(id))
+                    {
+                        string tmp = "" + (child_id + 1);
+                        child.SetAttribute("id", tmp);
+                    }
+                }
+            }
+
+            
+            _xml.Save(xmlFile);
 
         }
         private void Exit_Button(object sender, RoutedEventArgs e)
