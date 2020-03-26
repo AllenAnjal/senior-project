@@ -97,14 +97,10 @@ namespace senior_project
 
         private void removeStepButton_Click(object sender, RoutedEventArgs e)
         {
-           
-            XmlNode root = _xml.SelectSingleNode("//Sections");
-
             
-            string xpath = "//Test_Step id=" + (pos+1);
-            MessageBox.Show(xpath);
-            XmlNode currentNode = root.SelectSingleNode(xpath);
-
+            XmlNode currentNode = _treeView.SelectedItem as XmlNode;
+            XmlNode root = currentNode.ParentNode;
+            
             if (currentNode != null)
             {
                 root.RemoveChild(currentNode);
@@ -113,36 +109,48 @@ namespace senior_project
             {
                 MessageBox.Show("Error");
             }
-            /*
-             * 
-             *             string section = String.Empty, step = String.Empty;
-            XmlElement pos = _treeView.SelectedItem as XmlElement;
-            if (pos != null)
-            {
-                if (pos.Name == "Test_Step")
-                {
-                    step = pos.SelectSingleNode("@id").Value;
-                    section = pos.ParentNode.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-                }
-                else if (pos.Name == "Section")
-                {
-                    section = pos.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}", section);
-                }
-
-
-            }
-            else
-            {
-                lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-            }
-             */
         }
 
         private void addStepButton_Click(object sender, RoutedEventArgs e)
         {
-            XmlNode root = _xml.SelectSingleNode("//Section");
+            XmlElement root = _treeView.SelectedItem as XmlElement;
+            if (root.Name == "Test_Step")
+                root = root.ParentNode as XmlElement;
+            int count = 0;
+            foreach(XmlElement x in root)
+            {
+                count++;
+            }
+            count--;
+            string id = "" + count;
+            //creating elements to add to test_step 
+            XmlElement newTestStep = _xml.CreateElement("Test_Step");
+            newTestStep.SetAttribute("id", id);
+            XmlElement newStation = _xml.CreateElement("Station");
+            XmlElement newExpResult = _xml.CreateElement("Expected_Result");
+            XmlElement newControlAction = _xml.CreateElement("Control_Action");
+            XmlElement newPass = _xml.CreateElement("Pass");
+            XmlElement newFail = _xml.CreateElement("Fail");
+            XmlElement newComments = _xml.CreateElement("Comments");
+            XmlElement newImage = _xml.CreateElement("Image");
+
+            //setting the innertext to the textbox in the xaml page
+            newTestStep.InnerText = tbStep.Text;
+            newStation.InnerText = tbStation.Text;
+            newExpResult.InnerText = tbExpectedResult.Text;
+            newControlAction.InnerText = tbControlAction.Text;
+
+            //appending the subsections to test_step
+            newTestStep.AppendChild(newStation);
+            newTestStep.AppendChild(newControlAction);
+            newTestStep.AppendChild(newExpResult);
+            newTestStep.AppendChild(newPass);
+            newTestStep.AppendChild(newFail);
+            newTestStep.AppendChild(newComments);
+            newTestStep.AppendChild(newImage);
+
+            if (root.Name == "Section")
+                root.AppendChild(newTestStep);
 
         }
         private void Exit_Button(object sender, RoutedEventArgs e)
