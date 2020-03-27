@@ -122,7 +122,6 @@ namespace senior_project
             pbProcedureProgress.Maximum = count;
             pbProcedureProgress.Value = (double)tmp;
 
-            StepForward();
             //writeStep(true);
             //XmlVerification.writeXmltoFile(xmlProcedure, "tmp.xml");
             //forwardStep();
@@ -139,11 +138,13 @@ namespace senior_project
                 
                 sel["Pass"].InnerText = "false";
                 sel["Fail"].InnerText = "true";
-                cmt.Show();
-                
-            }
+                cmt.ShowDialog();
 
-            StepForward();
+            }
+            tmp++;
+            pbProcedureProgress.Maximum = count;
+            pbProcedureProgress.Value = (double)tmp;
+
             //loadComment();
             //hasCommented = false;
             //writeStep(false);
@@ -158,7 +159,7 @@ namespace senior_project
             try
             {
                 passAction();
-                LastStep();
+                //LastStep();
                 StepForward();
             }
             catch (Exception ex)
@@ -171,11 +172,11 @@ namespace senior_project
         {
             try
             {
-                StepForward();
                 failAction();
-                if (!cmt.IsActive)
-                    LastStep();
-                
+                StepForward();
+                //if (!cmt.IsActive)
+                //LastStep();
+
             }
             catch (Exception ex)
             {
@@ -210,11 +211,11 @@ namespace senior_project
                 tbExpectedResult.IsReadOnly = false;
                 */
                 _xmlDataProvider.XPath = "/TestProcedure/RedlinesList/Section";
-                treeView1.Items.Refresh();
-                treeView1.UpdateLayout();
-                tItems.Clear();
-                LoadListRecursive(treeView1, tItems);
-                tItems[pos].IsSelected = true;
+                //treeView1.Items.Refresh();
+                //treeView1.UpdateLayout();
+                //tItems.Clear();
+                //LoadListRecursive(treeView1, tItems);
+                //tItems[pos].IsSelected = true;
 
             }
             else
@@ -230,11 +231,11 @@ namespace senior_project
                 tbExpectedResult.IsReadOnly = true;
                 */
                 _xmlDataProvider.XPath = "/TestProcedure/Sections/Section";
-                treeView1.Items.Refresh();
-                treeView1.UpdateLayout();
-                tItems.Clear();
-                LoadListRecursive(treeView1, tItems);
-                tItems[pos].IsSelected = true;
+                //treeView1.Items.Refresh();
+                //treeView1.UpdateLayout();
+                //tItems.Clear();
+                //LoadListRecursive(treeView1, tItems);
+                //tItems[pos].IsSelected = true;
             }
 
             //red.ShowDialog();
@@ -264,7 +265,7 @@ namespace senior_project
         }
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-            tItems[2].IsSelected = true;
+            //tItems[2].IsSelected = true;
             //try
             //{
             //    //  TESTING
@@ -308,18 +309,18 @@ namespace senior_project
         private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             string section = String.Empty, step = String.Empty;
-            XmlElement pos = _treeView.SelectedItem as XmlElement;
-            if (pos != null)
+            XmlElement _pos = _treeView.SelectedItem as XmlElement;
+            if (_pos != null)
             {
-                if (pos.Name == "Test_Step")
+                if (_pos.Name == "Test_Step")
                 {
-                    step = pos.SelectSingleNode("@id").Value;
-                    section = pos.ParentNode.SelectSingleNode("@id").Value;
+                    step = _pos.SelectSingleNode("@id").Value;
+                    section = _pos.ParentNode.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
                 }
-                else if (pos.Name == "Section")
+                else if (_pos.Name == "Section")
                 {
-                    section = pos.SelectSingleNode("@id").Value;
+                    section = _pos.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}", section);
                 }
                 

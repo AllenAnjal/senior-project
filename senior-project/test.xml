@@ -20,7 +20,7 @@
         <Station>I AM THE TEST FILE</Station>
         <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
         <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
-        <Pass>true</Pass>
+        <Pass>false</Pass>
         <Fail>false</Fail>
         <Comments />
         <Image />
@@ -30,8 +30,9 @@
         <Control_Action>ControlAction s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st3</Expected_Result>
         <Pass>false</Pass>
-        <Fail>true</Fail>
+        <Fail>false</Fail>
         <Comments />
+        <Image />
       </Test_Step>
     </Section>
     <Section id="2">
@@ -55,63 +56,47 @@
         <Comments />
         <Image />
       </Test_Step>
-    <Test_Step id="3">
-		<Station>sec 2 st 3</Station>
-		<Control_Action>Control Action</Control_Action>
-		<Expected_Result>Exp Result</Expected_Result>
-		<Pass>false</Pass>
-		<Fail>false</Fail>
-		<Comments/>
-		<Image />
-	</Test_Step>
-    <Test_Step id="4">
-		<Station>sec 2 st 4</Station>
-		<Control_Action>Control Action</Control_Action>
-		<Expected_Result>Exp Result</Expected_Result>
-		<Pass>false</Pass>
-		<Fail>false</Fail>
-		<Comments/>
-		<Image />
-	</Test_Step>
+      <Test_Step id="3">
+        <Station>sec 2 st 3</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="4">
+        <Station>sec 2 st 4</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
     </Section>
   </Sections>
   <RedlinesList>
-    <Section id="73">
-      <Heading>IOS DORT TESTS RedlinesList</Heading>
+    <Section id="1">
+      <Heading>73.0 IOS DORT TESTS</Heading>
       <Description>Short Description</Description>
-      <Test_Step id="1">
-        <Station>I AM THE TEST FILE</Station>
+      <Test_Step id="5152">
+        <Station>I AM EDITED TEST FILE</Station>
         <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
         <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
-        <Pass>true</Pass>
+        <Pass>false</Pass>
         <Fail>false</Fail>
         <Comments />
         <Image />
       </Test_Step>
       <Test_Step id="2">
-        <Station>IOS</Station>
-        <Control_Action>Click the Simulator Maintenance page from the left menu.</Control_Action>
-        <Expected_Result>The Simulator Maintenance page is displayed.</Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-        <Image />
-      </Test_Step>
-      <Test_Step id="3">
-        <Station>Station Orig S1, step 3</Station>
-        <Control_Action>Control Action s1 st3</Control_Action>
-        <Expected_Result>ExpResult s1, st 3</Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-      </Test_Step>
-      <Test_Step id="4">
         <Station>Station Orig S1, step 4</Station>
         <Control_Action>ControlAction s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st3</Expected_Result>
         <Pass>false</Pass>
         <Fail>false</Fail>
         <Comments />
+        <Image />
       </Test_Step>
     </Section>
     <Section id="2">
@@ -119,7 +104,7 @@
       <Description>New Desc</Description>
       <Test_Step id="1">
         <Station>sec 2 st 1</Station>
-        <Control_Action>S2 Control Action</Control_Action>
+        <Control_Action>S2 Control Action and do this step</Control_Action>
         <Expected_Result>S2 EXp Result</Expected_Result>
         <Pass>false</Pass>
         <Fail>false</Fail>
@@ -128,6 +113,24 @@
       </Test_Step>
       <Test_Step id="2">
         <Station>sec 2 st 2</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="3">
+        <Station>sec 2 st 3</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="15543">
+        <Station>sec 2 st 4</Station>
         <Control_Action>Control Action</Control_Action>
         <Expected_Result>Exp Result</Expected_Result>
         <Pass>false</Pass>
