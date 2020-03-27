@@ -167,6 +167,7 @@ namespace senior_project
             //adding section to root
             root.AppendChild(newSection);
 
+            tItems.Clear();
             LoadListRecursive(_treeView, tItems);
             _xml.Save(xmlFile);
 
@@ -189,6 +190,7 @@ namespace senior_project
                 id = tmp.GetAttribute("id");
                 int x = Int32.Parse(id) + 1;
                 id = "" + x;
+                refChild = tmp;
             }
             
 
@@ -222,7 +224,9 @@ namespace senior_project
 
             //root.AppendChild(newTestStep);
             root.InsertAfter(newTestStep, refChild);
-            
+            //_treeView.Items.Refresh();
+            //_treeView.UpdateLayout();
+            tItems.Clear();
             LoadListRecursive(_treeView, tItems);
             
             bool flag = false;
@@ -242,6 +246,7 @@ namespace senior_project
                     }
                 }
             }
+            
             StepForward();
 
             _xml.Save(xmlFile);
