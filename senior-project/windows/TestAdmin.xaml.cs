@@ -206,6 +206,9 @@ namespace senior_project
             XmlElement newComments = _xml.CreateElement("Comments");
             XmlElement newImage = _xml.CreateElement("Image");
 
+            newPass.InnerText = "false";
+            newFail.InnerText = "false";
+
             //setting the innertext to the textbox in the xaml page
             newTestStep.InnerText = tbStep.Text;
             newStation.InnerText = tbStation.Text;
@@ -317,8 +320,6 @@ namespace senior_project
 
         private void ThisIsCalledWhenPropertyIsChanged(object sender, EventArgs e)
         {
-            //MessageBox.Show("WOAH");
-            //pbProcedureProgress.Value = getProcedureProgress(null);
             _treeView.Items.Refresh();
             _treeView.UpdateLayout();
         }

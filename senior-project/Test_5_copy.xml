@@ -56,8 +56,12 @@
         <Image />
       </Test_Step>
       <Test_Step id="3">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
-      <Test_Step id="4">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="4">3<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
       <Test_Step id="5">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="6">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+    </Section>
+    <Section id="3">
+      <Test_Step id="1">4<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
     </Section>
   </Sections>
   <RedlinesList>

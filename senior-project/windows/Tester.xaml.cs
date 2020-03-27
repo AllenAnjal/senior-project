@@ -200,12 +200,15 @@ namespace senior_project
             if (redlineClicked)
             {
                 changeColors(254, 1, 1);
+                setBoolean(false);
+                /*
                 failButton.IsEnabled = false;
                 passButton.IsEnabled = false;
                 tbStep.IsReadOnly = false;
                 tbStation.IsReadOnly = false;
                 tbControlAction.IsReadOnly = false;
                 tbExpectedResult.IsReadOnly = false;
+                */
                 _xmlDataProvider.XPath = "/TestProcedure/RedlinesList/Section";
                 treeView1.Items.Refresh();
                 treeView1.UpdateLayout();
@@ -217,12 +220,15 @@ namespace senior_project
             else
             {
                 changeColors(2, 93, 186);
+                setBoolean(true);
+                /*
                 failButton.IsEnabled = true;
                 passButton.IsEnabled = true;
                 tbStep.IsReadOnly = true;
                 tbStation.IsReadOnly = true;
                 tbControlAction.IsReadOnly = true;
                 tbExpectedResult.IsReadOnly = true;
+                */
                 _xmlDataProvider.XPath = "/TestProcedure/Sections/Section";
                 treeView1.Items.Refresh();
                 treeView1.UpdateLayout();
@@ -514,12 +520,14 @@ namespace senior_project
             borderExp.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
         }
 
-        private void setTextboxWrite(bool value)
+        private void setBoolean(bool value)
         {
             tbControlAction.IsReadOnly = value;
             tbStep.IsReadOnly = value;
             tbExpectedResult.IsReadOnly = value;
             tbStation.IsReadOnly = value;
+            passButton.IsEnabled = value;
+            failButton.IsEnabled = value;
         }
 
      
