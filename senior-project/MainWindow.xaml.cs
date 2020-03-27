@@ -82,8 +82,9 @@ namespace senior_project
         private void create_btn(object sender, RoutedEventArgs e)
         {
             askForFilename ask = new askForFilename();
-
-            MessageBox.Show("No valid XML has been selected", "Error");
+            this.Hide();
+            ask.Show();
+            
         }
 
         #endregion Context Menu Buttons

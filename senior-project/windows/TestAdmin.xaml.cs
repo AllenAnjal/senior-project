@@ -423,6 +423,8 @@ namespace senior_project
         {
             pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
             tItems[pos].IsSelected = true;
+            
+
         }
 
         private void StepToStart()

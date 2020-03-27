@@ -125,7 +125,7 @@
                     BorderThickness="1"
                     IsEnabled="True"
                     ItemsSource="{Binding Source={StaticResource xmlData}, UpdateSourceTrigger=PropertyChanged}"
-                    Opacity=".5"
+                    Opacity="1"
                     SelectedItemChanged="TreeView1_SelectedItemChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
@@ -143,6 +143,12 @@
                                     <Setter Property="IsSelected" Value="False" />
                                     <Setter Property="Focusable" Value="False" />
                                 </DataTrigger>
+                                <Trigger Property="IsSelected" Value="True" >
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False" >
+                                    <Setter Property="FontWeight" Value="Normal" />
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </TreeView.ItemContainerStyle>

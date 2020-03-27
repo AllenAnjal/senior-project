@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using System.Xml;
 
 namespace senior_project
 {
@@ -20,7 +21,9 @@ namespace senior_project
     /// </summary>
     public partial class askForFilename : Window
     {
-        public string MyValue { get; set; }
+
+        private XmlDocument _xml;
+        private string path;
         private MainWindow main = new MainWindow();
 
         public askForFilename()
@@ -35,42 +38,48 @@ namespace senior_project
 
         private void SubmitButton(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-
+            
             string file = nameBox.Text;
-            file += ".xml";
-            createFile(file);
-            // xmlProcedure = XmlVerification.loadXml(file);
+            MessageBox.Show(file);
+
+            //checks if the name already has .xml in it or not and add accordingly
+            if (!file.EndsWith(".xml"))
+                file += ".xml";
+
+            path = Directory.GetCurrentDirectory();
+            path = path.Substring(0, path.Length - 9);
+            file = path + file;
+            var f = File.Create(file);
+            f.Close();
+            using (StreamWriter sw = File.AppendText(file))
+            {
+                sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+                sw.WriteLine("<TestProcedure>\n");
+                sw.WriteLine("<Procedure_Heading>\n");
+                sw.WriteLine("<Name >CAE Testing</Name>\n"
+                                + "<Signature/>\n"
+                                + "<Organization/>\n"
+                                + "<Date/>\n"
+                                + "<Time/>\n"
+                                + "<Load_Version/>\n"
+                                + "<Description/>\n"
+                                + "<System/>\n"
+                                + "<Severity/>\n"
+                                + "<Revision> 1 </Revision>\n"
+                                + "</Procedure_Heading >\n");
+                sw.WriteLine("<Sections>\n");
+                sw.WriteLine("<Section id=\"1\">\n");
+                sw.WriteLine("<Heading> 1.0 IOS DORT TESTS </Heading>\n");
+                sw.WriteLine("<Description> short description </Description>\n");
+                sw.WriteLine("<Test_Step id=\"1\"><Station></Station><Control_Action></Control_Action><Expected_Result></Expected_Result><Pass>false</Pass><Fail>false</Fail><Comments/><Image /></Test_Step>\n");
+                sw.WriteLine("</Section>\n");
+                sw.WriteLine("</Sections>\n");
+                sw.WriteLine("</TestProcedure>");
+
+            }
+
             TestAdmin admin = new TestAdmin(main, file);
             admin.Show();
-        }
-
-        private void createFile(string path)
-        {
-            try
-            {
-                // Create the file, or overwrite if the file exists.
-                using (FileStream fs = File.Create(path))
-                {
-                    byte[] info = new UTF8Encoding(true).GetBytes("This is some text in the file.");
-                    // Add some information to the file.
-                    fs.Write(info, 0, info.Length);
-                }
-
-                // Open the stream and read it back.
-                using (StreamReader sr = File.OpenText(path))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        Console.WriteLine(s);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
         }
 
         private void CancelButton(object sender, RoutedEventArgs e)
