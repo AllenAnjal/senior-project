@@ -7,7 +7,7 @@
     Title="Tester"
     Width="800"
     Height="600"
-    MinWidth="350"
+    MinWidth="800"
     MinHeight="600"
     Closed="Window_Closed"
     ContentRendered="Window_ContentRendered"
@@ -21,7 +21,7 @@
         </ContextMenu>
         <Image x:Key="Stop" Source="icons\pause-256.png" Height="46"  Width="45"/>
         <Image x:Key="Resume" Source="icons\play-3-256.png" Height="46" Width="45"/>
-        <XmlDataProvider x:Key="xmlData" XPath="/TestProcedure/Sections/Section" />
+        <XmlDataProvider x:Key="xmlData" />
 
         <HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Test_Step}">
             <TextBlock>
@@ -49,6 +49,7 @@
                 <MenuItem Click="Exit_Button" Header="_Exit" />
             </MenuItem>
         </Menu>
+        
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -73,9 +74,10 @@
                     Name="pbProcedureProgress"
                     Width="90"
                     Height="16"
-                    Value="0" />
+                    Value="0" ValueChanged="pbProcedureProgress_ValueChanged"  />
             </StatusBarItem>
         </StatusBar>
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" MaxWidth="250" />
@@ -84,60 +86,27 @@
 
             <DockPanel
                 Grid.Column="0"
-                Margin="5,5,5,0"
-                VerticalAlignment="Stretch">
-                <DockPanel
-                    x:Name="stack"
-                    Grid.Column="0"
-                    DockPanel.Dock="Bottom">
-                    <Button
-                        x:Name="up"
-                        Width="45"
-                        Height="45"
-                        Margin="50,0,10,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        Click="move_up"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        ToolTip="Press to pass step">
-                        <Image Source="icons\up.png" />
-                    </Button>
-                    <Button
-                        x:Name="down"
-                        Grid.Column="0"
-                        Width="45"
-                        Height="45"
-                        Margin="0,0,60,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Click="move_down"
-                        DockPanel.Dock="Left"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        ToolTip="Press to pass step">
-                        <Image Source="icons\down.png" />
-                    </Button>
-                </DockPanel>
+                Margin="5,5,5,0">
+
                 <TreeView
                     x:Name="treeView1"
                     Height="470"
-                    VerticalAlignment="Top"
+                    DockPanel.Dock="Top"
+                    VerticalAlignment="Stretch"
                     BorderBrush="Black"
                     BorderThickness="1"
-                    IsEnabled="True"
                     ItemsSource="{Binding Source={StaticResource xmlData}, UpdateSourceTrigger=PropertyChanged}"
-                    Opacity=".5"
+                    FontSize="14"
                     SelectedItemChanged="TreeView1_SelectedItemChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
-                            <EventSetter Event="PreviewMouseDoubleClick" Handler="TreeView1_PreviewMouseLeftButtonUp_1" />
-                            <Setter Property="Foreground" Value="Black" />
                             <Setter Property="IsExpanded" Value="True" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding XPath=Pass}" Value="true">
-                                    <Setter Property="Background" Value="Green" />
+                                    <Setter Property="Background" Value="LightGreen" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding XPath=Fail}" Value="true">
-                                    <Setter Property="Background" Value="Red" />
+                                    <Setter Property="Background" Value="IndianRed" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Name}" Value="Section">
                                     <Setter Property="IsSelected" Value="False" />
@@ -147,15 +116,50 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                 </TreeView>
+
+                <Grid
+                    x:Name="stack"
+                    DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        x:Name="up"
+                        Width="45"
+                        Height="45"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="move_up"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to pass step">
+                        <Image Source="icons\up.png" />
+                    </Button>
+                    <Button
+                        x:Name="down"
+                        Grid.Column="1"
+                        Width="45"
+                        Height="45"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="move_down"
+                        DockPanel.Dock="Left"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to pass step">
+                        <Image Source="icons\down.png" />
+                    </Button>
+                </Grid>
             </DockPanel>
 
             <Grid Grid.Column="2" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="2*" MaxHeight="50" />
+                    <RowDefinition Height="101*" />
+                    <RowDefinition Height="101*" />
+                    <RowDefinition Height="120*" />
+                    <RowDefinition Height="101*" />
+                    <RowDefinition Height="18*"/>
+                    <RowDefinition Height="33*" MaxHeight="50" />
+                    <RowDefinition Height="17*"/>
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                     <Style TargetType="Label">
@@ -216,7 +220,17 @@
                             IsReadOnly="True"
                             IsReadOnlyCaretVisible="False"
                             Text="{Binding UpdateSourceTrigger=PropertyChanged, XPath=@id}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap" >
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsReadOnly" Value="True">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
                     </DockPanel>
                 </Border>
 
@@ -265,11 +279,20 @@
                             VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
-                            BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap" >
+                            <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="IsReadOnly" Value="True">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                            </TextBox.Style>
+                        </TextBox>
                     </DockPanel>
                 </Border>
 
@@ -318,11 +341,20 @@
                             VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Left"
                             VerticalContentAlignment="Center"
-                            BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap" >
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsReadOnly" Value="True">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
                     </DockPanel>
                 </Border>
 
@@ -334,7 +366,7 @@
                     Background="#025dba"
                     BorderBrush="Black"
                     BorderThickness="1"
-                    CornerRadius="7">
+                    CornerRadius="7" Grid.RowSpan="2">
                     <Border.Effect>
                         <DropShadowEffect
                             BlurRadius="5"
@@ -353,7 +385,7 @@
                     Background="#025dba"
                     BorderBrush="Black"
                     BorderThickness="1"
-                    CornerRadius="7">
+                    CornerRadius="7" Grid.RowSpan="2">
                     <DockPanel Margin="5">
                         <Label
                             x:Name="lblExpectedResult"
@@ -371,19 +403,28 @@
                             VerticalAlignment="Stretch"
                             HorizontalContentAlignment="Left"
                             VerticalContentAlignment="Center"
-                            BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Expected_Result, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap" >
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsReadOnly" Value="True">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
                     </DockPanel>
                 </Border>
 
                 <DockPanel
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Margin="5,0"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Bottom" Height="45">
+                    Height="45" Grid.RowSpan="2">
                     <Button
                         x:Name="passButton"
                         Width="46"
@@ -392,7 +433,17 @@
                         DockPanel.Dock="Right"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         ToolTip="Press to fail step and leave comment">
-                        <Image Source="icons\checked-checkbox-512.png" />
+                        <Image Source="icons\checked-checkbox-512.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value=".3"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                     </Button>
                     <Button
                         x:Name="failButton"
@@ -402,7 +453,18 @@
                         DockPanel.Dock="Right"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         ToolTip="Press to fail step and leave comment">
-                        <Image Source="icons\x-mark-5-512.png" />
+                        <Image Source="icons\x-mark-5-512.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value=".3"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                            
                     </Button>
                     <Button
                         x:Name="commentButton"
@@ -424,18 +486,10 @@
                         ToolTip="Leave a redline suggestion">
                         <Image Source="icons\edit-6-512.png" />
                     </Button>
-                    <Button
-                        x:Name="timerButton"
-                        Margin="0,-5,125,0"
-                        Click="timerClick"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        DockPanel.Dock="Right" Height="50" Width="51" VerticalAlignment="Top"
-                        >
-                        <DynamicResource ResourceKey="Resume"/>
-                    </Button>
 
                     <TextBlock
                         x:Name="timer"
+                        DockPanel.Dock="Left"
                         Margin="5"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
@@ -443,7 +497,18 @@
                         FontSize="20"
                         FontWeight="UltraBlack"
                         MouseLeftButtonUp="timer_MouseLeftButtonUp"
-                        TextAlignment="Center" />
+                        TextAlignment="Center" 
+                        />
+                    <Button
+                        x:Name="timerButton"
+                        Margin="0,-5,125,0"
+                        Click="timerClick"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        DockPanel.Dock="Left" Height="50" Width="51" VerticalAlignment="Top"
+                        >
+                        <DynamicResource ResourceKey="Stop"/>
+                    </Button>
+
                 </DockPanel>
             </Grid>
         </Grid>

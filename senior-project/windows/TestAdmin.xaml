@@ -11,6 +11,7 @@
     MinWidth="350"
     MinHeight="600"
     Closed="Window_Closed"
+    ContentRendered="Window_ContentRendered"
     Icon="icons\splashscreen.png"
     Loaded="Window_Loaded"
     WindowStartupLocation="CenterScreen"
@@ -22,16 +23,21 @@
 
         <XmlDataProvider x:Key="xmlData" XPath="/TestProcedure/Sections/Section" />
 
-        <HierarchicalDataTemplate DataType="Sections" ItemsSource="{Binding XPath=Section}">
-            <TextBlock Text="{Binding XPath=Sections}" />
-        </HierarchicalDataTemplate>
-
         <HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Test_Step}">
-            <TextBlock Text="{Binding XPath=Heading}" />
+            <TextBlock>
+                <Run Text="{Binding XPath=@id}" />
+                <Run Text=") " />
+                <Run Text="{Binding XPath=Heading}" />
+            </TextBlock>
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate DataType="Test_Step">
-            <TextBlock Text="{Binding XPath=@id}" />
+            <TextBlock>
+                <Run Text="Step " />
+                <Run Text="{Binding XPath=../@id}" />
+                <Run Text="." />
+                <Run Text="{Binding XPath=@id}" />
+            </TextBlock>
         </HierarchicalDataTemplate>
     </Window.Resources>
 
@@ -88,18 +94,14 @@
                     IsEnabled="True"
                     ItemsSource="{Binding Source={StaticResource xmlData}, UpdateSourceTrigger=PropertyChanged}"
                     Opacity=".5"
-                    SelectedItemChanged="TreeView1_SelectedItemChanged">
+                    SelectedItemChanged="TreeView1_SelectedItemChanged" Margin="0,0,0,39">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <EventSetter Event="PreviewMouseDoubleClick" Handler="TreeView1_PreviewMouseLeftButtonUp_1" />
                             <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="IsExpanded" Value="True"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding XPath=Pass}" Value="true">
-                                    <Setter Property="Background" Value="Green" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding XPath=Fail}" Value="true">
-                                    <Setter Property="Background" Value="Red" />
-                                </DataTrigger>
+
                                 <DataTrigger Binding="{Binding Path=Name}" Value="Section">
                                     <Setter Property="IsSelected" Value="False" />
                                     <Setter Property="Focusable" Value="False" />
@@ -108,8 +110,44 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                 </TreeView>
-            </DockPanel>
 
+            </DockPanel>
+            <DockPanel
+                Grid.Column="0"
+                Margin="5,5,5,0"
+                VerticalAlignment="Stretch">
+                <DockPanel
+                    x:Name="stack"
+                    Grid.Column="0"
+                    DockPanel.Dock="Bottom">
+                    <Button
+                        x:Name="up"
+                        Width="45"
+                        Height="45"
+                        Margin="50,0,10,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Click="move_up"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to pass step">
+                        <Image Source="icons\up.png" />
+                    </Button>
+                    <Button
+                        x:Name="down"
+                        Grid.Column="0"
+                        Width="45"
+                        Height="45"
+                        Margin="0,0,60,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Click="move_down"
+                        DockPanel.Dock="Left"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        ToolTip="Press to pass step">
+                        <Image Source="icons\down.png" />
+                    </Button>
+                </DockPanel>
+            </DockPanel>
             <Grid Grid.Column="2" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*" />
@@ -174,7 +212,7 @@
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             DataContext="{Binding SelectedItem, ElementName=treeView1}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             IsReadOnlyCaretVisible="False"
                             Text="{Binding UpdateSourceTrigger=PropertyChanged, XPath=@id}"
                             TextWrapping="Wrap" />
@@ -228,7 +266,7 @@
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap" />
                     </DockPanel>
@@ -281,7 +319,7 @@
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap" />
                     </DockPanel>
@@ -334,7 +372,7 @@
                             VerticalContentAlignment="Center"
                             BorderBrush="White"
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
-                            IsReadOnly="True"
+                            IsReadOnly="False"
                             Text="{Binding XPath=Expected_Result, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap" />
                     </DockPanel>
@@ -345,7 +383,8 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom">
                     <Border
-                        Width="145"
+                        Width="auto"
+                        
                         Height="45"
                         Margin="0,0,15,0"
                         Background="Crimson"
@@ -359,51 +398,33 @@
                             Background="Crimson"
                             BorderBrush="Crimson"
                             Click="removeStepButton_Click"
-                            Content="Remove Procedural Step"
+                            Content="Remove Selected Item"
                             DockPanel.Dock="Right"
                             Foreground="White"
-                            ToolTip="Remove the current step" />
+                            ToolTip="Remove the current item (section or step)" />
                     </Border>
                     <Border
-                        Width="90"
+                        Width="auto"
                         Height="45"
-                        Margin="0,0,20,0"
+                        Margin="0,0,50,0"
                         Background="#024DBA"
                         BorderBrush="Black"
                         BorderThickness="1"
                         CornerRadius="10"
-                        DockPanel.Dock="Left">
+                        DockPanel.Dock="Right">
                         <Button
-                            x:Name="moveDown"
-                            Margin="3,2,2,3"
+                            x:Name="addSectionButton1"
+                            Margin="4,2,3,2"
                             Background="#024DBA"
                             BorderBrush="#024DBA"
-                            Click="move_down"
-                            Content="Move down"
+                            Click="addSectionButton_Click"
+                            Content="Add New Section"
+                            DockPanel.Dock="Right"
                             Foreground="White"
-                            ToolTip="Move the current procedure down in the TOC" />
+                            ToolTip="Add a new section below the current one" />
                     </Border>
                     <Border
-                        Width="90"
-                        Height="45"
-                        Margin="0,0,0,0"
-                        Background="#024DBA"
-                        BorderBrush="Black"
-                        BorderThickness="1"
-                        CornerRadius="10"
-                        DockPanel.Dock="Left">
-                        <Button
-                            x:Name="moveUp"
-                            Margin="3,2,2,3"
-                            Background="#024DBA"
-                            BorderBrush="#024DBA"
-                            Click="move_up"
-                            Content="Move up"
-                            Foreground="White"
-                            ToolTip="Move the current procedure up in the TOC" />
-                    </Border>
-                    <Border
-                        Width="145"
+                        Width="112"
                         Height="45"
                         Margin="0,0,0,0"
                         Background="#024DBA"
@@ -412,12 +433,12 @@
                         CornerRadius="10"
                         DockPanel.Dock="Right">
                         <Button
-                            x:Name="addStepButton1"
-                            Margin="4,2,3,2"
+                            x:Name="addStepButton"
+                            Margin="4,2"
                             Background="#024DBA"
                             BorderBrush="#024DBA"
                             Click="addStepButton_Click"
-                            Content="Add Procedural Step"
+                            Content="Add New Step"
                             DockPanel.Dock="Right"
                             Foreground="White"
                             ToolTip="Add a new step below the current one" />

@@ -27,6 +27,7 @@ namespace senior_project
             commentBox.Text = defaultText;
         }
 
+
         private void submitAction()
         {
             if (commentBox.Text == defaultText)
@@ -35,7 +36,8 @@ namespace senior_project
             }
             else
             {
-                this.Close();
+
+                this.Hide();
             }
         }
 
@@ -51,8 +53,14 @@ namespace senior_project
             }
         }
 
-        private void CommentBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void commentBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            commentBox.Text = string.Empty;
+        }
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            commentBox.Text = defaultText;
         }
     }
 }
