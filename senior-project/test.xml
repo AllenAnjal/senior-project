@@ -20,7 +20,7 @@
         <Station>I AM THE TEST FILE</Station>
         <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
         <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
-        <Pass>false</Pass>
+        <Pass>true</Pass>
         <Fail>false</Fail>
         <Comments />
         <Image />
@@ -30,7 +30,7 @@
         <Control_Action>ControlAction s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st3</Expected_Result>
         <Pass>false</Pass>
-        <Fail>false</Fail>
+        <Fail>true</Fail>
         <Comments />
       </Test_Step>
     </Section>
@@ -55,9 +55,24 @@
         <Comments />
         <Image />
       </Test_Step>
-      <Test_Step id="3">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
-      <Test_Step id="4">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
-      <Test_Step id="5">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+    <Test_Step id="3">
+		<Station>sec 2 st 3</Station>
+		<Control_Action>Control Action</Control_Action>
+		<Expected_Result>Exp Result</Expected_Result>
+		<Pass>false</Pass>
+		<Fail>false</Fail>
+		<Comments/>
+		<Image />
+	</Test_Step>
+    <Test_Step id="4">
+		<Station>sec 2 st 4</Station>
+		<Control_Action>Control Action</Control_Action>
+		<Expected_Result>Exp Result</Expected_Result>
+		<Pass>false</Pass>
+		<Fail>false</Fail>
+		<Comments/>
+		<Image />
+	</Test_Step>
     </Section>
   </Sections>
   <RedlinesList>

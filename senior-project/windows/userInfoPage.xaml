@@ -17,19 +17,19 @@
         </Grid.ColumnDefinitions>
         <Border BorderBrush="White"
                 Background="White"
-                BorderThickness="3" CornerRadius="10" Grid.Column="1"
+                BorderThickness="3" CornerRadius="10" 
+                Grid.Column="1"
                 Height="250"
                 Margin="7">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="5" Direction="275" RenderingBias="Performance" ShadowDepth="2" Opacity=".5"/>
             </Border.Effect>
+            
             <DockPanel
             HorizontalAlignment="Right"
             Height="250"
             Grid.Column="1"
-            Width="200"
-            >
-
+            Width="200">
                 <Label Content="User Name" 
                    HorizontalAlignment="Left" 
                    VerticalAlignment="Top" 
@@ -78,14 +78,15 @@
                     Background="LightGreen"
                     Foreground="White"
                     FontWeight="Medium"
-                         Width="176" 
+                    Width="176" 
                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         BorderBrush="LightGreen"
-                    BorderThickness="2" Click="Button_Click"
+                        BorderThickness="2" Click="Button_Click"
                         HorizontalAlignment="Left" Margin="3,1,0,1"/>
                 </Border>
             </DockPanel>
         </Border>
+        
         <Image
             Source="icons\userWhite.png"
             Height="150"
