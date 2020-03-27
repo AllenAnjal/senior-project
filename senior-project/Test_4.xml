@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TestProcedure>
   <Procedure_Heading>
-    <Name >CAE Testing</Name>
+    <Name>CAE Testing</Name>
     <Signature />
     <Organization />
     <Date />
@@ -10,14 +10,14 @@
     <Description />
     <System />
     <Severity />
-    <Revision>1</Revision> />
+    <Revision>1</Revision>
   </Procedure_Heading>
   <Sections>
     <Section id="1">
-      <Heading>1.0 IOS DORT TESTS</Heading>
+      <Heading>73.0 IOS DORT TESTS</Heading>
       <Description>Short Description</Description>
       <Test_Step id="1">
-        <Station>IOS</Station>
+        <Station>I AM THE TEST FILE</Station>
         <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
         <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
         <Pass>false</Pass>
@@ -26,29 +26,13 @@
         <Image />
       </Test_Step>
       <Test_Step id="2">
-        <Station>IOS</Station>
-        <Control_Action>Click the Simulator Maintenance page from the left menu.</Control_Action>
-        <Expected_Result>The Simulator Maintenance page is displayed.</Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-        <Image />
-      </Test_Step>
-      <Test_Step id="3">
-        <Station>Station Orig S1, step 3</Station>
-        <Control_Action>Control Action s1 st3</Control_Action>
-        <Expected_Result>ExpResult s1, st 3</Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-      </Test_Step>
-      <Test_Step id="4">
         <Station>Station Orig S1, step 4</Station>
         <Control_Action>ControlAction s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st3</Expected_Result>
         <Pass>false</Pass>
         <Fail>false</Fail>
         <Comments />
+        <Image />
       </Test_Step>
     </Section>
     <Section id="2">
@@ -72,60 +56,79 @@
         <Comments />
         <Image />
       </Test_Step>
+      <Test_Step id="3">
+        <Station>sec 2 st 3</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
     </Section>
   </Sections>
   <RedlinesList>
-    <TextList>
-      <RedlineText id="1">
-        <ActionToTake>ExpectedResult</ActionToTake>
-        <FromSection>1</FromSection>
-        <FromStep>1</FromStep>
-        <ControlAction>false</ControlAction>
-        <Station>false</Station>
-        <ExpectedResult>true</ExpectedResult>
-        <SectionHeader>false</SectionHeader>
-        <SectionDescription>false</SectionDescription>
-        <Text>Expected Results Now Updated!</Text>
-      </RedlineText>
-      <RedlineText id="2">
-        <ActionToTake>ControlAction</ActionToTake>
-        <FromSection>2</FromSection>
-        <FromStep>2</FromStep>
-        <ControlAction>true</ControlAction>
-        <Station>false</Station>
-        <ExpectedResult>false</ExpectedResult>
-        <SectionHeader>false</SectionHeader>
-        <SectionDescription>false</SectionDescription>
-        <Text>Control Action is Updated!</Text>
-      </RedlineText>
-    </TextList>
-    <StepsList>
-      <RedlineStep id="1">
-        <ActionToTake>MoveStep</ActionToTake>
-        <FromSection>1</FromSection>
-        <FromStep>1</FromStep>
-        <ToSection>1</ToSection>
-        <ToStep> 2</ToStep>
-      </RedlineStep>
-      <RedlineStep id="2">
-        <ActionToTake>RemoveStep</ActionToTake>
-        <FromSection>2</FromSection>
-        <FromStep>2</FromStep>
-        <ToSection></ToSection>
-        <ToStep></ToStep>
-      </RedlineStep>
-    </StepsList>
-    <SectionList>
-      <RedlineSection id="1">
-        <ActionToTake>MoveSection</ActionToTake>
-        <FromSection>1</FromSection>
-        <ToSection>2</ToSection>
-      </RedlineSection>
-      <RedlineSection id="2">
-        <ActionToTake>RemoveSection</ActionToTake>
-        <FromSection>2</FromSection>
-        <ToSection></ToSection>
-      </RedlineSection>
-    </SectionList>
+    <Section id="1">
+      <Heading>73.0 IOS DORT TESTS</Heading>
+      <Description>Short Description</Description>
+      <Test_Step id="1">
+        <Station>I AM THE TEST FILE</Station>
+        <Control_Action>In the IOS GUI, click SIM Controls &amp; MAINT from the bottom of the left-most menu.</Control_Action>
+        <Expected_Result>The Simulator Controls page is displayed</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="2">
+        <Station>Station Orig S1, step 4</Station>
+        <Control_Action>ControlAction s1 st3</Control_Action>
+        <Expected_Result>ExpResult s1, st3</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+    </Section>
+    <Section id="2">
+      <Heading>New Heading</Heading>
+      <Description>New Desc</Description>
+      <Test_Step id="1">
+        <Station>sec 2 st 1</Station>
+        <Control_Action>S2 Control Action</Control_Action>
+        <Expected_Result>S2 EXp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="2">
+        <Station>sec 2 st 2</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="3">
+        <Station>sec 2 st 3</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="4">
+        <Station>sec 2 st 4</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+    </Section>
   </RedlinesList>
 </TestProcedure>

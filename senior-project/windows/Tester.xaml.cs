@@ -202,19 +202,9 @@ namespace senior_project
             {
                 changeColors(254, 1, 1);
                 setBoolean(false);
-                /*
-                failButton.IsEnabled = false;
-                passButton.IsEnabled = false;
-                tbStep.IsReadOnly = false;
-                tbStation.IsReadOnly = false;
-                tbControlAction.IsReadOnly = false;
-                tbExpectedResult.IsReadOnly = false;
-                */
                 _xmlDataProvider.XPath = "/TestProcedure/RedlinesList/Section";
-                //treeView1.Items.Refresh();
-                //treeView1.UpdateLayout();
-                //tItems.Clear();
-                //LoadListRecursive(treeView1, tItems);
+                tItems.Clear();
+                LoadListRecursive(treeView1, tItems);
                 //tItems[pos].IsSelected = true;
 
             }
@@ -222,19 +212,11 @@ namespace senior_project
             {
                 changeColors(2, 93, 186);
                 setBoolean(true);
-                /*
-                failButton.IsEnabled = true;
-                passButton.IsEnabled = true;
-                tbStep.IsReadOnly = true;
-                tbStation.IsReadOnly = true;
-                tbControlAction.IsReadOnly = true;
-                tbExpectedResult.IsReadOnly = true;
-                */
                 _xmlDataProvider.XPath = "/TestProcedure/Sections/Section";
                 //treeView1.Items.Refresh();
                 //treeView1.UpdateLayout();
-                //tItems.Clear();
-                //LoadListRecursive(treeView1, tItems);
+                tItems.Clear();
+                LoadListRecursive(treeView1, tItems);
                 //tItems[pos].IsSelected = true;
             }
 
@@ -317,11 +299,18 @@ namespace senior_project
                     step = _pos.SelectSingleNode("@id").Value;
                     section = _pos.ParentNode.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
+                    for (int i = 0; i < tItems.Count; i++)
+                    {
+                        if (tItems[i].IsSelected)
+                            pos = i;
+                    }
                 }
                 else if (_pos.Name == "Section")
                 {
                     section = _pos.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}", section);
+                    pos = 0;
+
                 }
                 
 
@@ -335,6 +324,11 @@ namespace senior_project
             stationTxt = tbStation.Text;
             controlTxt = tbControlAction.Text;
             expectedTxt = tbExpectedResult.Text;
+
+            
+
+
+            
         }
 
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
@@ -455,18 +449,22 @@ namespace senior_project
         {
             LoadListRecursive(_treeView, tItems);
             StepToStart();
+            
         }
 
         private void StepForward()
         {
             pos = (pos < tItems.Count - 1) ? pos + 1 : 0;
             tItems[pos].IsSelected = true;
+            Console.WriteLine(pos);
+            Console.WriteLine("The current count is" + tItems.Count);
         }
 
         private void StepBackwards()
         {
             pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
             tItems[pos].IsSelected = true;
+            Console.WriteLine(pos);
         }
 
         private void StepToStart()

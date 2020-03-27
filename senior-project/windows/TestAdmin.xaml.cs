@@ -97,6 +97,8 @@ namespace senior_project
         {
             
             XmlNode currentNode = _treeView.SelectedItem as XmlNode;
+            XmlElement tmp = _treeView.SelectedItem as XmlElement;
+            string id = tmp.GetAttribute("id");
             XmlNode root = currentNode.ParentNode;
             LoadListRecursive(_treeView, tItems);
             StepBackwards();
@@ -109,67 +111,23 @@ namespace senior_project
                 MessageBox.Show("Error");
             }
 
-            
-            tItems[pos].IsSelected = true;
-
-            _xml.Save(xmlFile);
-        }
-
-        private void addSectionButton_Click(object sender, RoutedEventArgs e)
-        {
-            XmlElement root = _treeView.SelectedItem as XmlElement;
-            if (root.Name == "Test_Step")
-                root = root.ParentNode.ParentNode as XmlElement;
-            else if (root.Name == "Section")
-                root = root.ParentNode as XmlElement;
-            int count = 1;
-            foreach (XmlElement x in root)
+            foreach (XmlElement child in root)
             {
-                if (x.Name == "Section")
-                    count++;
+                if (child.Name == "Test_Step")
+                {
+                    int child_id = Int32.Parse(child.GetAttribute("id"));
+                    if (child_id > Int32.Parse(id))
+                    {
+                        string tmp1 = "" + (child_id - 1);
+                        child.SetAttribute("id", tmp1);
+                    }
+                }
             }
-            string id = "" + count;
 
-            //creating a new section
-            XmlElement newSection = _xml.CreateElement("Section");
-            newSection.SetAttribute("id", id);
-
-            //creating a new test step within a newly created section
-            XmlElement newTestStep = _xml.CreateElement("Test_Step");
-            newTestStep.SetAttribute("id", "1");
-            XmlElement newStation = _xml.CreateElement("Station");
-            XmlElement newExpResult = _xml.CreateElement("Expected_Result");
-            XmlElement newControlAction = _xml.CreateElement("Control_Action");
-            XmlElement newPass = _xml.CreateElement("Pass");
-            XmlElement newFail = _xml.CreateElement("Fail");
-            XmlElement newComments = _xml.CreateElement("Comments");
-            XmlElement newImage = _xml.CreateElement("Image");
-
-            newTestStep.InnerText = tbStep.Text;
-            newStation.InnerText = tbStation.Text;
-            newExpResult.InnerText = tbExpectedResult.Text;
-            newControlAction.InnerText = tbControlAction.Text;
-
-            //appending the subsections to test_step
-            newTestStep.AppendChild(newStation);
-            newTestStep.AppendChild(newControlAction);
-            newTestStep.AppendChild(newExpResult);
-            newTestStep.AppendChild(newPass);
-            newTestStep.AppendChild(newFail);
-            newTestStep.AppendChild(newComments);
-            newTestStep.AppendChild(newImage);
-
-            //adding test step to section
-            newSection.AppendChild(newTestStep);
-
-            //adding section to root
-            root.AppendChild(newSection);
-
-            tItems.Clear();
-            LoadListRecursive(_treeView, tItems);
             _xml.Save(xmlFile);
-
         }
+
+        
         private void addStepButton_Click(object sender, RoutedEventArgs e)
         {
             string id ="";
@@ -257,6 +215,62 @@ namespace senior_project
             _xml.Save(xmlFile);
 
         }
+
+        private void addSectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            XmlElement root = _treeView.SelectedItem as XmlElement;
+            if (root.Name == "Test_Step")
+                root = root.ParentNode.ParentNode as XmlElement;
+            else if (root.Name == "Section")
+                root = root.ParentNode as XmlElement;
+            int count = 1;
+            foreach (XmlElement x in root)
+            {
+                if (x.Name == "Section")
+                    count++;
+            }
+            string id = "" + count;
+
+            //creating a new section
+            XmlElement newSection = _xml.CreateElement("Section");
+            newSection.SetAttribute("id", id);
+
+            //creating a new test step within a newly created section
+            XmlElement newTestStep = _xml.CreateElement("Test_Step");
+            newTestStep.SetAttribute("id", "1");
+            XmlElement newStation = _xml.CreateElement("Station");
+            XmlElement newExpResult = _xml.CreateElement("Expected_Result");
+            XmlElement newControlAction = _xml.CreateElement("Control_Action");
+            XmlElement newPass = _xml.CreateElement("Pass");
+            XmlElement newFail = _xml.CreateElement("Fail");
+            XmlElement newComments = _xml.CreateElement("Comments");
+            XmlElement newImage = _xml.CreateElement("Image");
+
+            newTestStep.InnerText = tbStep.Text;
+            newStation.InnerText = tbStation.Text;
+            newExpResult.InnerText = tbExpectedResult.Text;
+            newControlAction.InnerText = tbControlAction.Text;
+
+            //appending the subsections to test_step
+            newTestStep.AppendChild(newStation);
+            newTestStep.AppendChild(newControlAction);
+            newTestStep.AppendChild(newExpResult);
+            newTestStep.AppendChild(newPass);
+            newTestStep.AppendChild(newFail);
+            newTestStep.AppendChild(newComments);
+            newTestStep.AppendChild(newImage);
+
+            //adding test step to section
+            newSection.AppendChild(newTestStep);
+
+            //adding section to root
+            root.AppendChild(newSection);
+
+            tItems.Clear();
+            LoadListRecursive(_treeView, tItems);
+            _xml.Save(xmlFile);
+
+        }
         private void Exit_Button(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -277,6 +291,11 @@ namespace senior_project
                     step = pos.SelectSingleNode("@id").Value;
                     section = pos.ParentNode.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
+                    for (int i = 0; i < tItems.Count; i++)
+                    {
+                        if (tItems[i].IsSelected)
+                            this.pos = i;
+                    }
                 }
                 else if (pos.Name == "Section")
                 {
