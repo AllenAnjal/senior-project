@@ -11,14 +11,11 @@ using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
-<<<<<<< HEAD
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-=======
 using System.IO;
->>>>>>> a162f619f50a5eea44a6c2f895aa96e51a15b329
 
 namespace senior_project
 {
@@ -72,20 +69,6 @@ namespace senior_project
             _xml = new XmlDocument();
             tItems = new List<TreeViewItem>();
 
-            
-
-            //storing initial txt from textbox
-            
-            
-
-            //creates a copy of the test procedure and writes it to a copy and modified file
-            string path = Directory.GetCurrentDirectory();
-            path = path.Substring(0, path.Length - 9);
-            string copyfile = xmlFile.Substring(0, xmlFile.Length - 4) + "_copy.xml";
-            File.Copy(Path.Combine(path,xmlFile), Path.Combine(path,copyfile), true);
-            string newfile = xmlFile.Substring(0, xmlFile.Length - 4) + "_new.xml";
-            File.Copy(Path.Combine(path, xmlFile), Path.Combine(path, newfile), true);
-
             try
             {
                 _xml.Load(xmlFile);
@@ -125,11 +108,8 @@ namespace senior_project
 
         private void passAction()
         {
-<<<<<<< HEAD
-=======
             
             if (_treeView.SelectedItem == null) return;
->>>>>>> a162f619f50a5eea44a6c2f895aa96e51a15b329
             hasCommented = false;
             XmlElement sel = _treeView.SelectedItem as XmlElement;
 
@@ -141,8 +121,6 @@ namespace senior_project
             tmp++;
             pbProcedureProgress.Maximum = count;
             pbProcedureProgress.Value = (double)tmp;
-
-            MessageBox.Show(_xmlDataProvider.GetType().ToString());
 
             StepForward();
             //writeStep(true);
@@ -165,11 +143,7 @@ namespace senior_project
                 
             }
 
-<<<<<<< HEAD
             StepForward();
-=======
-
->>>>>>> a162f619f50a5eea44a6c2f895aa96e51a15b329
             //loadComment();
             //hasCommented = false;
             //writeStep(false);
@@ -225,15 +199,7 @@ namespace senior_project
             redlineClicked = !redlineClicked;
             if (redlineClicked)
             {
-<<<<<<< HEAD
-                lblStep.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                lblStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                lblControlAction.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderStep.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderStation.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderControl.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
-                borderExp.Background = new SolidColorBrush(Color.FromRgb(254, 1, 1));
+                changeColors(254, 1, 1);
                 failButton.IsEnabled = false;
                 passButton.IsEnabled = false;
                 tbStep.IsReadOnly = false;
@@ -250,14 +216,7 @@ namespace senior_project
             }
             else
             {
-                lblStep.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                lblStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                lblControlAction.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderStep.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderStation.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderControl.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
-                borderExp.Background = new SolidColorBrush(Color.FromRgb(2, 93, 186));
+                changeColors(2, 93, 186);
                 failButton.IsEnabled = true;
                 passButton.IsEnabled = true;
                 tbStep.IsReadOnly = true;
@@ -270,8 +229,6 @@ namespace senior_project
                 tItems.Clear();
                 LoadListRecursive(treeView1, tItems);
                 tItems[pos].IsSelected = true;
-=======
->>>>>>> a162f619f50a5eea44a6c2f895aa96e51a15b329
             }
 
             //red.ShowDialog();
@@ -339,86 +296,7 @@ namespace senior_project
             }
         }
 
-<<<<<<< HEAD
         #endregion
-
-        #region TreeView
-
-        private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            string section = String.Empty, step = String.Empty;
-            XmlElement pos = _treeView.SelectedItem as XmlElement;
-            if (pos != null)
-            {
-                if (pos.Name == "Test_Step")
-                {
-                    step = pos.SelectSingleNode("@id").Value;
-                    section = pos.ParentNode.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-                }
-                else if (pos.Name == "Section")
-                {
-                    section = pos.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}", section);
-                }
-            }
-            else
-            {
-                lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-            }
-        }
-
-        //Initialize the treeView to section 0, step 0
-
-        //Navigate to next step in test procedure
-
-        #endregion TreeView
-
-=======
-        private void Exit_Button(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void CommentButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //  TESTING
-                if (_treeView.SelectedItem == null) return;
-                XmlElement x = _treeView.SelectedItem as XmlElement;
-                if (x.Name == "Test_Step")
-                {
-                    //MessageBox.Show(x["Pass"].InnerText + "\n" + x["Pass"].Value);
-                    cmt.Show();
-                    //MessageBox.Show(String.Format("{0}", getProcedureProgress(x.ParentNode as XmlElement)));
-                }
-
-                //  TESTING
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
-        }
-
-        private void timerClick(object sender, RoutedEventArgs e)
-        {
-            if (stopWatch.IsRunning)
-            {
-                stopWatch.Stop();
-                timerButton.Content = FindResource("Stop");
-            }
-            else
-            {
-                stopWatch.Start();
-                timerButton.Content = FindResource("Resume");
-            }
-        }
->>>>>>> a162f619f50a5eea44a6c2f895aa96e51a15b329
-
-        #endregion buttons
-
         #region TreeView
 
         private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -486,10 +364,7 @@ namespace senior_project
             _treeView.UpdateLayout();
         }
 
-<<<<<<< HEAD
-=======
         #region otherFunctions
->>>>>>> a162f619f50a5eea44a6c2f895aa96e51a15b329
 
         //    if ((bool)openFileDialog.ShowDialog())
         //    {
@@ -571,8 +446,8 @@ namespace senior_project
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            //LoadListRecursive(_treeView, tItems);
-            //StepToStart();
+            LoadListRecursive(_treeView, tItems);
+            StepToStart();
         }
 
         private void StepForward()
@@ -589,8 +464,8 @@ namespace senior_project
 
         private void StepToStart()
         {
-            //Console.WriteLine(tItems.Count);
-            //tItems[0].IsSelected = true;
+            Console.WriteLine(tItems.Count);
+            tItems[0].IsSelected = true;
         }
         
         private void LastStep()
@@ -674,8 +549,5 @@ namespace senior_project
             //do nothing
         }
     }
-<<<<<<< HEAD
-=======
     #endregion otherFunctions
->>>>>>> a162f619f50a5eea44a6c2f895aa96e51a15b329
 }
