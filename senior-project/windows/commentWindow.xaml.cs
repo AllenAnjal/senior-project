@@ -62,5 +62,16 @@ namespace senior_project
         {
             commentBox.Text = defaultText;
         }
+
+        bool _shown;
+        protected override void OnContentRendered(EventArgs e)
+        {
+            base.OnContentRendered(e);
+            if (_shown)
+                return;
+            _shown = true;
+
+            commentBox.Text = defaultText;
+        }
     }
 }

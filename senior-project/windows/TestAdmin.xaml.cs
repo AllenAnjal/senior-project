@@ -78,8 +78,6 @@ namespace senior_project
             _treeView = FindName("treeView1") as TreeView;
             _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
             _xmlDataProvider.Document = _xml;
-
-            
         }
 
         #region buttons
@@ -207,10 +205,14 @@ namespace senior_project
             XmlElement newImage = _xml.CreateElement("Image");
 
             //setting the innertext to the textbox in the xaml page
-            newTestStep.InnerText = tbStep.Text;
-            newStation.InnerText = tbStation.Text;
-            newExpResult.InnerText = tbExpectedResult.Text;
-            newControlAction.InnerText = tbControlAction.Text;
+            //newTestStep.InnerText = tbStep.Text;
+            //newStation.InnerText = tbStation.Text;
+            //newExpResult.InnerText = tbExpectedResult.Text;
+            //newControlAction.InnerText = tbControlAction.Text;
+            newTestStep.InnerText = "";
+            newStation.InnerText = "";
+            newExpResult.InnerText = "";
+            newControlAction.InnerText ="";
 
             //appending the subsections to test_step
             newTestStep.AppendChild(newStation);
