@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Test_Procedure rev="">
+	<Procedure_Heading>
+		<!--Editor-->
+		<System />
+		<Description />
+		<!--Tester-->
+		<Name />
+		<Date />
+		<Software_Load_Version />
+		<Program_Phase />
+		<Program_Type />
+		<Classification />
+		<Signature />
+		<Start_Time />
+		<Stop_Time />
+	</Procedure_Heading>
+	<Sections>
+		<Section id="">
+			<Heading />
+			<Description />
+			<Test_Step id="">
+				<Station />
+				<Control_Action />
+				<Expected_Result />
+				<Result />
+					<Comment />
+					<Severity />
+				<Comment />
+			</Test_Step>
+		</Section>
+	</Sections>
+	<Redlines>
+		<Section id="">
+			<Heading />
+			<Description />
+			<Test_Step id="">
+				<Station />
+				<Control_Action />
+				<Expected_Result />
+				<Result />
+					<Comment />
+					<Severity />
+				<Comment />
+			</Test_Step>
+		</Section>
+	</Redlines>
+</Test_Procedure>
