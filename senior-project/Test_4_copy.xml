@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TestProcedure>
   <Procedure_Heading>
-    <Name >CAE Testing</Name>
+    <Name>CAE Testing</Name>
     <Signature />
     <Organization />
     <Date />
@@ -10,7 +10,7 @@
     <Description />
     <System />
     <Severity />
-    <Revision>1</Revision> />
+    <Revision>1</Revision> /&gt;
   </Procedure_Heading>
   <Sections>
     <Section id="1">
@@ -42,7 +42,10 @@
         <Fail>false</Fail>
         <Comments />
       </Test_Step>
-      <Test_Step id="4">
+      <Test_Step id="4">3<Station>Station Orig S1, step 3</Station><Control_Action>Control Action s1 st3</Control_Action><Expected_Result>ExpResult s1, st 3</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="5">3<Station>Station Orig S1, step 3</Station><Control_Action>Control Action s1 st3</Control_Action><Expected_Result>ExpResult s1, st 3</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="6">5<Station>Station Orig S1, step 3</Station><Control_Action>Control Action s1 st3</Control_Action><Expected_Result>ExpResult s1, st 3</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="7">
         <Station>Station Orig S1, step 4</Station>
         <Control_Action>ControlAction s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st3</Expected_Result>
@@ -111,8 +114,10 @@
         <ActionToTake>RemoveStep</ActionToTake>
         <FromSection>2</FromSection>
         <FromStep>2</FromStep>
-        <ToSection></ToSection>
-        <ToStep></ToStep>
+        <ToSection>
+        </ToSection>
+        <ToStep>
+        </ToStep>
       </RedlineStep>
     </StepsList>
     <SectionList>
@@ -124,7 +129,8 @@
       <RedlineSection id="2">
         <ActionToTake>RemoveSection</ActionToTake>
         <FromSection>2</FromSection>
-        <ToSection></ToSection>
+        <ToSection>
+        </ToSection>
       </RedlineSection>
     </SectionList>
   </RedlinesList>

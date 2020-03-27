@@ -25,7 +25,7 @@
         <Comments />
         <Image />
       </Test_Step>
-      <Test_Step id="4">
+      <Test_Step id="2">
         <Station>Station Orig S1, step 4</Station>
         <Control_Action>ControlAction s1 st3</Control_Action>
         <Expected_Result>ExpResult s1, st3</Expected_Result>
@@ -33,6 +33,9 @@
         <Fail>false</Fail>
         <Comments />
       </Test_Step>
+      <Test_Step id="3">2<Station>Station Orig S1, step 4</Station><Control_Action>ControlAction s1 st3</Control_Action><Expected_Result>ExpResult s1, st3</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="4">3<Station>Station Orig S1, step 4</Station><Control_Action>ControlAction s1 st3</Control_Action><Expected_Result>ExpResult s1, st3</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="4">3<Station>Station Orig S1, step 4</Station><Control_Action>ControlAction s1 st3</Control_Action><Expected_Result>ExpResult s1, st3</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
     </Section>
     <Section id="2">
       <Heading>New Heading</Heading>
@@ -46,10 +49,21 @@
         <Comments />
         <Image />
       </Test_Step>
-      <Test_Step id="12">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
-      <Test_Step id="12">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
-      <Test_Step id="14">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
-      <Test_Step id="15">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="2">
+        <Station>sec 2 st 2</Station>
+        <Control_Action>Control Action</Control_Action>
+        <Expected_Result>Exp Result</Expected_Result>
+        <Pass>false</Pass>
+        <Fail>false</Fail>
+        <Comments />
+        <Image />
+      </Test_Step>
+      <Test_Step id="3">2<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="4">3<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="5">4<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="5">4<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="6">5<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Test_Step id="7">6<Station>sec 2 st 2</Station><Control_Action>Control Action</Control_Action><Expected_Result>Exp Result</Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
     </Section>
   </Sections>
   <RedlinesList>

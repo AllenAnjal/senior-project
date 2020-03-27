@@ -222,21 +222,28 @@ namespace senior_project
 
             //root.AppendChild(newTestStep);
             root.InsertAfter(newTestStep, refChild);
+            
             LoadListRecursive(_treeView, tItems);
+            
+            bool flag = false;
             foreach ( XmlElement child in root)
             {
                 if (child.Name == "Test_Step")
                 {
                     int child_id = Int32.Parse(child.GetAttribute("id"));
-                    if (child_id > Int32.Parse(id))
+                    if (child_id >= Int32.Parse(id) && flag)
                     {
                         string tmp = "" + (child_id + 1);
                         child.SetAttribute("id", tmp);
                     }
+                    else if (child_id >= Int32.Parse(id) && !flag)
+                    {
+                        flag = true;
+                    }
                 }
             }
+            StepForward();
 
-            
             _xml.Save(xmlFile);
 
         }
