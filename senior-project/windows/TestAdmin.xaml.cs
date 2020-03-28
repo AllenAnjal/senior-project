@@ -84,12 +84,103 @@ namespace senior_project
 
         private void move_down(object sender, RoutedEventArgs e)
         {
+            //StepForward();
+            XmlNode currentNode = _treeView.SelectedItem as XmlNode;
+            XmlNode referenceNode = currentNode.NextSibling;
+            XmlNode root = currentNode.ParentNode;
+            XmlNode sectionRoot = root.ParentNode;
+            bool goHigher = false;
+            if (referenceNode == null)
+            {
+                Console.WriteLine("This is null");
+                referenceNode = currentNode.ParentNode.NextSibling;
+                if (referenceNode == null)
+                {
+                    referenceNode = currentNode.ParentNode.ParentNode.FirstChild;
+                }
+                else
+                {
+                    referenceNode = referenceNode.FirstChild;
+                }
+                goHigher = true;
+            }
+
+            XmlElement curr = currentNode as XmlElement;
+            //string id = curr.GetAttribute("id");
+            XmlElement sibling = referenceNode as XmlElement;
+            //string id2 = sibling.GetAttribute("id");
+            //curr.SetAttribute("id", id2);
+          //  sibling.SetAttribute("id", id);
+
+            XmlNode copyNode = currentNode;
+
+            if (!goHigher)
+            {
+                root.InsertAfter(currentNode, referenceNode);
+            }
+            else
+            {
+
+                root = root.NextSibling;
+                if (root == null)
+                    root = currentNode.ParentNode.ParentNode.FirstChild;
+                root.PrependChild(copyNode);
+                
+            }
+            tItems.Clear();
+            LoadListRecursive(_treeView, tItems);
+            
             StepForward();
+
         }
 
         private void move_up(object sender, RoutedEventArgs e)
         {
-            
+
+            XmlNode currentNode = _treeView.SelectedItem as XmlNode;
+            XmlNode referenceNode = currentNode.PreviousSibling;
+            XmlNode root = currentNode.ParentNode;
+            bool goHigher = false;
+            if (referenceNode == null)
+            {
+                Console.WriteLine("This is null");
+                referenceNode = currentNode.ParentNode.PreviousSibling;
+                if (referenceNode == null)
+                {
+                    referenceNode = currentNode.ParentNode.ParentNode.LastChild;
+                }
+                else
+                {
+                    referenceNode = referenceNode.LastChild;
+                }
+                goHigher = true;
+            }
+
+            XmlElement curr = currentNode as XmlElement;
+            //string id = curr.GetAttribute("id");
+            XmlElement sibling = referenceNode as XmlElement;
+            //string id2 = sibling.GetAttribute("id");
+            //curr.SetAttribute("id", id2);
+            //  sibling.SetAttribute("id", id);
+
+            XmlNode copyNode = currentNode;
+
+            if (!goHigher)
+            {
+                root.InsertBefore(currentNode, referenceNode);
+            }
+            else
+            {
+
+                root = root.PreviousSibling;
+                if (root == null)
+                    root = currentNode.ParentNode.ParentNode.LastChild;
+                root.AppendChild(copyNode);
+
+            }
+            tItems.Clear();
+            LoadListRecursive(_treeView, tItems);
+
             StepBackwards();
         }
 
@@ -100,6 +191,7 @@ namespace senior_project
             XmlElement tmp = _treeView.SelectedItem as XmlElement;
             string id = tmp.GetAttribute("id");
             XmlNode root = currentNode.ParentNode;
+            tItems.Clear();
             LoadListRecursive(_treeView, tItems);
             StepBackwards();
             if (currentNode != null)
