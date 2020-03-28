@@ -304,8 +304,6 @@ namespace senior_project
             
             StepForward();
 
-            _xml.Save(xmlFile);
-
         }
 
         private void addSectionButton_Click(object sender, RoutedEventArgs e)
@@ -360,7 +358,7 @@ namespace senior_project
 
             tItems.Clear();
             LoadListRecursive(_treeView, tItems);
-            _xml.Save(xmlFile);
+         
 
         }
         private void Exit_Button(object sender, RoutedEventArgs e)
