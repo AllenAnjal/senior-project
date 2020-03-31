@@ -75,6 +75,7 @@
     <Compile Include="windows\RedlinesTester.xaml.cs" />
     <Compile Include="windows\TestAdmin.xaml.cs" />
     <Compile Include="windows\Tester.xaml.cs" />
+    <Compile Include="windows\TreeHelper.cs" />
     <Compile Include="windows\userInfoPage.xaml.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

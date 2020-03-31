@@ -33,8 +33,9 @@ namespace senior_project
         private exportWindow export = new exportWindow();
         private commentWindow cmt = new commentWindow();
 
-        //strings to store text from user 
+        //strings to store text from user
         private string stepTxt;
+
         private string stationTxt;
         private string controlTxt;
         private string expectedTxt;
@@ -44,6 +45,7 @@ namespace senior_project
 
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDocument _xml;
+
         private string xmlFile;
 
         private List<TreeViewItem> tItems;
@@ -55,6 +57,8 @@ namespace senior_project
         private TreeView _treeView;
         private string SectionName = "Section";
         private string StepName = "Test_Step";
+
+        private TreeHelper treeHelper;
 
         public TestAdmin(MainWindow mw, String xmlFile)
         {
@@ -68,7 +72,6 @@ namespace senior_project
             try
             {
                 _xml.Load(xmlFile);
-
             }
             catch (Exception err)
             {
@@ -78,6 +81,8 @@ namespace senior_project
             _treeView = FindName("treeView1") as TreeView;
             _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
             _xmlDataProvider.Document = _xml;
+
+            treeHelper = new TreeHelper(_treeView, SectionName, StepName);
         }
 
         #region buttons
@@ -110,7 +115,7 @@ namespace senior_project
             XmlElement sibling = referenceNode as XmlElement;
             //string id2 = sibling.GetAttribute("id");
             //curr.SetAttribute("id", id2);
-          //  sibling.SetAttribute("id", id);
+            //  sibling.SetAttribute("id", id);
 
             XmlNode copyNode = currentNode;
 
@@ -120,23 +125,19 @@ namespace senior_project
             }
             else
             {
-
                 root = root.NextSibling;
                 if (root == null)
                     root = currentNode.ParentNode.ParentNode.FirstChild;
                 root.PrependChild(copyNode);
-                
             }
             tItems.Clear();
             LoadListRecursive(_treeView, tItems);
-            
-            StepForward();
 
+            StepForward();
         }
 
         private void move_up(object sender, RoutedEventArgs e)
         {
-
             XmlNode currentNode = _treeView.SelectedItem as XmlNode;
             XmlNode referenceNode = currentNode.PreviousSibling;
             XmlNode root = currentNode.ParentNode;
@@ -171,12 +172,10 @@ namespace senior_project
             }
             else
             {
-
                 root = root.PreviousSibling;
                 if (root == null)
                     root = currentNode.ParentNode.ParentNode.LastChild;
                 root.AppendChild(copyNode);
-
             }
             tItems.Clear();
             LoadListRecursive(_treeView, tItems);
@@ -186,7 +185,6 @@ namespace senior_project
 
         private void removeStepButton_Click(object sender, RoutedEventArgs e)
         {
-            
             XmlNode currentNode = _treeView.SelectedItem as XmlNode;
             XmlElement tmp = _treeView.SelectedItem as XmlElement;
             string id = tmp.GetAttribute("id");
@@ -219,10 +217,9 @@ namespace senior_project
             _xml.Save(xmlFile);
         }
 
-        
         private void addStepButton_Click(object sender, RoutedEventArgs e)
         {
-            string id ="";
+            string id = "";
             XmlElement root = _treeView.SelectedItem as XmlElement;
             XmlElement refChild = root;
             if (root.Name == "Test_Step")
@@ -233,17 +230,15 @@ namespace senior_project
                 id = "" + x;
             }
             else if (root.Name == "Section")
-            { 
+            {
                 XmlElement tmp = root.LastChild as XmlElement;
                 id = tmp.GetAttribute("id");
                 int x = Int32.Parse(id) + 1;
                 id = "" + x;
                 refChild = tmp;
             }
-            
 
-
-                //creating elements to add to test_step 
+            //creating elements to add to test_step
             XmlElement newTestStep = _xml.CreateElement("Test_Step");
             newTestStep.SetAttribute("id", id);
             XmlElement newStation = _xml.CreateElement("Station");
@@ -265,7 +260,7 @@ namespace senior_project
             newTestStep.InnerText = "";
             newStation.InnerText = "";
             newExpResult.InnerText = "";
-            newControlAction.InnerText ="";
+            newControlAction.InnerText = "";
 
             //appending the subsections to test_step
             newTestStep.AppendChild(newStation);
@@ -276,16 +271,15 @@ namespace senior_project
             newTestStep.AppendChild(newComments);
             newTestStep.AppendChild(newImage);
 
-
             //root.AppendChild(newTestStep);
             root.InsertAfter(newTestStep, refChild);
             //_treeView.Items.Refresh();
             //_treeView.UpdateLayout();
             tItems.Clear();
             LoadListRecursive(_treeView, tItems);
-            
+
             bool flag = false;
-            foreach ( XmlElement child in root)
+            foreach (XmlElement child in root)
             {
                 if (child.Name == "Test_Step")
                 {
@@ -301,9 +295,8 @@ namespace senior_project
                     }
                 }
             }
-            
-            StepForward();
 
+            StepForward();
         }
 
         private void addSectionButton_Click(object sender, RoutedEventArgs e)
@@ -358,9 +351,8 @@ namespace senior_project
 
             tItems.Clear();
             LoadListRecursive(_treeView, tItems);
-         
-
         }
+
         private void Exit_Button(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -392,15 +384,11 @@ namespace senior_project
                     section = pos.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}", section);
                 }
-
-
             }
             else
             {
                 lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
             }
-
-
         }
 
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
@@ -412,8 +400,6 @@ namespace senior_project
         //Navigate to next step in test procedure
 
         #endregion TreeView
-
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -436,6 +422,7 @@ namespace senior_project
         }
 
         #region otherFunctions
+
         private void ftn_Open_File()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -527,16 +514,24 @@ namespace senior_project
 
         private void StepForward()
         {
-            pos = (pos < tItems.Count - 1) ? pos + 1 : 0;
-            tItems[pos].IsSelected = true;
+            treeHelper.MoveForward();
+        }
+
+        private void GoToNext(object sender, RoutedEventArgs e)
+        {
+            treeHelper.MoveForward();
         }
 
         private void StepBackwards()
         {
-            pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
-            tItems[pos].IsSelected = true;
-            
+            treeHelper.MoveBackwards();
+            //pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
+            //tItems[pos].IsSelected = true;
+        }
 
+        private void GoToPrevious(object sender, RoutedEventArgs e)
+        {
+            treeHelper.MoveBackwards();
         }
 
         private void StepToStart()
@@ -546,12 +541,11 @@ namespace senior_project
             tItems[0].IsSelected = true;
         }
 
-     
-
         private void pbProcedureProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             //do nothing
         }
     }
+
     #endregion otherFunctions
 }

@@ -48,6 +48,13 @@
                 <Separator />
                 <MenuItem Click="Exit_Button" Header="_Exit" />
             </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="Move Step Down" />
+                <MenuItem Header="Move Step Up" />
+
+                <MenuItem Click="GoToPrevious" Header="Select Previous Step" />
+                <MenuItem Click="GoToNext" Header="Select Next Step" />
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
@@ -88,35 +95,35 @@
                 VerticalAlignment="Stretch">
                 <TreeView
                     x:Name="treeView1"
+                    Margin="0,0,0,39"
                     VerticalAlignment="Stretch"
                     BorderBrush="Black"
                     BorderThickness="1"
                     IsEnabled="True"
                     ItemsSource="{Binding Source={StaticResource xmlData}, UpdateSourceTrigger=PropertyChanged}"
                     Opacity="1"
-                    SelectedItemChanged="TreeView1_SelectedItemChanged" Margin="0,0,0,39">
+                    SelectedItemChanged="TreeView1_SelectedItemChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <EventSetter Event="PreviewMouseDoubleClick" Handler="TreeView1_PreviewMouseLeftButtonUp_1" />
                             <Setter Property="Foreground" Value="Black" />
-                            <Setter Property="IsExpanded" Value="True"/>
+                            <Setter Property="IsExpanded" Value="True" />
                             <Style.Triggers>
 
                                 <DataTrigger Binding="{Binding Path=Name}" Value="Section">
                                     <Setter Property="IsSelected" Value="False" />
                                     <Setter Property="Focusable" Value="False" />
                                 </DataTrigger>
-                                <Trigger Property="IsSelected" Value="True" >
+                                <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="FontWeight" Value="Bold" />
                                 </Trigger>
-                                <Trigger Property="IsSelected" Value="False" >
+                                <Trigger Property="IsSelected" Value="False">
                                     <Setter Property="FontWeight" Value="Normal" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </TreeView.ItemContainerStyle>
                 </TreeView>
-
             </DockPanel>
             <DockPanel
                 Grid.Column="0"
@@ -390,7 +397,6 @@
                     VerticalAlignment="Bottom">
                     <Border
                         Width="auto"
-                        
                         Height="45"
                         Margin="0,0,15,0"
                         Background="Crimson"

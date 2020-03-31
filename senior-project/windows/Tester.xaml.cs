@@ -26,6 +26,7 @@ namespace senior_project
     {
         //  Begin Declarations
         private MainWindow main;
+
         private String commentDefault = "Leave a comment";
         private bool pausePlay = false;
         private bool hasCommented = false;
@@ -36,8 +37,9 @@ namespace senior_project
         private exportWindow export = new exportWindow();
         private commentWindow cmt = new commentWindow();
 
-        //strings to store text from user 
-        private string stepTxt; 
+        //strings to store text from user
+        private string stepTxt;
+
         private string stationTxt;
         private string controlTxt;
         private string expectedTxt;
@@ -47,6 +49,7 @@ namespace senior_project
 
         //  XML TreeView Implementation with XmlDataProvider and XmlDocument
         private XmlDataProvider _xmlDataProvider;
+
         private XmlDocument _xml;
         private string xmlFile;
 
@@ -58,6 +61,8 @@ namespace senior_project
         private TreeView _treeView;
         private string SectionName = "Section";
         private string StepName = "Test_Step";
+
+        private TreeHelper treeHelper;
 
         public Tester(MainWindow mw, String xmlFile)
         {
@@ -72,7 +77,6 @@ namespace senior_project
             try
             {
                 _xml.Load(xmlFile);
-
             }
             catch (Exception err)
             {
@@ -91,11 +95,12 @@ namespace senior_project
             stopWatch = new Stopwatch();
             stopWatch.Start();
 
-
             t = new DispatcherTimer();// new TimeSpan(0, 0, 0, 0, 1), DispatcherPriority.Background, t_Tick, Dispatcher.CurrentDispatcher);
             t.Interval = TimeSpan.FromMilliseconds(1);
             t.Tick += t_Tick;
             t.Start();
+
+            treeHelper = new TreeHelper(_treeView, SectionName, StepName);
         }
 
         private void t_Tick(object sender, EventArgs e)
@@ -108,7 +113,6 @@ namespace senior_project
 
         private void passAction()
         {
-            
             if (_treeView.SelectedItem == null) return;
             hasCommented = false;
             XmlElement sel = _treeView.SelectedItem as XmlElement;
@@ -135,11 +139,9 @@ namespace senior_project
 
             if (sel.Name == "Test_Step")
             {
-                
                 sel["Pass"].InnerText = "false";
                 sel["Fail"].InnerText = "true";
                 cmt.ShowDialog();
-
             }
             tmp++;
             pbProcedureProgress.Maximum = count;
@@ -152,7 +154,7 @@ namespace senior_project
             //XmlVerification.exportCsv(xmlProcedure, treeView1);
             //forwardStep();
         }
-        
+
         //Update XML tmp file, forward step
         private void PassButton_Click(object sender, RoutedEventArgs e)
         {
@@ -176,7 +178,6 @@ namespace senior_project
                 StepForward();
                 //if (!cmt.IsActive)
                 //LastStep();
-
             }
             catch (Exception ex)
             {
@@ -186,13 +187,16 @@ namespace senior_project
 
         private void move_down(object sender, RoutedEventArgs e)
         {
-            StepForward();
+            treeHelper.MoveForward();
+            //StepForward();
         }
 
         private void move_up(object sender, RoutedEventArgs e)
         {
+            treeHelper.MoveBackwards();
+
             //  BEGIN TEMPORARY TEST CODE
-            StepBackwards();
+            //StepBackwards();
         }
 
         private void RedlineButton_Click(object sender, RoutedEventArgs e)
@@ -206,7 +210,6 @@ namespace senior_project
                 tItems.Clear();
                 LoadListRecursive(treeView1, tItems);
                 //tItems[pos].IsSelected = true;
-
             }
             else
             {
@@ -245,8 +248,105 @@ namespace senior_project
                 Console.WriteLine(saveFile.FileName);
             }
         }
+
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
+            return;
+            /*
+            // DEV GOAL:
+            //  Retrieve Current id of step and section
+            //  Detect position within section
+            //  Report if first child or last child of section
+            string stepID = String.Empty, sectionID = String.Empty;
+            int nStep = 0, nSection = 0;
+            string pStep = string.Empty, pSection = string.Empty;
+            //bool? isFirst = null, isLast = null;
+
+            bool? detectedElement = false;
+            XmlElement currentElement = _treeView.SelectedItem as XmlElement;
+            XmlNode parentNode = currentElement.ParentNode as XmlNode;
+            XmlNodeList children = parentNode.SelectNodes("Test_Step");
+
+            TreeViewItem cItem = _treeView.SelectedItem as TreeViewItem;
+
+            stepID = currentElement.SelectSingleNode("@id").Value;
+            sectionID = parentNode.SelectSingleNode("@id").Value;
+
+            if (children.Count > 0 && children.Item(0).Equals(currentElement as XmlNode)) isFirst = true;
+            else isFirst = false;
+            if (children.Count > 0 && children.Item(children.Count - 1).Equals(currentElement as XmlNode)) isLast = true;
+            else isLast = false;
+            foreach (XmlNode c in children)
+            {
+                if (c.Equals(currentElement as XmlNode)) detectedElement = true;
+            }
+            if ((isFirst ?? false))
+            {
+                if (parentNode.PreviousSibling == null)
+                {
+                }
+                else
+                {
+                    XmlNode pNode = parentNode.PreviousSibling;
+                    pSection = pNode.SelectSingleNode("@id").Value;
+                    pStep = pNode.LastChild.SelectSingleNode("@id").Value;
+                }
+            }
+            else
+            {
+                pSection = sectionID;
+                pStep = currentElement.PreviousSibling.SelectSingleNode("@id").Value;
+            }
+            if (isLast ?? false)
+            {
+                if (parentNode.NextSibling == null) ;
+                else
+                {
+                    XmlNode nNode = parentNode.NextSibling;
+                    //nSection = nNode.SelectSingleNode("@id").Value;
+                    Int32.TryParse(nNode.SelectSingleNode("@id").Value, out nSection);
+                    //nStep = nNode.SelectSingleNode("Test_Step").SelectSingleNode("@id").Value;
+                    Int32.TryParse(nNode.SelectSingleNode("Test_Step").SelectSingleNode("@id").Value, out nStep);
+                }
+            }
+            else
+            {
+                //nSection = sectionID;
+                Int32.TryParse(sectionID, out nSection);
+                //nStep = currentElement.NextSibling.SelectSingleNode("@id").Value;
+                Int32.TryParse(currentElement.NextSibling.SelectSingleNode("@id").Value, out nStep);
+            }
+
+            MessageBox.Show(
+                $"{pSection}.{pStep}\t|\tPrevious Position\n" +
+                $"{sectionID}.{stepID}\t|\tCurrent Position\n" +
+                $"{nSection}.{nStep}\t|\tNext Position\n" +
+
+                $"{children.Count}\t|\tSteps in Section\n" +
+                $"{(XmlConvert.ToString(detectedElement ?? false))}\t|\tDetected current Step\n" +
+                $"{(XmlConvert.ToString(isFirst ?? false))}\t|\tStep is first child\n" +
+                $"{(XmlConvert.ToString(isLast ?? false))}\t|\tStep is last child\n",
+                "Extracted XML information");
+
+            //TreeViewItem root = _treeView.ItemContainerGenerator.ContainerFromIndex(0) as TreeViewItem;
+            if (nSection != 0)
+            {
+                TreeViewItem nextSection = _treeView.ItemContainerGenerator.ContainerFromIndex(nSection - 1) as TreeViewItem;
+                TreeViewItem nextStep = nextSection.ItemContainerGenerator.ContainerFromIndex(nStep - 1) as TreeViewItem;
+                //nextStep.IsSelected = true;
+            }
+
+            List<XmlNode> xList = new List<XmlNode>();
+            foreach (XmlNode c in children)
+            {
+                xList.Add(c);
+            }
+            validateNode = i => i.Equals(currentElement as XmlNode);
+            MessageBox.Show($"Step Position : {xList.FindIndex(validateNode)}");
+            isFirst = xList.First<XmlNode>().Equals(currentElement);
+            isLast = xList.Last<XmlNode>().Equals(currentElement);
+            //_treeView.ItemContainerGenerator
+            */
             //tItems[2].IsSelected = true;
             //try
             //{
@@ -267,10 +367,12 @@ namespace senior_project
             //    MessageBox.Show($"Error: {ex.Message}");
             //}
         }
+
         private void Exit_Button(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
         private void timerClick(object sender, RoutedEventArgs e)
         {
             if (stopWatch.IsRunning)
@@ -285,7 +387,8 @@ namespace senior_project
             }
         }
 
-        #endregion
+        #endregion Buttons
+
         #region TreeView
 
         private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -310,25 +413,17 @@ namespace senior_project
                     section = _pos.SelectSingleNode("@id").Value;
                     lblProcedurePosition.Text = String.Format("Section {0}", section);
                     pos = 0;
-
                 }
-                
-
             }
             else
             {
                 lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
             }
-            
+
             stepTxt = tbStep.Text;
             stationTxt = tbStation.Text;
             controlTxt = tbControlAction.Text;
             expectedTxt = tbExpectedResult.Text;
-
-            
-
-
-            
         }
 
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
@@ -340,8 +435,6 @@ namespace senior_project
         //Navigate to next step in test procedure
 
         #endregion TreeView
-
-       
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -449,22 +542,85 @@ namespace senior_project
         {
             LoadListRecursive(_treeView, tItems);
             StepToStart();
-            
         }
 
         private void StepForward()
         {
-            pos = (pos < tItems.Count - 1) ? pos + 1 : 0;
-            tItems[pos].IsSelected = true;
-            Console.WriteLine(pos);
-            Console.WriteLine("The current count is" + tItems.Count);
+            MoveStep(true);
+            //pos = (pos < tItems.Count - 1) ? pos + 1 : 0;
+            //tItems[pos].IsSelected = true;
+            //Console.WriteLine(pos);
+            //Console.WriteLine("The current count is" + tItems.Count);
         }
 
         private void StepBackwards()
         {
-            pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
-            tItems[pos].IsSelected = true;
-            Console.WriteLine(pos);
+            MoveStep(false);
+            //pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
+            //tItems[pos].IsSelected = true;
+            //Console.WriteLine(pos);
+        }
+
+        private void MoveStep(bool moveForward)
+        {
+            const string sectionName = "Section";
+            const string stepName = "Test_Step";
+            int currSection, currStep, prevSection, prevStep, nextSection, nextStep;
+            bool isFirst, isLast;
+            var step = _treeView.SelectedItem as XmlNode;
+            var section = step.ParentNode as XmlNode;
+
+            var nodes = section.SelectNodes(stepName) as XmlNodeList;
+
+            List<XmlNode> nList = new List<XmlNode>();
+            foreach (XmlNode n in nodes) nList.Add(n);
+
+            currStep = nList.FindIndex(i => i.Equals(step));
+            isFirst = nList.First<XmlNode>().Equals(step);
+            isLast = nList.Last<XmlNode>().Equals(step);
+
+            nodes = section.ParentNode.SelectNodes(sectionName);
+
+            nList.Clear();
+            foreach (XmlNode n in nodes) nList.Add(n);
+
+            currSection = nList.FindIndex(i => i.Equals(section));
+
+            prevSection = currSection;
+            prevStep = currStep - 1;
+            nextSection = currSection;
+            nextStep = currStep + 1;
+            if (isFirst)
+            {
+                if (section.PreviousSibling == null)
+                {
+                    prevSection = 0;
+                    prevStep = 0;
+                }
+                else
+                {
+                    prevSection = currSection - 1;
+                    prevStep = section.PreviousSibling.SelectNodes("Test_Step").Count - 1;
+                }
+            }
+            if (isLast)
+            {
+                if (section.NextSibling == null)
+                {
+                    nextStep = currStep;
+                }
+                else
+                {
+                    nextSection = currSection + 1;
+                    nextStep = 0;
+                }
+            }
+
+            //MessageBox.Show($"{currSection}.{currStep} -> {prevSection}.{prevStep}");
+
+            TreeViewItem newSection = _treeView.ItemContainerGenerator.ContainerFromIndex(moveForward ? nextSection : prevSection) as TreeViewItem;
+            TreeViewItem newStep = newSection.ItemContainerGenerator.ContainerFromIndex(moveForward ? nextStep : prevStep) as TreeViewItem;
+            newStep.IsSelected = true;
         }
 
         private void StepToStart()
@@ -472,7 +628,7 @@ namespace senior_project
             Console.WriteLine(tItems.Count);
             tItems[0].IsSelected = true;
         }
-        
+
         private void LastStep()
         {
             if (pos == tItems.Count - 1)
@@ -483,7 +639,7 @@ namespace senior_project
                 using (StreamWriter sw = File.AppendText(newfile))
                 {
                     sw.WriteLine("\n<redline>\n");
-                    foreach(string change in changes)
+                    foreach (string change in changes)
                     {
                         sw.WriteLine(change);
                     }
@@ -529,8 +685,6 @@ namespace senior_project
             failButton.IsEnabled = value;
         }
 
-     
-
         private void addRedlineChanges()
         {
             if (tbStep.Text.Length != stepTxt.Length)
@@ -556,5 +710,6 @@ namespace senior_project
             //do nothing
         }
     }
+
     #endregion otherFunctions
 }

@@ -19,8 +19,16 @@
         <ContextMenu x:Key="contextMenu">
             <MenuItem Click="Exit_Button" Header="Exit" />
         </ContextMenu>
-        <Image x:Key="Stop" Source="icons\pause-256.png" Height="46"  Width="45"/>
-        <Image x:Key="Resume" Source="icons\play-3-256.png" Height="46" Width="45"/>
+        <Image
+            x:Key="Stop"
+            Width="45"
+            Height="46"
+            Source="icons\pause-256.png" />
+        <Image
+            x:Key="Resume"
+            Width="45"
+            Height="46"
+            Source="icons\play-3-256.png" />
         <XmlDataProvider x:Key="xmlData" />
 
         <HierarchicalDataTemplate DataType="Section" ItemsSource="{Binding XPath=Test_Step}">
@@ -49,7 +57,7 @@
                 <MenuItem Click="Exit_Button" Header="_Exit" />
             </MenuItem>
         </Menu>
-        
+
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -74,27 +82,26 @@
                     Name="pbProcedureProgress"
                     Width="90"
                     Height="16"
-                    Value="0" ValueChanged="pbProcedureProgress_ValueChanged"  />
+                    ValueChanged="pbProcedureProgress_ValueChanged"
+                    Value="0" />
             </StatusBarItem>
         </StatusBar>
-        
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" MaxWidth="250" />
                 <ColumnDefinition Width="7*" />
             </Grid.ColumnDefinitions>
 
-            <DockPanel
-                Grid.Column="0"
-                Margin="5,5,5,0">
+            <DockPanel Grid.Column="0" Margin="5,5,5,0">
 
                 <TreeView
                     x:Name="treeView1"
                     Height="470"
-                    DockPanel.Dock="Top"
                     VerticalAlignment="Stretch"
                     BorderBrush="Black"
                     BorderThickness="1"
+                    DockPanel.Dock="Top"
                     ItemsSource="{Binding Source={StaticResource xmlData}, UpdateSourceTrigger=PropertyChanged}"
                     Opacity="1"
                     SelectedItemChanged="TreeView1_SelectedItemChanged">
@@ -112,10 +119,10 @@
                                     <Setter Property="IsSelected" Value="False" />
                                     <Setter Property="Focusable" Value="False" />
                                 </DataTrigger>
-                                <Trigger Property="IsSelected" Value="True" >
+                                <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="FontWeight" Value="Bold" />
                                 </Trigger>
-                                <Trigger Property="IsSelected" Value="False" >
+                                <Trigger Property="IsSelected" Value="False">
                                     <Setter Property="FontWeight" Value="Normal" />
                                 </Trigger>
                             </Style.Triggers>
@@ -123,9 +130,7 @@
                     </TreeView.ItemContainerStyle>
                 </TreeView>
 
-                <Grid
-                    x:Name="stack"
-                    DockPanel.Dock="Top">
+                <Grid x:Name="stack" DockPanel.Dock="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
@@ -163,9 +168,9 @@
                     <RowDefinition Height="101*" />
                     <RowDefinition Height="120*" />
                     <RowDefinition Height="101*" />
-                    <RowDefinition Height="18*"/>
+                    <RowDefinition Height="18*" />
                     <RowDefinition Height="33*" MaxHeight="50" />
-                    <RowDefinition Height="17*"/>
+                    <RowDefinition Height="17*" />
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                     <Style TargetType="Label">
@@ -226,12 +231,12 @@
                             IsReadOnly="True"
                             IsReadOnlyCaretVisible="False"
                             Text="{Binding UpdateSourceTrigger=PropertyChanged, XPath=@id}"
-                            TextWrapping="Wrap" >
+                            TextWrapping="Wrap">
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Style.Triggers>
                                         <Trigger Property="IsReadOnly" Value="True">
-                                            <Setter Property="Background" Value="LightGray"/>
+                                            <Setter Property="Background" Value="LightGray" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -288,15 +293,15 @@
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Station, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" >
+                            TextWrapping="Wrap">
                             <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="IsReadOnly" Value="True">
-                                        <Setter Property="Background" Value="LightGray"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsReadOnly" Value="True">
+                                            <Setter Property="Background" Value="LightGray" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
                             </TextBox.Style>
                         </TextBox>
                     </DockPanel>
@@ -350,12 +355,12 @@
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Control_Action, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" >
+                            TextWrapping="Wrap">
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Style.Triggers>
                                         <Trigger Property="IsReadOnly" Value="True">
-                                            <Setter Property="Background" Value="LightGray"/>
+                                            <Setter Property="Background" Value="LightGray" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -366,13 +371,14 @@
 
                 <Border
                     Grid.Row="3"
+                    Grid.RowSpan="2"
                     Padding="0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     Background="#025dba"
                     BorderBrush="Black"
                     BorderThickness="1"
-                    CornerRadius="7" Grid.RowSpan="2">
+                    CornerRadius="7">
                     <Border.Effect>
                         <DropShadowEffect
                             BlurRadius="5"
@@ -385,13 +391,14 @@
                 <Border
                     x:Name="borderExp"
                     Grid.Row="3"
+                    Grid.RowSpan="2"
                     Padding="0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     Background="#025dba"
                     BorderBrush="Black"
                     BorderThickness="1"
-                    CornerRadius="7" Grid.RowSpan="2">
+                    CornerRadius="7">
                     <DockPanel Margin="5">
                         <Label
                             x:Name="lblExpectedResult"
@@ -412,12 +419,12 @@
                             DataContext="{Binding ElementName=treeView1, Path=SelectedItem}"
                             IsReadOnly="True"
                             Text="{Binding XPath=Expected_Result, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" >
+                            TextWrapping="Wrap">
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Style.Triggers>
                                         <Trigger Property="IsReadOnly" Value="True">
-                                            <Setter Property="Background" Value="LightGray"/>
+                                            <Setter Property="Background" Value="LightGray" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -428,9 +435,10 @@
 
                 <DockPanel
                     Grid.Row="5"
+                    Grid.RowSpan="2"
+                    Height="45"
                     Margin="5,0"
-                    HorizontalAlignment="Stretch"
-                    Height="45" Grid.RowSpan="2">
+                    HorizontalAlignment="Stretch">
                     <Button
                         x:Name="passButton"
                         Width="46"
@@ -444,7 +452,7 @@
                                 <Style TargetType="Image">
                                     <Style.Triggers>
                                         <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Opacity" Value=".3"/>
+                                            <Setter Property="Opacity" Value=".3" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -464,13 +472,12 @@
                                 <Style TargetType="Image">
                                     <Style.Triggers>
                                         <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Opacity" Value=".3"/>
+                                            <Setter Property="Opacity" Value=".3" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
                             </Image.Style>
                         </Image>
-                            
                     </Button>
                     <Button
                         x:Name="commentButton"
@@ -495,26 +502,26 @@
 
                     <TextBlock
                         x:Name="timer"
-                        DockPanel.Dock="Left"
                         Margin="5"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                        DockPanel.Dock="Left"
                         FontFamily="Comic Sans MS"
                         FontSize="20"
                         FontWeight="UltraBlack"
                         MouseLeftButtonUp="timer_MouseLeftButtonUp"
-                        TextAlignment="Center" 
-                        />
+                        TextAlignment="Center" />
                     <Button
                         x:Name="timerButton"
+                        Width="51"
+                        Height="50"
                         Margin="0,-5,125,0"
+                        VerticalAlignment="Top"
                         Click="timerClick"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        DockPanel.Dock="Left" Height="50" Width="51" VerticalAlignment="Top"
-                        >
-                        <DynamicResource ResourceKey="Stop"/>
+                        DockPanel.Dock="Left"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <DynamicResource ResourceKey="Stop" />
                     </Button>
-
                 </DockPanel>
             </Grid>
         </Grid>
