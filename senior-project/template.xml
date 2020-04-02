@@ -17,30 +17,32 @@
 	</Procedure_Heading>
 	<Sections>
 		<Section id="">
-			<Heading />
-			<Description />
+			<Heading></Heading>
+			<Description></Description>
 			<Test_Step id="">
-				<Station />
-				<Control_Action />
-				<Expected_Result />
-				<Result />
+				<Station></Station>
+				<Control_Action></Control_Action>
+				<Expected_Result></Expected_Result>
+				<Result result="">
 					<Comment />
 					<Severity />
+				</Result>
 				<Comment />
 			</Test_Step>
 		</Section>
 	</Sections>
 	<Redlines>
 		<Section id="">
-			<Heading />
-			<Description />
+			<Heading></Heading>
+			<Description></Description>
 			<Test_Step id="">
-				<Station />
-				<Control_Action />
-				<Expected_Result />
-				<Result />
+				<Station></Station>
+				<Control_Action></Control_Action>
+				<Expected_Result></Expected_Result>
+				<Result result="">
 					<Comment />
 					<Severity />
+				</Result>
 				<Comment />
 			</Test_Step>
 		</Section>

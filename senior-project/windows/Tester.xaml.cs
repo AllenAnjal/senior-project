@@ -88,7 +88,7 @@ namespace senior_project
             _treeView = FindName("treeView1") as TreeView;
             _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
             _xmlDataProvider.Document = _xml;
-            _xmlDataProvider.XPath = "/TestProcedure/Sections/Section";
+            _xmlDataProvider.XPath = "/Test_Procedure/Sections/Section";
 
             count = getTotalSteps();
 
@@ -119,8 +119,7 @@ namespace senior_project
 
             if (sel.Name == "Test_Step")
             {
-                sel["Pass"].InnerText = "true";
-                sel["Fail"].InnerText = "false";
+                sel["Result"].SetAttribute("result", "pass");
             }
             tmp++;
             pbProcedureProgress.Maximum = count;
@@ -139,9 +138,7 @@ namespace senior_project
 
             if (sel.Name == "Test_Step")
             {
-                sel["Pass"].InnerText = "false";
-                sel["Fail"].InnerText = "true";
-                cmt.ShowDialog();
+                sel["Result"].SetAttribute("result", "fail");
             }
             tmp++;
             pbProcedureProgress.Maximum = count;
@@ -206,7 +203,7 @@ namespace senior_project
             {
                 changeColors(254, 1, 1);
                 setBoolean(false);
-                _xmlDataProvider.XPath = "/TestProcedure/RedlinesList/Section";
+                _xmlDataProvider.XPath = "/Test_Procedure/Redlines/Section";
                 tItems.Clear();
                 LoadListRecursive(treeView1, tItems);
                 //tItems[pos].IsSelected = true;
@@ -215,7 +212,7 @@ namespace senior_project
             {
                 changeColors(2, 93, 186);
                 setBoolean(true);
-                _xmlDataProvider.XPath = "/TestProcedure/Sections/Section";
+                _xmlDataProvider.XPath = "/Test_Procedure/Sections/Section";
                 //treeView1.Items.Refresh();
                 //treeView1.UpdateLayout();
                 tItems.Clear();
@@ -626,7 +623,7 @@ namespace senior_project
         private void StepToStart()
         {
             Console.WriteLine(tItems.Count);
-            tItems[0].IsSelected = true;
+            //tItems[0].IsSelected = true;
         }
 
         private void LastStep()

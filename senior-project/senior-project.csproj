@@ -219,6 +219,8 @@
     <Resource Include="windows\icons\pause-256.png" />
     <Resource Include="windows\icons\play-3-256.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="template.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

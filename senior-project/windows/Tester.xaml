@@ -109,10 +109,10 @@
                         <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="IsExpanded" Value="True" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding XPath=Pass}" Value="true">
+                                <DataTrigger Binding="{Binding XPath=Result/@result}" Value="pass">
                                     <Setter Property="Background" Value="LightGreen" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding XPath=Fail}" Value="true">
+                                <DataTrigger Binding="{Binding XPath=Result/@result}" Value="fail">
                                     <Setter Property="Background" Value="IndianRed" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Name}" Value="Section">
