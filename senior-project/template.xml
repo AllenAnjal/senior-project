@@ -21,8 +21,11 @@
 			<Description></Description>
 			<Test_Step id="">
 				<Station></Station>
+				<Station_Redline></Station_Redline>
 				<Control_Action></Control_Action>
+				<Control_Action_Redline></Control_Action_Redline>
 				<Expected_Result></Expected_Result>
+				<Expected_Result_Redline></Expected_Result_Redline>
 				<Result result="">
 					<Comment />
 					<Severity />

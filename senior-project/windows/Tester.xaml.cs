@@ -37,13 +37,6 @@ namespace senior_project
         private exportWindow export = new exportWindow();
         private commentWindow cmt = new commentWindow();
 
-        //strings to store text from user
-        private string stepTxt;
-
-        private string stationTxt;
-        private string controlTxt;
-        private string expectedTxt;
-
         //arraylist to store change
         private ArrayList changes = new ArrayList();
 
@@ -86,9 +79,9 @@ namespace senior_project
             userInfoPage x = new userInfoPage(xmlFile);
             x.ShowDialog();
             _treeView = FindName("treeView1") as TreeView;
-            _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
-            _xmlDataProvider.Document = _xml;
-            _xmlDataProvider.XPath = "/Test_Procedure/Sections/Section";
+            //_xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
+            //_xmlDataProvider.Document = _xml;
+            //_xmlDataProvider.XPath = "/Test_Procedure/Sections/Section";
 
             count = getTotalSteps();
 
@@ -101,7 +94,40 @@ namespace senior_project
             t.Start();
 
             treeHelper = new TreeHelper(_treeView, SectionName, StepName);
+
+            MainViewModel test = new MainViewModel(_xml);
+            this.DataContext = test;
         }
+
+        private void RedlineButton_Click(object sender, RoutedEventArgs e)
+        {
+            redlineClicked = !redlineClicked;
+            if (redlineClicked)
+            {
+                changeColors(254, 1, 1);
+                setBoolean(false);
+                redlineIndicator.Text = "Redline Mode";
+                //tItems[pos].IsSelected = true;
+            }
+            else
+            {
+                changeColors(2, 93, 186);
+                setBoolean(true);
+                redlineIndicator.Text = "";
+                //treeView1.Items.Refresh();
+                //treeView1.UpdateLayout();
+                //tItems[pos].IsSelected = true;
+            }
+
+            //red.ShowDialog();
+
+            //  TESTING FOR TREEVIEW
+            //  ftn_Open_File();
+
+            //  TESTING FOR TREEVIEW
+        }
+
+        #region OLD STUFF
 
         private void t_Tick(object sender, EventArgs e)
         {
@@ -196,37 +222,6 @@ namespace senior_project
             //StepBackwards();
         }
 
-        private void RedlineButton_Click(object sender, RoutedEventArgs e)
-        {
-            redlineClicked = !redlineClicked;
-            if (redlineClicked)
-            {
-                changeColors(254, 1, 1);
-                setBoolean(false);
-                _xmlDataProvider.XPath = "/Test_Procedure/Redlines/Section";
-                tItems.Clear();
-                LoadListRecursive(treeView1, tItems);
-                //tItems[pos].IsSelected = true;
-            }
-            else
-            {
-                changeColors(2, 93, 186);
-                setBoolean(true);
-                _xmlDataProvider.XPath = "/Test_Procedure/Sections/Section";
-                //treeView1.Items.Refresh();
-                //treeView1.UpdateLayout();
-                tItems.Clear();
-                LoadListRecursive(treeView1, tItems);
-                //tItems[pos].IsSelected = true;
-            }
-
-            //red.ShowDialog();
-
-            //  TESTING FOR TREEVIEW
-            //  ftn_Open_File();
-
-            //  TESTING FOR TREEVIEW
-        }
 
         //If there is an image in the XML step, send image to button
         //If no image available, change button to red and image unavailable (or remove button entirely)
@@ -390,37 +385,32 @@ namespace senior_project
 
         private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            string section = String.Empty, step = String.Empty;
-            XmlElement _pos = _treeView.SelectedItem as XmlElement;
-            if (_pos != null)
-            {
-                if (_pos.Name == "Test_Step")
-                {
-                    step = _pos.SelectSingleNode("@id").Value;
-                    section = _pos.ParentNode.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-                    for (int i = 0; i < tItems.Count; i++)
-                    {
-                        if (tItems[i].IsSelected)
-                            pos = i;
-                    }
-                }
-                else if (_pos.Name == "Section")
-                {
-                    section = _pos.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}", section);
-                    pos = 0;
-                }
-            }
-            else
-            {
-                lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-            }
-
-            stepTxt = tbStep.Text;
-            stationTxt = tbStation.Text;
-            controlTxt = tbControlAction.Text;
-            expectedTxt = tbExpectedResult.Text;
+            //string section = String.Empty, step = String.Empty;
+            //XmlElement _pos = _treeView.SelectedItem as XmlElement;
+            //if (_pos != null)
+            //{
+            //    if (_pos.Name == "Test_Step")
+            //    {
+            //        step = _pos.SelectSingleNode("@id").Value;
+            //        section = _pos.ParentNode.SelectSingleNode("@id").Value;
+            //        lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
+            //        for (int i = 0; i < tItems.Count; i++)
+            //        {
+            //            if (tItems[i].IsSelected)
+            //                pos = i;
+            //        }
+            //    }
+            //    else if (_pos.Name == "Section")
+            //    {
+            //        section = _pos.SelectSingleNode("@id").Value;
+            //        lblProcedurePosition.Text = String.Format("Section {0}", section);
+            //        pos = 0;
+            //    }
+            //}
+            //else
+            //{
+            //    lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
+            //}
         }
 
         private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
@@ -438,7 +428,7 @@ namespace senior_project
             var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(TreeView));
             if (dpd != null)
             {
-                dpd.AddValueChanged(treeView1, ThisIsCalledWhenPropertyIsChanged);
+                //dpd.AddValueChanged(treeView1, ThisIsCalledWhenPropertyIsChanged);
             }
         }
 
@@ -537,8 +527,8 @@ namespace senior_project
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            LoadListRecursive(_treeView, tItems);
-            StepToStart();
+            //LoadListRecursive(_treeView, tItems);
+           // StepToStart();
         }
 
         private void StepForward()
@@ -662,11 +652,9 @@ namespace senior_project
 
         private void changeColors(byte r, byte g, byte b)
         {
-            lblStep.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
             lblStation.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
             lblControlAction.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
             lblExpectedResult.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
-            borderStep.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
             borderStation.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
             borderControl.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
             borderExp.Background = new SolidColorBrush(Color.FromRgb(r, g, b));
@@ -675,38 +663,572 @@ namespace senior_project
         private void setBoolean(bool value)
         {
             tbControlAction.IsReadOnly = value;
-            tbStep.IsReadOnly = value;
             tbExpectedResult.IsReadOnly = value;
             tbStation.IsReadOnly = value;
-            passButton.IsEnabled = value;
-            failButton.IsEnabled = value;
-        }
-
-        private void addRedlineChanges()
-        {
-            if (tbStep.Text.Length != stepTxt.Length)
-            {
-                changes.Add("Original: " + stepTxt + " \nModified: " + tbStep.Text + "\n\n");
-            }
-            if (tbStation.Text.Length != stationTxt.Length)
-            {
-                changes.Add("Original: " + stationTxt + " \nModified: " + tbStation.Text + "\n\n");
-            }
-            if (tbControlAction.Text.Length != controlTxt.Length)
-            {
-                changes.Add("Original: " + controlTxt + " \nModified: " + tbControlAction.Text + "\n\n");
-            }
-            if (tbExpectedResult.Text.Length != expectedTxt.Length)
-            {
-                changes.Add("Original: " + expectedTxt + " \nModified: " + tbExpectedResult.Text + "\n\n");
-            }
         }
 
         private void pbProcedureProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             //do nothing
         }
+
+        #endregion otherFunctions
+        #endregion
     }
 
-    #endregion otherFunctions
+    #region MVVM Implementation
+
+    public class RelayCommand : ICommand
+    {
+        private readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
+
+        public RelayCommand(Action<object> execute) : this(execute, null) { }
+        public RelayCommand( Action<object> execute, Predicate<object> canExecute)
+        {
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+            _execute = execute; 
+            _canExecute = canExecute;
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null ? true : _canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute(parameter);
+        }
+    }
+
+    public class BaseViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public event EventHandler SelectedItemUpdated;
+
+        protected void OnSelectedItemChanged()
+            => SelectedItemUpdated?.Invoke(this, null);
+    }
+
+    public class ResultToColorConverter : IValueConverter
+    {
+        public static ResultToColorConverter Instance = new ResultToColorConverter();
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            TestStepViewModel step = value as TestStepViewModel;
+            if (step.ControlActionChanged || step.ExpectedResultChanged || step.StationChanged)
+            {
+                return new SolidColorBrush(Colors.Yellow);
+            } 
+            else if (step.ResultChanged)
+            {
+                if (step.Result)
+                {
+                    return new SolidColorBrush(Colors.Green);
+                }
+                else
+                {
+                    return new SolidColorBrush(Colors.Red);
+                }
+            } 
+            else
+            {
+                return new SolidColorBrush(Colors.Transparent);
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class StepToLabelConverter : IValueConverter
+    {
+        public static StepToLabelConverter Instance = new StepToLabelConverter();
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            TestStepViewModel step = value as TestStepViewModel;
+            string label = step.StepID + ".";
+            if (step.ControlActionChanged || step.ExpectedResultChanged || step.StationChanged)
+            {
+                label += " (Edited)";
+            }
+            if (step.ResultChanged)
+            {
+                if (step.Result)
+                {
+                    label += " (Passed)";
+                }
+                else
+                {
+                    label += " (Failed)";
+                }
+            }
+            return label;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TestStepViewModel : BaseViewModel
+    {
+        private string _stationOriginal;
+        private string _station;
+        private bool _stationChanged = false;
+        private string _controlActionOriginal;
+        private string _controlAction;
+        private bool _controlActionChanged = false;
+        private string _expectedResultOriginal;
+        private string _expectedResult;
+        private bool _expectedResultChanged = false;
+        private bool _result = false;
+        private bool _resultChanged = false;
+        private bool _isSelected = false;
+
+        public TestStepViewModel(int stepID, string station, string controlAction, string expectedResult)
+        {
+            this.StepID = stepID;
+            _stationOriginal = station;
+            _station = station;
+            _controlActionOriginal = controlAction;
+            _controlAction = controlAction;
+            _expectedResultOriginal = expectedResult;
+            _expectedResult = expectedResult;
+        }
+
+        public Object ItSelf
+        {
+            get { return this; }
+        }
+
+        public int StepID { get; set; }
+
+        public string Station
+        {
+            get { return _station; }
+            set
+            {
+                if (!value.Equals(_station))
+                {
+                    _station = value;
+                    if (_station.Equals(_stationOriginal))
+                    {
+                        StationChanged = false;
+                    }
+                    else
+                    {
+                        StationChanged = true;
+                    }
+                    OnPropertyChanged("Station");
+                }
+            }
+        }
+        public bool StationChanged
+        {
+            get { return _stationChanged; }
+            set
+            {
+                if (value != _stationChanged)
+                {
+                    _stationChanged = value;
+                    OnPropertyChanged("StationChanged");
+                    OnPropertyChanged("ItSelf");
+                }
+            }
+        }
+
+        public string ControlAction
+        {
+            get { return _controlAction; }
+            set
+            {
+                if (!value.Equals(_controlAction))
+                {
+                    _controlAction = value;
+                    if (_controlAction.Equals(_controlActionOriginal))
+                    {
+                        ControlActionChanged = false;
+                    }
+                    else
+                    {
+                        ControlActionChanged = true;
+                    }
+                    OnPropertyChanged("ControlAction");
+                }
+            }
+        }
+        public bool ControlActionChanged
+        {
+            get { return _controlActionChanged; }
+            set
+            {
+                if (value != _controlActionChanged)
+                {
+                    _controlActionChanged = value;
+                    OnPropertyChanged("ControlActionChanged");
+                    OnPropertyChanged("ItSelf");
+                }
+            }
+        }
+
+        public string ExpectedResult
+        {
+            get { return _expectedResult; }
+            set
+            {
+                if (!value.Equals(_expectedResult))
+                {
+                    _expectedResult = value;
+                    if (_expectedResult.Equals(_expectedResultOriginal))
+                    {
+                        ExpectedResultChanged = false;
+                    }
+                    else
+                    {
+                        ExpectedResultChanged = true;
+                    }
+                    OnPropertyChanged("ExpectedResult");
+                }
+            }
+        }
+        public bool ExpectedResultChanged
+        {
+            get { return _expectedResultChanged; }
+            set
+            {
+                if (_expectedResultChanged != value)
+                {
+                    _expectedResultChanged = value;
+                    OnPropertyChanged("ExpectedResultChanged");
+                    OnPropertyChanged("ItSelf");
+                }
+            }
+        }
+
+        public bool Result
+        {
+            get { return _result; }
+            set
+            {
+                _result = value;
+                ResultChanged = true;
+                OnPropertyChanged("Result");
+                OnPropertyChanged("ItSelf");
+            }
+        }
+        public bool ResultChanged
+        {
+            get { return _resultChanged; }
+            set
+            {
+                if (_resultChanged != value)
+                {
+                    _resultChanged = value;
+                }
+            }
+        }
+
+        public string ResultComment { get; set; }
+        public string Severity { get; set; }
+        public string Comment { get; set; }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged("IsSelected");
+                    OnSelectedItemChanged();
+                }
+            }
+        }
+    }
+
+    public class SectionsViewModel : BaseViewModel
+    {
+        private int _sectionID;
+        private string _sectionHeading;
+        private ObservableCollection<TestStepViewModel> _steps;
+        private bool _isSelected = false;
+
+        public SectionsViewModel(int sectionID, string sectionHeading)
+        {
+            _sectionID = sectionID;
+            _sectionHeading = sectionHeading;
+        }
+
+        public ObservableCollection<TestStepViewModel> Steps
+        {
+            get { return _steps; }
+            set
+            {
+                if (_steps != value)
+                {
+                    _steps = value;
+                    OnPropertyChanged("Steps");
+                }
+            }
+        }
+
+        public int SectionID
+        {
+            get { return _sectionID; }
+            set
+            {
+                if (_sectionID != value)
+                {
+                    _sectionID = value;
+                    OnPropertyChanged("SectionID");
+                }
+            }
+        }
+
+        public string SectionHeading
+        {
+            get { return _sectionHeading; }
+            set
+            {
+                if (_sectionHeading != value)
+                {
+                    _sectionHeading = value;
+                    OnPropertyChanged("SectionHeading");
+                }
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged("IsSelected");
+                }
+            }
+        }
+    }
+
+    public class MainViewModel : BaseViewModel
+    {
+        #region Private Members
+
+        /// <summary>
+        /// List of all sections
+        /// </summary>
+        private ObservableCollection<SectionsViewModel> _sections;
+
+        private TestStepViewModel _selectedStep;
+
+        private ICommand _PassStepCommand;
+        private ICommand _FailStepCommand;
+
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="xmlDocument">The path to the xml Document to load</param>
+        public MainViewModel(XmlDocument xmlDocument)
+        {
+            XmlNode root = xmlDocument.SelectSingleNode("Test_Procedure");
+
+            _sections = new ObservableCollection<SectionsViewModel>();
+
+            var sectionsList = root.SelectNodes("Sections/Section");
+            foreach (XmlNode sectionNode in sectionsList)
+            {
+                SectionsViewModel newSection = new SectionsViewModel(Int32.Parse(sectionNode.Attributes.GetNamedItem("id").Value), sectionNode.SelectSingleNode("Heading").InnerText);
+                var steps = new ObservableCollection<TestStepViewModel>();
+
+                var testStepsList = sectionNode.SelectNodes("Test_Step");
+                foreach (XmlNode testStepNode in testStepsList)
+                {
+                    int stepID = Int32.Parse(testStepNode.Attributes.GetNamedItem("id").Value);
+                    string station = testStepNode.SelectSingleNode("Station").InnerText;
+                    string controlAction = testStepNode.SelectSingleNode("Control_Action").InnerText;
+                    string expectedResult = testStepNode.SelectSingleNode("Expected_Result").InnerText;
+                    TestStepViewModel newStep = new TestStepViewModel(stepID, station, controlAction, expectedResult);
+                    addEventHandlerToStep(newStep);
+                    steps.Add(newStep);
+                }
+
+                newSection.Steps = steps;
+                _sections.Add(newSection);
+            }
+
+            _sections[0].Steps[0].IsSelected = true;
+        }
+        #endregion
+
+        #region Public Members
+
+        /// <summary>
+        /// List of Sections
+        /// </summary>
+        public ObservableCollection<SectionsViewModel> Sections
+        {
+            get { return _sections; }
+            set
+            {
+                if (value != _sections)
+                {
+                    _sections = value;
+                    OnPropertyChanged("Sections");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns currently selected test step
+        /// </summary>
+        public TestStepViewModel SelectedStep
+        {
+            get { return _selectedStep; }
+            set
+            {
+                TestStepViewModel selectedStep = value;
+                foreach (SectionsViewModel section in _sections)
+                {
+                    selectedStep = section.Steps.FirstOrDefault(i => i.IsSelected);
+                    if (selectedStep != null)
+                        break;
+                }
+                _selectedStep = selectedStep;
+                OnPropertyChanged("SelectedStep");
+            }
+        }
+
+        public ICommand PassStepCommand
+        {
+            get
+            {
+                if (_PassStepCommand == null)
+                {
+                    _PassStepCommand = new RelayCommand(p => this.PassStep());
+                }
+                return _PassStepCommand;
+            }
+        }
+
+        public ICommand FailStepCommand
+        {
+            get
+            {
+                if (_FailStepCommand == null)
+                {
+                    _FailStepCommand = new RelayCommand(p => this.FailStep());
+                }
+                return _FailStepCommand;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Event listener for test step changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void StepSelectedChanged(object sender, EventArgs e)
+        {
+            this.SelectedStep = null;
+        }
+
+        /// <summary>
+        /// Event listener for the values of the currently selected test step changing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void StepSelectedValueChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("SelectedStep");
+        }
+
+        #endregion
+
+        #region Commands
+
+        private void PassStep()
+        {
+            if (SelectedStep != null)
+            {
+                SelectedStep.Result = true;
+                selectNextStep();
+            }
+        }
+
+        private void FailStep()
+        {
+            if (SelectedStep != null)
+            {
+                SelectedStep.Result = false;
+                selectNextStep();
+            }
+        }
+
+        #endregion
+
+        #region Helper Functions
+
+        /// <summary>
+        /// Adds event listeners to the test step
+        /// </summary>
+        /// <param name="newStep">test step to add event handler to</param>
+        private void addEventHandlerToStep(TestStepViewModel newStep)
+        {
+            newStep.SelectedItemUpdated += StepSelectedChanged;
+            newStep.PropertyChanged += StepSelectedValueChanged;
+        }
+
+        private void selectNextStep()
+        {
+            int i, j;
+            bool selectedFound = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for(j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+                    if (selectedFound)
+                    {
+                        _sections[i].Steps[j].IsSelected = true;
+                        return;
+                    }
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        selectedFound = true;
+                    }
+                }
+            }
+        }
+
+        #endregion
+    }
+
+    #endregion
+
 }
