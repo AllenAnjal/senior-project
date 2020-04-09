@@ -11,7 +11,6 @@
 		<Program_Phase />
 		<Program_Type />
 		<Classification />
-		<Signature />
 		<Start_Time />
 		<Stop_Time />
 	</Procedure_Heading>
@@ -34,20 +33,4 @@
 			</Test_Step>
 		</Section>
 	</Sections>
-	<Redlines>
-		<Section id="">
-			<Heading></Heading>
-			<Description></Description>
-			<Test_Step id="">
-				<Station></Station>
-				<Control_Action></Control_Action>
-				<Expected_Result></Expected_Result>
-				<Result result="">
-					<Comment />
-					<Severity />
-				</Result>
-				<Comment />
-			</Test_Step>
-		</Section>
-	</Redlines>
 </Test_Procedure>

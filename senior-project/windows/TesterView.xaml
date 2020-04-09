@@ -11,10 +11,8 @@
     Height="600"
     MinWidth="800"
     MinHeight="600"
-    Closed="Window_Closed"
-    ContentRendered="Window_ContentRendered"
+    Closed="WindowClosed"
     Icon="icons\splashscreen.png"
-    Loaded="Window_Loaded"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -23,23 +21,26 @@
         </ContextMenu>
         <Image
             x:Key="Stop"
-            Width="45"
-            Height="46"
+            Stretch="Fill"
             Source="icons\pause-256.png" />
         <Image
             x:Key="Resume"
-            Width="45"
-            Height="46"
+            Stretch="Fill"
             Source="icons\play-3-256.png" />
-
+        <local:ResultToColorConverter x:Key="resultToColorConverter"/>
+        <local:StepToTreeviewLabelConverter x:Key="stepToTreeviewLabelConverter"/>
+        <local:StepToFullLabelConverter x:Key="stepToFullLabelConverter"/>
     </Window.Resources>
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Click="mnuSave_Click" Header="_Save..." />
+                <MenuItem  Header="_Save..."  Command="{Binding SaveToXmlCommand}"/>
                 <Separator />
                 <MenuItem Click="Exit_Button" Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Command="{Binding EditUserInfoCommand}" Header="_User Info..."/>
             </MenuItem>
         </Menu>
 
@@ -48,7 +49,7 @@
                 <ItemsPanelTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="auto" MaxWidth="150"/>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
@@ -58,7 +59,8 @@
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem>
-                <TextBlock Name="lblProcedurePosition" />
+                <TextBlock Name="lblProcedurePosition" 
+                           Text="{Binding Path=SelectedStep, Converter={StaticResource stepToFullLabelConverter}}"/>
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
@@ -70,7 +72,6 @@
                     Name="pbProcedureProgress"
                     Width="90"
                     Height="16"
-                    ValueChanged="pbProcedureProgress_ValueChanged"
                     Value="0" />
             </StatusBarItem>
         </StatusBar>
@@ -93,7 +94,7 @@
                         Height="45"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Click="move_up"
+                        Command="{Binding MoveUpCommand}"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         ToolTip="Press to pass step">
                         <Image Source="icons\up.png" />
@@ -105,7 +106,7 @@
                         Height="45"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Click="move_down"
+                        Command="{Binding MoveDownCommand}"
                         DockPanel.Dock="Left"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         ToolTip="Press to pass step">
@@ -119,13 +120,12 @@
                     BorderBrush="Black"
                     BorderThickness="1"
                     DockPanel.Dock="Top"
-                    ItemsSource="{Binding Sections}"
-                    SelectedItemChanged="TreeView1_SelectedItemChanged">
+                    ItemsSource="{Binding Sections}">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="Margin" Value="0 1 0 1"/>
                             <Setter Property="IsExpanded" Value="True" />
-                            <Setter Property="Background" Value="{Binding Path=ItSelf, Converter={x:Static local:ResultToColorConverter.Instance}}" />
+                            <Setter Property="Background" Value="{Binding Path=ItSelf, Converter={StaticResource resultToColorConverter}}" />
                             <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                         </Style>
                     </TreeView.ItemContainerStyle>
@@ -135,7 +135,7 @@
                             <HierarchicalDataTemplate.ItemTemplate>
                                 <DataTemplate DataType="TestStepViewModel">
                                     <Label VerticalAlignment="Center" FontSize="12"
-                                           Content="{Binding Path=ItSelf, Converter={x:Static local:StepToLabelConverter.Instance}}"/>
+                                           Content="{Binding Path=ItSelf, Converter={StaticResource stepToTreeviewLabelConverter}}"/>
                                 </DataTemplate>
                             </HierarchicalDataTemplate.ItemTemplate>
                         </HierarchicalDataTemplate>
@@ -407,9 +407,10 @@
                         Width="46"
                         Height="45"
                         Command="{Binding PassStepCommand}"
+                        CommandParameter="Test"
                         DockPanel.Dock="Right"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        ToolTip="Press to fail step and leave comment">
+                        ToolTip="Press to pass the selected step.">
                         <Image Source="icons\checked-checkbox-512.png">
                             <Image.Style>
                                 <Style TargetType="Image">
@@ -429,7 +430,7 @@
                         Command="{Binding FailStepCommand}"
                         DockPanel.Dock="Right"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        ToolTip="Press to fail step and leave comment">
+                        ToolTip="Press to fail the selected step.">
                         <Image Source="icons\x-mark-5-512.png">
                             <Image.Style>
                                 <Style TargetType="Image">
@@ -444,43 +445,21 @@
                     </Button>
                     <Button
                         x:Name="commentButton"
-                        Width="65"
-                        Height="45"
-                        Click="CommentButton_Click"
                         DockPanel.Dock="Right"
+                        Margin="5 0 5 0"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        ToolTip="Leave a comment">
+                        ToolTip="Leave a comment"
+                        Command="{Binding CommentCommand}" > 
                         <Image Source="icons\comments-512.png" />
                     </Button>
                     <Button
                         x:Name="redlineButton"
-                        Width="67"
-                        Height="45"
+                        Margin="5 0 5 0"
                         Click="RedlineButton_Click"
                         DockPanel.Dock="Right"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                         ToolTip="Leave a redline suggestion">
                         <Image Source="icons\edit-6-512.png" />
-                    </Button>
-
-                    <TextBlock
-                        x:Name="timer"
-                        Margin="5"
-                        DockPanel.Dock="Left"
-                        FontFamily="Comic Sans MS"
-                        FontSize="20"
-                        FontWeight="UltraBlack"
-                        MouseLeftButtonUp="timer_MouseLeftButtonUp"
-                        TextAlignment="Center" />
-                    <Button
-                        x:Name="timerButton"
-                        Width="50"
-                        Height="50"
-                        Margin="0,-5,125,0"
-                        DockPanel.Dock="Left"
-                        Click="timerClick"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                        <DynamicResource ResourceKey="Stop" />
                     </Button>
                 </DockPanel>
             </Grid>

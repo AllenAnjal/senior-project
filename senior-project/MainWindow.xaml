@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:senior_project"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Test Precodure Launcher"
+    Title="Test Procedure Launcher"
     Width="360"
     Height="548.495"
     Closing="Window_Closing"
@@ -22,7 +22,9 @@
             <RowDefinition Height="Auto" MinHeight="402" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="75.839" />
+            <ColumnDefinition Width="208.326"/>
+            <ColumnDefinition Width="28.674"/>
         </Grid.ColumnDefinitions>
         <Label
             x:Name="lbl_version"
@@ -31,52 +33,52 @@
             VerticalAlignment="Bottom"
             Content="Version (2.0)"
             FontStyle="Italic"
-            Foreground="White" />
+            Foreground="White" Grid.ColumnSpan="2" />
         <Button
             Name="StartButton"
             Width="50"
             Height="50"
-            Margin="0,50,-30,0"
+            Margin="71,202,87.326,152"
             Background="#025DBA"
             BorderThickness="0"
             Click="start_btn"
             Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-            ToolTip="Start Test Procedure">
+            ToolTip="Start Test Procedure" Grid.Column="1">
             <Image Source="images\play-512.png" />
         </Button>
         <Button
             Name="editButton"
             Width="50"
             Height="50"
-            Margin="0,0,-30,75"
+            Margin="71,0,87.326,75"
             VerticalAlignment="Bottom"
             Background="#025DBA"
             BorderThickness="0"
             Click="edit_btn"
             Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-            ToolTip="Edit Test Procedure">
+            ToolTip="Edit Test Procedure" Grid.Column="1">
             <Image Source="images\edit-12-512.png" />
         </Button>
         <Button
             Name="createButton"
             Width="50"
             Height="50"
-            Margin="0,0,-30,0"
+            Margin="71,0,87.326,0"
             VerticalAlignment="Bottom"
             Background="#025DBA"
             BorderThickness="0"
             Click="create_btn"
             Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-            ToolTip="Create Test Procedure">
+            ToolTip="Create Test Procedure" Grid.Column="1">
             <Image Source="images\add-file-512.png" />
         </Button>
         <Image
             x:Name="image"
             Width="341"
             Height="178"
-            Margin="-10,10,-20,0"
+            Margin="-7,10,-20,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Source="images/test.png" />
+            Source="images/test.png" Grid.ColumnSpan="3" />
     </Grid>
 </Window>

@@ -65,6 +65,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\Document.cs" />
+    <Compile Include="Dialog\IDialog.cs" />
+    <Compile Include="Dialog\CommentDialog.xaml.cs">
+      <DependentUpon>CommentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="windows\askForFilename.xaml.cs">
       <DependentUpon>askForFilename.xaml</DependentUpon>
     </Compile>
@@ -77,7 +81,11 @@
     <Compile Include="windows\TestAdmin.xaml.cs" />
     <Compile Include="windows\Tester.xaml.cs" />
     <Compile Include="windows\TreeHelper.cs" />
-    <Compile Include="windows\userInfoPage.xaml.cs" />
+    <Compile Include="Dialog\userInfoPage.xaml.cs" />
+    <Page Include="Dialog\CommentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -114,11 +122,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="windows\Tester.xaml">
+    <Page Include="windows\TesterView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="windows\userInfoPage.xaml">
+    <Page Include="Dialog\userInfoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,75 +1,115 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestProcedure>
+<Test_Procedure rev="">
   <Procedure_Heading>
-    <Name>CAE Testing</Name>
-    <Signature />
-    <Organization />
-    <Date />
-    <Time />
-    <Load_Version />
-    <Description />
+    <!--Editor-->
     <System />
-    <Severity />
-    <Revision> 1 </Revision>
+    <Description />
+    <!--Tester-->
+    <Name>Michael</Name>
+    <Date>4/9/2020 12:00:00 AM</Date>
+    <Software_Load_Version>Software Load</Software_Load_Version>
+    <Program_Phase>Phase 1</Program_Phase>
+    <Program_Type>Type 2</Program_Type>
+    <Classification>Class Big</Classification>
+    <Start_Time>13:29</Start_Time>
+    <Stop_Time>13:31</Stop_Time>
   </Procedure_Heading>
   <Sections>
     <Section id="1">
-      <Heading> 1.0 IOS DORT TESTS </Heading>
-      <Description> short description </Description>
+      <Heading>Heading 1</Heading>
+      <Description>Desc</Description>
       <Test_Step id="1">
-        <Station>
-        </Station>
-        <Control_Action>
-        </Control_Action>
-        <Expected_Result>
-        </Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-        <Image />
+        <Station>IOS DORT</Station>
+        <Station_Redline>IOS DORT Revised</Station_Redline>
+        <Control_Action>Do THis</Control_Action>
+        <Control_Action_Redline>
+        </Control_Action_Redline>
+        <Expected_Result>Expect That</Expected_Result>
+        <Expected_Result_Redline>
+        </Expected_Result_Redline>
+        <Result result="True">
+          <Comment>
+          </Comment>
+          <Severity>
+          </Severity>
+        </Result>
+        <Comment>
+        </Comment>
       </Test_Step>
       <Test_Step id="2">
-        <Station>
-        </Station>
-        <Control_Action>
-        </Control_Action>
-        <Expected_Result>
-        </Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-        <Image />
+        <Station>IOS2</Station>
+        <Station_Redline>
+        </Station_Redline>
+        <Control_Action>Do THis 2</Control_Action>
+        <Control_Action_Redline>
+        </Control_Action_Redline>
+        <Expected_Result>Expect That 2</Expected_Result>
+        <Expected_Result_Redline>
+        </Expected_Result_Redline>
+        <Result result="False">
+          <Comment>This Thing Failed</Comment>
+          <Severity>Mild</Severity>
+        </Result>
+        <Comment>
+        </Comment>
       </Test_Step>
       <Test_Step id="3">
-        <Station>
-        </Station>
-        <Control_Action>
-        </Control_Action>
-        <Expected_Result>
-        </Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-        <Image />
-      </Test_Step>
-      <Test_Step id="4">
-        <Station>
-        </Station>
-        <Control_Action>
-        </Control_Action>
-        <Expected_Result>
-        </Expected_Result>
-        <Pass>false</Pass>
-        <Fail>false</Fail>
-        <Comments />
-        <Image />
+        <Station>IOS3</Station>
+        <Station_Redline>
+        </Station_Redline>
+        <Control_Action>Do THis 3</Control_Action>
+        <Control_Action_Redline>
+        </Control_Action_Redline>
+        <Expected_Result>Expect That 3</Expected_Result>
+        <Expected_Result_Redline>
+        </Expected_Result_Redline>
+        <Result result="True">
+          <Comment>
+          </Comment>
+          <Severity>
+          </Severity>
+        </Result>
+        <Comment>Comment on 3</Comment>
       </Test_Step>
     </Section>
     <Section id="2">
-      <Test_Step id="1">1<Station></Station><Control_Action></Control_Action><Expected_Result></Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
-    </Section>
-    <Section id="3">
-      <Test_Step id="1">1<Station></Station><Control_Action></Control_Action><Expected_Result></Expected_Result><Pass /><Fail /><Comments /><Image /></Test_Step>
+      <Heading>Test 2</Heading>
+      <Description>Some Desc.</Description>
+      <Test_Step id="1">
+        <Station>testes</Station>
+        <Station_Redline>
+        </Station_Redline>
+        <Control_Action>dsadasd</Control_Action>
+        <Control_Action_Redline>
+        </Control_Action_Redline>
+        <Expected_Result>cxzcxzcxz</Expected_Result>
+        <Expected_Result_Redline>cxzcxzcxz Test 2</Expected_Result_Redline>
+        <Result result="False">
+          <Comment>Failure</Comment>
+          <Severity>Medium</Severity>
+        </Result>
+        <Comment>
+        </Comment>
+      </Test_Step>
+      <Test_Step id="2">
+        <Station>test</Station>
+        <Station_Redline>
+        </Station_Redline>
+        <Control_Action>cxzcqq</Control_Action>
+        <Control_Action_Redline>
+        </Control_Action_Redline>
+        <Expected_Result>asdadsadas</Expected_Result>
+        <Expected_Result_Redline>
+        </Expected_Result_Redline>
+        <Result result="True">
+          <Comment>
+          </Comment>
+          <Severity>
+          </Severity>
+        </Result>
+        <Comment>
+        </Comment>
+      </Test_Step>
     </Section>
   </Sections>
-</TestProcedure>
+</Test_Procedure>
