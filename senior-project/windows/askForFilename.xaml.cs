@@ -40,7 +40,6 @@ namespace senior_project
         {
             
             string file = nameBox.Text;
-            MessageBox.Show(file);
 
             //checks if the name already has .xml in it or not and add accordingly
             if (!file.EndsWith(".xml"))
@@ -73,10 +72,20 @@ namespace senior_project
                 sw.WriteLine("<Heading> 1.0 IOS DORT TESTS </Heading>\n");
                 sw.WriteLine("<Description> short description </Description>\n");
                 sw.WriteLine("<Test_Step id=\"1\">\n" +
+<<<<<<< HEAD
                                 "<Station></Station>\n" + 
                                 "<Control_Action></Control_Action>\n" + 
                                 "<Expected_Result></Expected_Result>\n" +
                                 "<Result result=\"\"></Result>\n" + 
+=======
+                                "<Station></Station>\n" +
+                                "<Station_Redline></Station_Redline>\n" +
+                                "<Control_Action></Control_Action>\n" +
+                                "<Control_Action_Redline></Control_Action_Redline>\n" +
+                                "<Expected_Result></Expected_Result>\n" +
+                                "<Expected_Result_Redline></Expected_Result_Redline>\n" +
+                                "<Result result=\"\"></Result>\n" +
+>>>>>>> 36cd1f57a139ac18a8b0601a5f9f97f043f09fa3
                                 "<Comments/></Test_Step>\n");
                 sw.WriteLine("</Section>\n");
                 sw.WriteLine("</Sections>\n");
