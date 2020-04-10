@@ -11,6 +11,10 @@ using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
+using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.IO;
 
 namespace senior_project
@@ -20,532 +24,613 @@ namespace senior_project
     /// </summary>
     public partial class TestAdmin : Window
     {
-        //  Begin Declarations
-
         private MainWindow main;
-        private String commentDefault = "Leave a comment";
-        private bool pausePlay = false;
-        private bool hasCommented = false;
         private bool redlineClicked = false;
-        private DispatcherTimer t;
-        private DateTime start;
-        private Stopwatch stopWatch;
-        private exportWindow export = new exportWindow();
-        private commentWindow cmt = new commentWindow();
-
-        //strings to store text from user
-        private string stepTxt;
-
-        private string stationTxt;
-        private string controlTxt;
-        private string expectedTxt;
-
-        //arraylist to store change
-        private ArrayList changes = new ArrayList();
-
-        //  XML TreeView Implementation with XmlDataProvider and XmlDocument
-        private XmlDocument _xml;
-
-        private string xmlFile;
-
-        private List<TreeViewItem> tItems;
-        private int pos = 0;
-        private int count = 0;
-        private int tmp = 0;
-
-        private XmlDataProvider _xmlDataProvider;
-        private TreeView _treeView;
-        private string SectionName = "Section";
-        private string StepName = "Test_Step";
-
-        private TreeHelper treeHelper;
 
         public TestAdmin(MainWindow mw, String xmlFile)
         {
             InitializeComponent();
             main = mw;
 
-            this.xmlFile = xmlFile;
+            IDialogService dialogService = new DialogService(mw);
 
-            _xml = new XmlDocument();
-            tItems = new List<TreeViewItem>();
+            XmlDocument xml = new XmlDocument();
             try
             {
-                _xml.Load(xmlFile);
+                xml.Load(xmlFile);
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "Error");
+                throw new ArgumentException(err.ToString());
             }
 
-            _treeView = FindName("treeView1") as TreeView;
-            _xmlDataProvider = FindResource("xmlData") as XmlDataProvider;
-            _xmlDataProvider.Document = _xml;
-
-            treeHelper = new TreeHelper(_treeView, SectionName, StepName);
+            EditorViewModel test = new EditorViewModel(xml, dialogService);
+            this.DataContext = test;
         }
 
-        #region buttons
-
-        private void move_down(object sender, RoutedEventArgs e)
+        private void WindowClosed(object sender, EventArgs e)
         {
-            //StepForward();
-            XmlNode currentNode = _treeView.SelectedItem as XmlNode;
-            XmlNode referenceNode = currentNode.NextSibling;
-            XmlNode root = currentNode.ParentNode;
-            XmlNode sectionRoot = root.ParentNode;
-            bool goHigher = false;
-            if (referenceNode == null)
-            {
-                Console.WriteLine("This is null");
-                referenceNode = currentNode.ParentNode.NextSibling;
-                if (referenceNode == null)
-                {
-                    referenceNode = currentNode.ParentNode.ParentNode.FirstChild;
-                }
-                else
-                {
-                    referenceNode = referenceNode.FirstChild;
-                }
-                goHigher = true;
-            }
-
-            XmlElement curr = currentNode as XmlElement;
-            //string id = curr.GetAttribute("id");
-            XmlElement sibling = referenceNode as XmlElement;
-            //string id2 = sibling.GetAttribute("id");
-            //curr.SetAttribute("id", id2);
-            //  sibling.SetAttribute("id", id);
-
-            XmlNode copyNode = currentNode;
-
-            if (!goHigher)
-            {
-                root.InsertAfter(currentNode, referenceNode);
-            }
-            else
-            {
-                root = root.NextSibling;
-                if (root == null)
-                    root = currentNode.ParentNode.ParentNode.FirstChild;
-                root.PrependChild(copyNode);
-            }
-            tItems.Clear();
-            LoadListRecursive(_treeView, tItems);
-
-            StepForward();
+            main.Show();
         }
 
-        private void move_up(object sender, RoutedEventArgs e)
-        {
-            XmlNode currentNode = _treeView.SelectedItem as XmlNode;
-            XmlNode referenceNode = currentNode.PreviousSibling;
-            XmlNode root = currentNode.ParentNode;
-            bool goHigher = false;
-            if (referenceNode == null)
-            {
-                Console.WriteLine("This is null");
-                referenceNode = currentNode.ParentNode.PreviousSibling;
-                if (referenceNode == null)
-                {
-                    referenceNode = currentNode.ParentNode.ParentNode.LastChild;
-                }
-                else
-                {
-                    referenceNode = referenceNode.LastChild;
-                }
-                goHigher = true;
-            }
-
-            XmlElement curr = currentNode as XmlElement;
-            //string id = curr.GetAttribute("id");
-            XmlElement sibling = referenceNode as XmlElement;
-            //string id2 = sibling.GetAttribute("id");
-            //curr.SetAttribute("id", id2);
-            //  sibling.SetAttribute("id", id);
-
-            XmlNode copyNode = currentNode;
-
-            if (!goHigher)
-            {
-                root.InsertBefore(currentNode, referenceNode);
-            }
-            else
-            {
-                root = root.PreviousSibling;
-                if (root == null)
-                    root = currentNode.ParentNode.ParentNode.LastChild;
-                root.AppendChild(copyNode);
-            }
-            tItems.Clear();
-            LoadListRecursive(_treeView, tItems);
-
-            StepBackwards();
-        }
-
-        private void removeStepButton_Click(object sender, RoutedEventArgs e)
-        {
-            XmlNode currentNode = _treeView.SelectedItem as XmlNode;
-            XmlElement tmp = _treeView.SelectedItem as XmlElement;
-            string id = tmp.GetAttribute("id");
-            XmlNode root = currentNode.ParentNode;
-            tItems.Clear();
-            LoadListRecursive(_treeView, tItems);
-            StepBackwards();
-            if (currentNode != null)
-            {
-                root.RemoveChild(currentNode);
-            }
-            else
-            {
-                MessageBox.Show("Error");
-            }
-
-            foreach (XmlElement child in root)
-            {
-                if (child.Name == "Test_Step")
-                {
-                    int child_id = Int32.Parse(child.GetAttribute("id"));
-                    if (child_id > Int32.Parse(id))
-                    {
-                        string tmp1 = "" + (child_id - 1);
-                        child.SetAttribute("id", tmp1);
-                    }
-                }
-            }
-
-            _xml.Save(xmlFile);
-        }
-
-        private void addStepButton_Click(object sender, RoutedEventArgs e)
-        {
-            string id = "";
-            XmlElement root = _treeView.SelectedItem as XmlElement;
-            XmlElement refChild = root;
-            if (root.Name == "Test_Step")
-            {
-                id = root.GetAttribute("id");
-                int x = Int32.Parse(id) + 1;
-                root = root.ParentNode as XmlElement;
-                id = "" + x;
-            }
-            else if (root.Name == "Section")
-            {
-                XmlElement tmp = root.LastChild as XmlElement;
-                id = tmp.GetAttribute("id");
-                int x = Int32.Parse(id) + 1;
-                id = "" + x;
-                refChild = tmp;
-            }
-
-            //creating elements to add to test_step
-            XmlElement newTestStep = _xml.CreateElement("Test_Step");
-            newTestStep.SetAttribute("id", id);
-            XmlElement newStation = _xml.CreateElement("Station");
-            XmlElement newExpResult = _xml.CreateElement("Expected_Result");
-            XmlElement newControlAction = _xml.CreateElement("Control_Action");
-            XmlElement newPass = _xml.CreateElement("Pass");
-            XmlElement newFail = _xml.CreateElement("Fail");
-            XmlElement newComments = _xml.CreateElement("Comments");
-            XmlElement newImage = _xml.CreateElement("Image");
-
-            newPass.InnerText = "false";
-            newFail.InnerText = "false";
-
-            //setting the innertext to the textbox in the xaml page
-            //newTestStep.InnerText = tbStep.Text;
-            //newStation.InnerText = tbStation.Text;
-            //newExpResult.InnerText = tbExpectedResult.Text;
-            //newControlAction.InnerText = tbControlAction.Text;
-            newTestStep.InnerText = "";
-            newStation.InnerText = "";
-            newExpResult.InnerText = "";
-            newControlAction.InnerText = "";
-
-            //appending the subsections to test_step
-            newTestStep.AppendChild(newStation);
-            newTestStep.AppendChild(newControlAction);
-            newTestStep.AppendChild(newExpResult);
-            newTestStep.AppendChild(newPass);
-            newTestStep.AppendChild(newFail);
-            newTestStep.AppendChild(newComments);
-            newTestStep.AppendChild(newImage);
-
-            //root.AppendChild(newTestStep);
-            root.InsertAfter(newTestStep, refChild);
-            //_treeView.Items.Refresh();
-            //_treeView.UpdateLayout();
-            tItems.Clear();
-            LoadListRecursive(_treeView, tItems);
-
-            bool flag = false;
-            foreach (XmlElement child in root)
-            {
-                if (child.Name == "Test_Step")
-                {
-                    int child_id = Int32.Parse(child.GetAttribute("id"));
-                    if (child_id >= Int32.Parse(id) && flag)
-                    {
-                        string tmp = "" + (child_id + 1);
-                        child.SetAttribute("id", tmp);
-                    }
-                    else if (child_id >= Int32.Parse(id) && !flag)
-                    {
-                        flag = true;
-                    }
-                }
-            }
-
-            StepForward();
-        }
-
-        private void addSectionButton_Click(object sender, RoutedEventArgs e)
-        {
-            XmlElement root = _treeView.SelectedItem as XmlElement;
-            if (root.Name == "Test_Step")
-                root = root.ParentNode.ParentNode as XmlElement;
-            else if (root.Name == "Section")
-                root = root.ParentNode as XmlElement;
-            int count = 1;
-            foreach (XmlElement x in root)
-            {
-                if (x.Name == "Section")
-                    count++;
-            }
-            string id = "" + count;
-
-            //creating a new section
-            XmlElement newSection = _xml.CreateElement("Section");
-            newSection.SetAttribute("id", id);
-
-            //creating a new test step within a newly created section
-            XmlElement newTestStep = _xml.CreateElement("Test_Step");
-            newTestStep.SetAttribute("id", "1");
-            XmlElement newStation = _xml.CreateElement("Station");
-            XmlElement newExpResult = _xml.CreateElement("Expected_Result");
-            XmlElement newControlAction = _xml.CreateElement("Control_Action");
-            XmlElement newPass = _xml.CreateElement("Pass");
-            XmlElement newFail = _xml.CreateElement("Fail");
-            XmlElement newComments = _xml.CreateElement("Comments");
-            XmlElement newImage = _xml.CreateElement("Image");
-
-            newTestStep.InnerText = tbStep.Text;
-            newStation.InnerText = tbStation.Text;
-            newExpResult.InnerText = tbExpectedResult.Text;
-            newControlAction.InnerText = tbControlAction.Text;
-
-            //appending the subsections to test_step
-            newTestStep.AppendChild(newStation);
-            newTestStep.AppendChild(newControlAction);
-            newTestStep.AppendChild(newExpResult);
-            newTestStep.AppendChild(newPass);
-            newTestStep.AppendChild(newFail);
-            newTestStep.AppendChild(newComments);
-            newTestStep.AppendChild(newImage);
-
-            //adding test step to section
-            newSection.AppendChild(newTestStep);
-
-            //adding section to root
-            root.AppendChild(newSection);
-
-            tItems.Clear();
-            LoadListRecursive(_treeView, tItems);
-        }
 
         private void Exit_Button(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        #endregion buttons
 
-        #region TreeView
+    }
 
-        private void TreeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    #region MVVM Implementation
+
+    public class EditorRelayCommand : ICommand
+    {
+        private readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
+
+        public EditorRelayCommand(Action<object> execute) : this(execute, null) { }
+        public EditorRelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            string section = String.Empty, step = String.Empty;
-            XmlElement pos = _treeView.SelectedItem as XmlElement;
-            if (pos != null)
-            {
-                if (pos.Name == "Test_Step")
-                {
-                    step = pos.SelectSingleNode("@id").Value;
-                    section = pos.ParentNode.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-                    for (int i = 0; i < tItems.Count; i++)
-                    {
-                        if (tItems[i].IsSelected)
-                            this.pos = i;
-                    }
-                }
-                else if (pos.Name == "Section")
-                {
-                    section = pos.SelectSingleNode("@id").Value;
-                    lblProcedurePosition.Text = String.Format("Section {0}", section);
-                }
-            }
-            else
-            {
-                lblProcedurePosition.Text = String.Format("Section {0}, Step {1}", section, step);
-            }
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
-        private void TreeView1_PreviewMouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
+        public event EventHandler CanExecuteChanged
         {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
-        //Initialize the treeView to section 0, step 0
-
-        //Navigate to next step in test procedure
-
-        #endregion TreeView
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        public bool CanExecute(object parameter)
         {
-            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(TreeView));
-            if (dpd != null)
-            {
-                dpd.AddValueChanged(treeView1, ThisIsCalledWhenPropertyIsChanged);
-            }
+            return _canExecute == null ? true : _canExecute(parameter);
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        public void Execute(object parameter)
         {
-            main.Show();
-        }
-
-        private void ThisIsCalledWhenPropertyIsChanged(object sender, EventArgs e)
-        {
-            _treeView.Items.Refresh();
-            _treeView.UpdateLayout();
-        }
-
-        #region otherFunctions
-
-        private void ftn_Open_File()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "XML files|*.xml";
-
-            if ((bool)openFileDialog.ShowDialog())
-            {
-                _xml = new XmlDocument();
-
-                try
-                {
-                    _xml.Load(openFileDialog.FileName);
-                }
-                catch (Exception err)
-                {
-                    MessageBox.Show(err.Message, "Error");
-                }
-
-                _xmlDataProvider.Document = _xml;
-            }
-
-            MessageBox.Show(openFileDialog.FileName);
-            _treeView.Items.Refresh();
-            _treeView.UpdateLayout();
-        }
-
-        private int getTotalSteps()//XmlElement searchRoot)
-        {
-            XmlNodeList nList = _xml.GetElementsByTagName("Test_Step");
-            int o = 0;
-            foreach (XmlNode n in nList)
-            {
-                o++;
-                //if (XmlConvert.ToBoolean(n["Pass"].InnerText) || XmlConvert.ToBoolean(n["Fail"].InnerText)) o++;
-            }
-            return o;
-            // return (((double)o / nList.Count) * 100);
-        }
-
-        private void mnuSave_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "XML files|*.xml";
-            if ((bool)saveFileDialog.ShowDialog())
-            {
-                try
-                {
-                    _xml.Save(saveFileDialog.FileName);
-                }
-                catch (Exception err)
-                {
-                    MessageBox.Show(err.Message, "Error");
-                }
-            }
-        }
-
-        private void LoadListRecursive(ItemsControl ic, List<TreeViewItem> steps)
-        {
-            //Search for the object model in first level children (recursively)
-
-            if (ic == null)//&& ((XmlElement)tvi.Header).Name == "Test_Steps")
-            {
-                return;
-            }
-
-            if (ic.GetType().Equals(typeof(TreeViewItem)))
-            {
-                TreeViewItem tvi = ic as TreeViewItem;
-                XmlElement element = tvi.Header as XmlElement;
-
-                if (element.Name.Equals(StepName))
-                {
-                    steps.Add(tvi);
-                }
-            }
-
-            foreach (object i in ic.Items)
-            {
-                TreeViewItem extraction = ic.ItemContainerGenerator.ContainerFromItem(i) as TreeViewItem;
-                LoadListRecursive(extraction, steps);
-            }
-        }
-
-        private void Window_ContentRendered(object sender, EventArgs e)
-        {
-            LoadListRecursive(_treeView, tItems);
-            StepToStart();
-        }
-
-        private void StepForward()
-        {
-            treeHelper.MoveForward();
-        }
-
-        private void GoToNext(object sender, RoutedEventArgs e)
-        {
-            treeHelper.MoveForward();
-        }
-
-        private void StepBackwards()
-        {
-            treeHelper.MoveBackwards();
-            //pos = (pos == 0) ? tItems.Count - 1 : pos - 1;
-            //tItems[pos].IsSelected = true;
-        }
-
-        private void GoToPrevious(object sender, RoutedEventArgs e)
-        {
-            treeHelper.MoveBackwards();
-        }
-
-        private void StepToStart()
-        {
-            Console.WriteLine(tItems.Count);
-
-            tItems[0].IsSelected = true;
-        }
-
-        private void pbProcedureProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            //do nothing
+            _execute(parameter);
         }
     }
 
-    #endregion otherFunctions
+    public class EditorBaseViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+        public event EventHandler<EditorSelectedItemUpdateEventArgs> SelectedItemUpdated;
+        protected void OnSelectedItemChanged(EditorStepViewModel testStep)
+            => SelectedItemUpdated?.Invoke(this, new EditorSelectedItemUpdateEventArgs(testStep));
+    }
+
+    public class EditorSelectedItemUpdateEventArgs : EventArgs
+    {
+        private readonly EditorStepViewModel _selectedStep;
+
+        public EditorSelectedItemUpdateEventArgs(EditorStepViewModel selectedStep)
+        {
+            _selectedStep = selectedStep;
+        }
+
+        public EditorStepViewModel SelectedStep
+        {
+            get { return _selectedStep; }
+        }
+    }
+
+    public class EditorStepToTreeviewLabelConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            EditorStepViewModel step = value as EditorStepViewModel;
+            string label = step.StepID + ".";
+
+            return label;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EditorStepToFullLabelConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            EditorStepViewModel testStep = value as EditorStepViewModel;
+            return "Section: " + testStep.Parent.SectionID.ToString() + ", Step: " + testStep.StepID.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EditorStepViewModel : EditorBaseViewModel
+    {
+        #region Private Members
+
+        private string _stationOriginal;
+        private string _station;
+        private string _controlActionOriginal;
+        private string _controlAction;
+        private string _expectedResultOriginal;
+        private string _expectedResult;
+        private bool _isSelected;
+
+        #endregion
+
+        #region Constructor
+
+        public EditorStepViewModel(int stepID, string station, string controlAction, string expectedResult)
+        {
+            this.StepID = stepID;
+            _stationOriginal = station;
+            _station = station;
+            _controlActionOriginal = controlAction;
+            _controlAction = controlAction;
+            _expectedResultOriginal = expectedResult;
+            _expectedResult = expectedResult;
+        }
+
+        #endregion
+
+        #region Public Members
+
+        public EditorSectionsViewModel Parent { get; set; }
+
+        public Object ItSelf
+        {
+            get { return this; }
+        }
+
+        public int StepID { get; set; }
+
+        public string Station
+        {
+            get { return _station; }
+            set
+            {
+                if (!value.Equals(_station))
+                {
+                    _station = value;
+                    OnPropertyChanged("Station");
+                }
+            }
+        }
+
+
+        public string ControlAction
+        {
+            get { return _controlAction; }
+            set
+            {
+                if (!value.Equals(_controlAction))
+                {
+                    _controlAction = value;
+                    OnPropertyChanged("ControlAction");
+                }
+            }
+        }
+
+
+        public string ExpectedResult
+        {
+            get { return _expectedResult; }
+            set
+            {
+                if (!value.Equals(_expectedResult))
+                {
+                    _expectedResult = value;
+                    OnPropertyChanged("ExpectedResult");
+                }
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    if (_isSelected)
+                    {
+                        OnSelectedItemChanged(this);
+                        OnPropertyChanged("IsSelected");
+                    }
+                }
+            }
+        }
+
+        #endregion
+    }
+
+    public class EditorSectionsViewModel : EditorBaseViewModel
+    {
+        private int _sectionID;
+        private string _sectionHeading;
+        private ObservableCollection<EditorStepViewModel> _steps;
+        private bool _isSelected = false;
+
+        public EditorSectionsViewModel(int sectionID, string sectionHeading)
+        {
+            _sectionID = sectionID;
+            _sectionHeading = sectionHeading;
+        }
+
+        public ObservableCollection<EditorStepViewModel> Steps
+        {
+            get { return _steps; }
+            set
+            {
+                if (_steps != value)
+                {
+                    _steps = value;
+                    OnPropertyChanged("Steps");
+                }
+            }
+        }
+
+        public int SectionID
+        {
+            get { return _sectionID; }
+            set
+            {
+                if (_sectionID != value)
+                {
+                    _sectionID = value;
+                    OnPropertyChanged("SectionID");
+                }
+            }
+        }
+
+        public string SectionHeading
+        {
+            get { return _sectionHeading; }
+            set
+            {
+                if (_sectionHeading != value)
+                {
+                    _sectionHeading = value;
+                    OnPropertyChanged("SectionHeading");
+                }
+            }
+        }
+
+        public string Description { get; set; }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged("IsSelected");
+                }
+            }
+        }
+    }
+
+
+    public class EditorViewModel : EditorBaseViewModel
+    {
+        #region Private Members
+
+        /// <summary>
+        /// List of all sections
+        /// </summary>
+        private ObservableCollection<EditorSectionsViewModel> _sections;
+        private EditorStepViewModel _selectedStep;
+        private readonly IDialogService _dialogService;
+        private XmlDocument originalXML;
+
+        private string _date = String.Empty;
+        private string _timeStarted = String.Empty;
+
+        #endregion
+
+        #region Constructor
+
+        public EditorViewModel(XmlDocument xmlDocument, IDialogService dialogService)
+        {
+            _dialogService = dialogService;
+            _sections = new ObservableCollection<EditorSectionsViewModel>();
+
+            loadXML(xmlDocument);
+            originalXML = xmlDocument;
+
+            _sections[0].Steps[0].IsSelected = true;
+        }
+        #endregion
+
+        #region Public Members
+
+        /// <summary>
+        /// List of Sections
+        /// </summary>
+        public ObservableCollection<EditorSectionsViewModel> Sections
+        {
+            get { return _sections; }
+            set
+            {
+                if (value != _sections)
+                {
+                    _sections = value;
+                    OnPropertyChanged("Sections");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns currently selected test step
+        /// </summary>
+        public EditorStepViewModel SelectedStep
+        {
+            get { return _selectedStep; }
+            set
+            {
+                if (_selectedStep != value)
+                {
+                    _selectedStep = value;
+                    OnPropertyChanged("SelectedStep");
+                }
+
+            }
+        }
+
+
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Event listener for test step changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void StepSelectedChanged(object sender, EditorSelectedItemUpdateEventArgs e)
+        {
+            this.SelectedStep = e.SelectedStep;
+        }
+
+        /// <summary>
+        /// Event listener for the values of the currently selected test step changing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void StepSelectedValueChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("SelectedStep");
+        }
+
+        #endregion
+
+        #region Commands
+
+        private ICommand removeCommand;
+        private ICommand _MoveUpCommand;
+        private ICommand _MoveDownCommand;
+        private ICommand _SaveToXmlCommand;
+
+        public ICommand MoveUpCommand
+        {
+            get
+            {
+                if (_MoveUpCommand == null)
+                {
+                    _MoveUpCommand = new RelayCommand(p => this.MoveUp());
+                }
+                return _MoveUpCommand;
+            }
+        }
+        private void MoveUp()
+        {
+            selectPreviousStep();
+        }
+
+        public ICommand MoveDownCommand
+        {
+            get
+            {
+                if (_MoveDownCommand == null)
+                {
+                    _MoveDownCommand = new RelayCommand(p => this.MoveDown());
+                }
+                return _MoveDownCommand;
+            }
+        }
+        private void MoveDown()
+        {
+            selectNextStep();
+        }
+
+
+        public ICommand SaveToXmlCommand
+        {
+            get
+            {
+                if (_SaveToXmlCommand == null)
+                {
+                    _SaveToXmlCommand = new RelayCommand(p => this.SaveToXml());
+                }
+                return _SaveToXmlCommand;
+            }
+        }
+        private void SaveToXml()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            try
+            {
+                saveFileDialog.Filter = "XML file (*.xml)|*.xml";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string fullpath = saveFileDialog.FileName;
+
+                    XmlNode root = originalXML.SelectSingleNode("Test_Procedure");
+
+                    // Fill Heading
+                    /*
+                    XmlNode procedureHeading = root.SelectSingleNode("Procedure_Heading");
+                    procedureHeading.SelectSingleNode("Name").InnerText = Name;
+                    procedureHeading.SelectSingleNode("Date").InnerText = _date;
+                    procedureHeading.SelectSingleNode("Software_Load_Version").InnerText = SoftwareLoadVersion;
+                    procedureHeading.SelectSingleNode("Program_Phase").InnerText = ProgramPhase;
+                    procedureHeading.SelectSingleNode("Program_Type").InnerText = ProgramType;
+                    procedureHeading.SelectSingleNode("Classification").InnerText = Classification;
+                    procedureHeading.SelectSingleNode("Start_Time").InnerText = _timeStarted;
+                    procedureHeading.SelectSingleNode("Stop_Time").InnerText = DateTime.Now.ToString("HH:mm");
+                    */
+                    int i = 0, j = 0;
+                    // Fill Test Steps
+                    var sectionsList = root.SelectNodes("Sections/Section");
+                    foreach (XmlNode sectionNode in sectionsList)
+                    {
+                        var testStepsList = sectionNode.SelectNodes("Test_Step");
+                        j = 0;
+                        foreach (XmlNode testStepNode in testStepsList)
+                        {
+                            EditorStepViewModel testStep = _sections[i].Steps[j];
+                                testStepNode.SelectSingleNode("Station_Redline").InnerText = testStep.Station;
+                                testStepNode.SelectSingleNode("Control_Action_Redline").InnerText = testStep.ControlAction;
+                                testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText = testStep.ExpectedResult;
+
+                            XmlNode resultNode = testStepNode.SelectSingleNode("Result");
+
+
+                            testStepNode.SelectSingleNode("Comment").InnerText = "";
+
+                            j++;
+                        }
+                        i++;
+                    }
+
+                    originalXML.Save(fullpath);
+                }
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        #endregion
+
+        #region Helper Functions
+
+        /// <summary>
+        /// Adds event listeners to the test step
+        /// </summary>
+        /// <param name="newStep">test step to add event handler to</param>
+
+        private void loadXML(XmlDocument xmlDocument)
+        {
+            XmlNode root = xmlDocument.SelectSingleNode("Test_Procedure");
+
+            XmlNode heading = root.SelectSingleNode("Procedure_Heading");
+
+            var sectionsList = root.SelectNodes("Sections/Section");
+            foreach (XmlNode sectionNode in sectionsList)
+            {
+                EditorSectionsViewModel newSection = new EditorSectionsViewModel(Int32.Parse(sectionNode.Attributes.GetNamedItem("id").Value), sectionNode.SelectSingleNode("Heading").InnerText);
+                newSection.Description = sectionNode.SelectSingleNode("Description").InnerText;
+
+
+                var steps = new ObservableCollection<EditorStepViewModel>();
+                var testStepsList = sectionNode.SelectNodes("Test_Step");
+                foreach (XmlNode testStepNode in testStepsList)
+                {
+                    int stepID = Int32.Parse(testStepNode.Attributes.GetNamedItem("id").Value);
+                    string station = testStepNode.SelectSingleNode("Station").InnerText;
+                    string controlAction = testStepNode.SelectSingleNode("Control_Action").InnerText;
+                    string expectedResult = testStepNode.SelectSingleNode("Expected_Result").InnerText;
+                    EditorStepViewModel newStep = new EditorStepViewModel(stepID, station, controlAction, expectedResult);
+                    XmlNode result = testStepNode.SelectSingleNode("Result");
+
+
+                    if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Station_Redline").InnerText))
+                        newStep.Station = testStepNode.SelectSingleNode("Station_Redline").InnerText;
+
+                    if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Control_Action_Redline").InnerText))
+                        newStep.ControlAction = testStepNode.SelectSingleNode("Control_Action").InnerText;
+
+                    if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText))
+                        newStep.ExpectedResult = testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText;
+
+                    newStep.Parent = newSection;
+                    addEventHandlerToStep(newStep);
+                    steps.Add(newStep);
+                }
+
+                newSection.Steps = steps;
+                _sections.Add(newSection);
+            }
+        }
+
+        private void addEventHandlerToStep(EditorStepViewModel newStep)
+        {
+            newStep.SelectedItemUpdated += StepSelectedChanged;
+            newStep.PropertyChanged += StepSelectedValueChanged;
+        }
+
+        private void selectNextStep()
+        {
+            if (_selectedStep == null) { return; }
+            int i, j;
+            bool selectedFound = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+                    if (selectedFound)
+                    {
+                        _sections[i].Steps[j].IsSelected = true;
+                        return;
+                    }
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        selectedFound = true;
+                    }
+                }
+            }
+        }
+
+        private void selectPreviousStep()
+        {
+            if (_selectedStep == null) { return; }
+            int i, j;
+            bool selectedFound = false;
+            for (i = _sections.Count() - 1; i > -1; i--)
+            {
+                for (j = _sections[i].Steps.Count() - 1; j > -1; j--)
+                {
+                    if (selectedFound)
+                    {
+                        _sections[i].Steps[j].IsSelected = true;
+                        return;
+                    }
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        selectedFound = true;
+                    }
+                }
+            }
+        }
+
+
+        #endregion
+    }
+
+
+    #endregion
 }
