@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Test_Procedure>
+
+<Procedure_Heading>
+
+<Name >CAE Testing</Name>
+<Signature/>
+<Organization/>
+<Date/>
+<Time/>
+<Load_Version/>
+<Description/>
+<System/>
+<Severity/>
+<Revision> 1 </Revision>
+</Procedure_Heading >
+
+<Sections>
+
+<Section id="1">
+
+<Heading> 1.0 IOS DORT TESTS </Heading>
+
+<Description> short description </Description>
+
+<Test_Step id="1"><Station></Station><Control_Action></Control_Action><Expected_Result></Expected_Result><Pass>false</Pass><Fail>false</Fail><Comments/><Image /></Test_Step>
+
+</Section>
+
+</Sections>
+
+</TestProcedure>
