@@ -54,27 +54,33 @@ namespace senior_project
             using (StreamWriter sw = File.AppendText(file))
             {
                 sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-                sw.WriteLine("<TestProcedure>\n");
+                sw.WriteLine("<Test_Procedure rev=\"\">\n");
                 sw.WriteLine("<Procedure_Heading>\n");
-                sw.WriteLine("<Name >CAE Testing</Name>\n"
-                                + "<Signature/>\n"
-                                + "<Organization/>\n"
-                                + "<Date/>\n"
+                sw.WriteLine("<System />\n"
+                                + "<Description />\n"
+                                + "<Name />\n"
+                                + "<Date />\n"
                                 + "<Time/>\n"
-                                + "<Load_Version/>\n"
-                                + "<Description/>\n"
-                                + "<System/>\n"
-                                + "<Severity/>\n"
-                                + "<Revision> 1 </Revision>\n"
+                                + "<Software_Load_Version />\n"
+                                + "<Program_Phase />\n"
+                                + "<Classification />\n"
+                                + "<Signature />\n"
+                                + "<Start_Time />\n"
+                                + "<Stop_Time />\n"
                                 + "</Procedure_Heading >\n");
                 sw.WriteLine("<Sections>\n");
                 sw.WriteLine("<Section id=\"1\">\n");
                 sw.WriteLine("<Heading> 1.0 IOS DORT TESTS </Heading>\n");
                 sw.WriteLine("<Description> short description </Description>\n");
-                sw.WriteLine("<Test_Step id=\"1\"><Station></Station><Control_Action></Control_Action><Expected_Result></Expected_Result><Pass>false</Pass><Fail>false</Fail><Comments/><Image /></Test_Step>\n");
+                sw.WriteLine("<Test_Step id=\"1\">\n" +
+                                "<Station></Station>\n" + 
+                                "<Control_Action></Control_Action>\n" + 
+                                "<Expected_Result></Expected_Result>\n" +
+                                "<Result result=\"\"></Result>\n" + 
+                                "<Comments/></Test_Step>\n");
                 sw.WriteLine("</Section>\n");
                 sw.WriteLine("</Sections>\n");
-                sw.WriteLine("</TestProcedure>");
+                sw.WriteLine("</Test_Procedure>");
 
             }
 
