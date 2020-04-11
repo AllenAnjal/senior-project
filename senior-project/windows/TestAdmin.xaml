@@ -347,23 +347,43 @@
                     LastChildFill="False">
                     <Button
                         x:Name="removeButton"
-                        Width="46"
+                        Width="100"
                         Height="45"
+                        Margin="0,0,30,0"
                         Command="{Binding removeCommand}"
                         DockPanel.Dock="Right"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                        Content="Remove Item"
                         ToolTip="Press to remove the selected item">
-                        <Image Source="icons\x-mark-5-512.png">
-                            <Image.Style>
-                                <Style TargetType="Image">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Opacity" Value=".3" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>
-                        </Image>
+                    </Button>
+                    <Button
+                        x:Name="addStepButton"
+                        Width="100"
+                        Height="45"
+                        Margin="0,0,30,0"
+                        Command="{Binding addStepCommand}"
+                        DockPanel.Dock="Right"
+                        Content="Add Step"
+                        ToolTip="Press to add a new test step under the current selected item">
+                    </Button>
+                    <Button
+                        x:Name="addSsectionButton"
+                        Width="100"
+                        Height="45"
+                        Margin="0,0,30,0"
+                        Command="{Binding addSectionCommand}"
+                        DockPanel.Dock="Right"
+                        Content="Add Section"
+                        ToolTip="Press to add a new section under the current section">
+                    </Button>
+                    <Button
+                        x:Name="renameSectionButton"
+                        Width="100"
+                        Height="45"
+                        Margin="0,0,30,0"
+                        Command="{Binding renameCommand}"
+                        DockPanel.Dock="Right"
+                        Content="Rename Section"
+                        ToolTip="Press to rename a section (section must be selected)">
                     </Button>
                 </DockPanel>
             </Grid>

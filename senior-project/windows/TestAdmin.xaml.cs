@@ -158,6 +158,7 @@ namespace senior_project
 
         private string _stationOriginal;
         private string _station;
+        private int _stepID;
         private string _controlActionOriginal;
         private string _controlAction;
         private string _expectedResultOriginal;
@@ -170,7 +171,7 @@ namespace senior_project
 
         public EditorStepViewModel(int stepID, string station, string controlAction, string expectedResult)
         {
-            this.StepID = stepID;
+            _stepID = stepID;
             _stationOriginal = station;
             _station = station;
             _controlActionOriginal = controlAction;
@@ -190,7 +191,17 @@ namespace senior_project
             get { return this; }
         }
 
-        public int StepID { get; set; }
+        public int StepID { 
+            get { return _stepID; }
+            set
+            {
+                if (value != _stepID)
+                {
+                    _stepID = value;
+                    OnPropertyChanged("ItSelf");
+                }
+            }
+        }
 
         public string Station
         {
@@ -418,10 +429,123 @@ namespace senior_project
 
         #region Commands
 
-        private ICommand removeCommand;
+        private ICommand _removeCommand;
+        private ICommand _addStepCommand;
+        private ICommand _addSectionCommand;
+        private ICommand _renameCommand;
         private ICommand _MoveUpCommand;
         private ICommand _MoveDownCommand;
         private ICommand _SaveToXmlCommand;
+
+        #region functionality portion for editor
+        public ICommand removeCommand
+        {
+            get
+            {
+                if (_removeCommand == null)
+                {
+                    _removeCommand = new RelayCommand(p => this.remove());
+                }
+                return _removeCommand;
+            }
+        }
+
+        private void remove()
+        {
+            int i = 0;
+            bool sectionSelected = false;
+            for (i = 0; i < _sections.Count(); i++) {
+                if (_sections[i].IsSelected)
+                {
+                    sectionSelected = true;
+                    break;
+                }
+            }
+            if(sectionSelected)
+                _sections.RemoveAt(i);
+            else
+            {
+                i = 0;
+                int j = 0, location = 0;
+                bool testSelected = false;
+                for(i = 0; i< _sections.Count(); i++)
+                {
+                    for(j = 0; j< _sections[i].Steps.Count(); j++)
+                    {
+                                       
+                        if (_sections[i].Steps[j].IsSelected) {
+                            testSelected = true;
+                            location = j;
+                        }
+                        else if (testSelected)
+                        {
+                            
+                            _sections[i].Steps[j].StepID--;
+                            
+                        }
+
+                    }
+                    if (testSelected) break;
+                }
+
+                _sections[i].Steps.RemoveAt(location);
+            }
+
+            
+        }
+
+        public ICommand addStepCommand
+        {
+            get
+            {
+                if (_addStepCommand == null)
+                {
+                    _addStepCommand = new RelayCommand(p => this.addStep());
+                }
+                return _addStepCommand;
+            }
+        }
+
+        private void addStep()
+        {
+
+        }
+
+        public ICommand addSectionCommand
+        {
+            get
+            {
+                if (_addSectionCommand == null)
+                {
+                    _addSectionCommand = new RelayCommand(p => this.addSection());
+                }
+                return _addSectionCommand;
+            }
+        }
+
+        private void addSection()
+        {
+
+        }
+
+        public ICommand renameCommand
+        {
+            get
+            {
+                if (_renameCommand == null)
+                {
+                    _renameCommand = new RelayCommand(p => this.renameSection());
+                }
+                return _renameCommand;
+            }
+        }
+
+        private void renameSection()
+        {
+
+        }
+
+        #endregion
 
         public ICommand MoveUpCommand
         {
