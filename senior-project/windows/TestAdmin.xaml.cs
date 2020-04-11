@@ -690,6 +690,11 @@ namespace senior_project
                     _sections[i - 1].Steps.Add(_sections[i].Steps[j]);
                     _sections[i].Steps.RemoveAt(j);
                     _sections[i - 1].Steps[_sections[i - 1].Steps.Count() - 1].IsSelected = true;
+                    _sections[i - 1].Steps[_sections[i - 1].Steps.Count() - 1].StepID = _sections[i - 1].Steps.Count();
+                    for (int k = 0; k < _sections[i].Steps.Count(); k++)
+                    {
+                        _sections[i].Steps[k].StepID = k + 1;
+                    }
                 }
                 else if (j == 0 && i == 0)
                 {
@@ -697,13 +702,26 @@ namespace senior_project
                     _sections[0].Steps.RemoveAt(0);
                     _sections[0].Steps[0].IsSelected = false;
                     _sections[_sections.Count() - 1].Steps[_sections[_sections.Count() - 1].Steps.Count() - 1].IsSelected = true;
+                    _sections[_sections.Count() - 1].Steps[_sections[_sections.Count() - 1].Steps.Count() - 1].StepID = _sections[_sections.Count() - 1].Steps.Count();
+                    for (int k = 0; k < _sections[0].Steps.Count(); k++)
+                    {
+                        _sections[0].Steps[k].StepID = k + 1;
+                    }
+
+
                 }
                 else
                 {
+
+                    int id1 = _sections[i].Steps[j].StepID;
+                    int id2 = _sections[i].Steps[j - 1].StepID;
+
                     tmp = _sections[i].Steps[j];
                     _sections[i].Steps[j] = _sections[i].Steps[j - 1];
                     _sections[i].Steps[j].IsSelected = false;
                     _sections[i].Steps[j - 1] = tmp;
+                    _sections[i].Steps[j].StepID = id1;
+                    _sections[i].Steps[j - 1].StepID = id2;
                 }
                 //selectPreviousStep();
             }
@@ -723,7 +741,66 @@ namespace senior_project
         }
         private void MoveDown()
         {
-            selectNextStep();
+            //selectNextStep();
+            int i = 0, j = 0;
+            bool stepSelected = false;
+            EditorStepViewModel tmp;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        stepSelected = true;
+
+                        break;
+                    }
+                }
+                if (stepSelected) break;
+            }
+            if (stepSelected)
+            {
+                if (j == _sections[_sections.Count() - 1].Steps.Count() - 1 && i < _sections.Count() - 1 )
+                {
+
+
+                    _sections[i].Steps[j].IsSelected = false;
+                    _sections[i + 1].Steps.Insert(0, _sections[i].Steps[j]);
+                    _sections[i].Steps.RemoveAt(j);
+                    _sections[i + 1].Steps[0].IsSelected = true;
+                    for(int k = 0; k < _sections[i + 1].Steps.Count(); k++)
+                    {
+                        _sections[i + 1].Steps[k].StepID = k + 1;
+                    }
+
+                }
+                else if (j == _sections[_sections.Count() - 1].Steps.Count() - 1 && i == _sections.Count() - 1)
+                {
+                    _sections[0].Steps.Insert(0, _sections[i].Steps[j]);
+                    _sections[_sections.Count() - 1].Steps.RemoveAt(_sections[_sections.Count() - 1].Steps.Count() - 1);
+                    _sections[_sections.Count() - 1].Steps[_sections[_sections.Count() - 1].Steps.Count() - 1].IsSelected = false;
+                    _sections[0].Steps[0].IsSelected = true;
+
+                    for (int k = 0; k < _sections[0].Steps.Count(); k++)
+                    {
+                        _sections[0].Steps[k].StepID = k + 1;
+                    }
+                }
+                else
+                {
+                    int id1 = _sections[i].Steps[j].StepID;
+                    int id2 = _sections[i].Steps[j + 1].StepID;
+                    tmp = _sections[i].Steps[j];
+                    _sections[i].Steps[j] = _sections[i].Steps[j + 1];
+                    _sections[i].Steps[j].IsSelected = false;
+                    _sections[i].Steps[j + 1] = tmp;
+                    _sections[i].Steps[j + 1].StepID = id2;
+                    _sections[i].Steps[j].StepID = id1;
+                }
+                //selectPreviousStep();
+            }
+            else { MessageBox.Show("No test step selected"); }
         }
 
 
