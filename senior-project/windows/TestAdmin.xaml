@@ -31,6 +31,11 @@
                 <Separator />
                 <MenuItem Click="Exit_Button" Header="_Exit" />
             </MenuItem>
+            <MenuItem Header="_Editor Tools">
+                <MenuItem Command="{Binding MoveSectionDownCommand}" Header="_Move Section Down"/>
+                <MenuItem Command="{Binding MoveSectionUpCommand}" Header="_Move Section Up"/>
+                <MenuItem Command="{Binding CommitAllCommand}" Header="_Commit All Changes"/>
+            </MenuItem>
         </Menu>
 
         <StatusBar DockPanel.Dock="Bottom">

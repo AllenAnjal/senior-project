@@ -436,6 +436,9 @@ namespace senior_project
         private ICommand _MoveUpCommand;
         private ICommand _MoveDownCommand;
         private ICommand _SaveToXmlCommand;
+        private ICommand _CommitAll;
+        private ICommand _MoveSectionUp;
+        private ICommand _MoveSectionDown;
 
         #region functionality portion for editor
         public ICommand removeCommand
@@ -803,6 +806,129 @@ namespace senior_project
             else { MessageBox.Show("No test step selected"); }
         }
 
+
+        public ICommand MoveSectionDownCommand
+        {
+            get
+            {
+                if(_MoveSectionDown == null)
+                {
+                    _MoveSectionDown = new RelayCommand(p => this.MoveSectionDown());
+                }
+                return _MoveSectionDown;
+            }
+        }
+
+        private void MoveSectionDown()
+        {
+            int i = 0;
+            bool sectionSelected = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                if (_sections[i].IsSelected)
+                {
+                    sectionSelected = true;
+                    break;
+                }
+            }
+            if (!sectionSelected)
+            {
+                MessageBox.Show("No section is selected");
+            }
+            else
+            {
+                if (i == _sections.Count() - 1)
+                {
+                    int id1 = _sections[i].SectionID;
+                    int id2 = _sections[0].SectionID;
+                    EditorSectionsViewModel tmp = _sections[i];
+                    _sections[i] = _sections[0];
+                    _sections[0] = tmp;
+                    _sections[i].SectionID = id1;
+                    _sections[0].SectionID = id2;
+                }
+                else
+                {
+                    int id1 = _sections[i].SectionID;
+                    int id2 = _sections[i + 1].SectionID;
+                    EditorSectionsViewModel tmp = _sections[i];
+                    _sections[i] = _sections[i + 1];
+                    _sections[i + 1] = tmp;
+                    _sections[i].SectionID = id1;
+                    _sections[i + 1].SectionID = id2;
+                }
+            }
+        }
+
+        public ICommand MoveSectionUpCommand
+        {
+            get
+            {
+                if (_MoveSectionUp == null)
+                {
+                    _MoveSectionUp = new RelayCommand(p => this.MoveSectionUp());
+                }
+                return _MoveSectionUp;
+            }
+        }
+
+        private void MoveSectionUp()
+        {
+            int i = 0;
+            bool sectionSelected = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                if (_sections[i].IsSelected)
+                {
+                    sectionSelected = true;
+                    break;
+                }
+            }
+            if (!sectionSelected)
+            {
+                MessageBox.Show("No section is selected");
+            }
+            else
+            {
+                if (i == 0)
+                {
+                    int id1 = _sections[i].SectionID;
+                    int id2 = _sections[_sections.Count()].SectionID;
+                    EditorSectionsViewModel tmp = _sections[i];
+                    _sections[i] = _sections[_sections.Count()];
+                    _sections[_sections.Count()] = tmp;
+                    _sections[i].SectionID = id1;
+                    _sections[_sections.Count()].SectionID = id2;
+                }
+                else
+                {
+                    int id1 = _sections[i].SectionID;
+                    int id2 = _sections[i - 1].SectionID;
+                    EditorSectionsViewModel tmp = _sections[i];
+                    _sections[i] = _sections[i - 1];
+                    _sections[i - 1] = tmp;
+                    _sections[i].SectionID = id1;
+                    _sections[i - 1].SectionID = id2;
+                }
+            }
+        }
+
+        public ICommand CommitAllCommand
+        {
+            get
+            {
+                if (_CommitAll == null)
+                {
+                    _CommitAll = new RelayCommand(p => this.CommitAll());
+                }
+                return _CommitAll;
+            }
+        }
+
+        private void CommitAll()
+        {
+
+        }
 
         public ICommand SaveToXmlCommand
         {
