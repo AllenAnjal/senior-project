@@ -665,7 +665,49 @@ namespace senior_project
         }
         private void MoveUp()
         {
-            selectPreviousStep();
+            int i = 0, j = 0;
+            bool stepSelected = false;
+            EditorStepViewModel tmp;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        stepSelected = true;
+
+                        break;
+                    }
+                }
+                if (stepSelected) break;
+            }
+            if (stepSelected)
+            {
+                if (j == 0 && i > 0)
+                {
+                    _sections[i].Steps[j].IsSelected = false;
+                    _sections[i - 1].Steps.Add(_sections[i].Steps[j]);
+                    _sections[i].Steps.RemoveAt(j);
+                    _sections[i - 1].Steps[_sections[i - 1].Steps.Count() - 1].IsSelected = true;
+                }
+                else if (j == 0 && i == 0)
+                {
+                    _sections[_sections.Count() -  1].Steps.Add(_sections[i].Steps[j]);
+                    _sections[0].Steps.RemoveAt(0);
+                    _sections[0].Steps[0].IsSelected = false;
+                    _sections[_sections.Count() - 1].Steps[_sections[_sections.Count() - 1].Steps.Count() - 1].IsSelected = true;
+                }
+                else
+                {
+                    tmp = _sections[i].Steps[j];
+                    _sections[i].Steps[j] = _sections[i].Steps[j - 1];
+                    _sections[i].Steps[j].IsSelected = false;
+                    _sections[i].Steps[j - 1] = tmp;
+                }
+                //selectPreviousStep();
+            }
+            else { MessageBox.Show("No test step selected"); }
         }
 
         public ICommand MoveDownCommand
