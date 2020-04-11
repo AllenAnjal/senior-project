@@ -33,7 +33,7 @@ namespace senior_project
             main = mw;
 
             IDialogService dialogService = new DialogService(mw);
-
+            dialogService.Register<renameDialogViewModel, renameDialog>();
             XmlDocument xml = new XmlDocument();
             try
             {
@@ -509,6 +509,45 @@ namespace senior_project
         private void addStep()
         {
 
+            int i = 0, j = 0;
+            bool testSelected = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        testSelected = true;
+                        break;
+                    }
+
+                }
+                if (testSelected) break;
+            }
+            EditorStepViewModel newStep = new EditorStepViewModel((j + 1), "", "", "");
+            if (!testSelected)
+            {
+                
+                //add under section as first element 
+                for (i = 0; i < _sections.Count(); i++)
+                {
+                    if (_sections[i].IsSelected)
+                    {
+                        break;
+                    }
+                }
+                newStep.StepID = _sections[i].Steps.Count() + 1;
+                _sections[i].Steps.Add(newStep);
+            }
+            else
+            {
+                _sections[i].Steps.Insert(j, newStep);
+                for (int k = j + 1; k < _sections[i].Steps.Count(); k++)
+                {
+                    _sections[i].Steps[k].StepID++;
+                }
+            }
         }
 
         public ICommand addSectionCommand
@@ -525,7 +564,36 @@ namespace senior_project
 
         private void addSection()
         {
+            int i = 0;
+            bool sectionSelected = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                if (_sections[i].IsSelected)
+                {
+                    sectionSelected = true;
+                    break;
+                }
+            }
+            if (!sectionSelected)
+            {
+                MessageBox.Show("No section is selected");
+            }
+            else
+            {
+                EditorSectionsViewModel newSection = new EditorSectionsViewModel((i + 1), "new section");
+                newSection.Steps = new ObservableCollection<EditorStepViewModel>();
+                EditorStepViewModel newStep = new EditorStepViewModel(1, "new station", "new control", "new expected");
+                newSection.Steps.Add(newStep);
+                
+                _sections.Insert(i + 1, newSection);
+                for(int j = i + 1; j < _sections.Count(); j++)
+                {
+                    _sections[j].SectionID++;
+                }
+                
+                
 
+            }
         }
 
         public ICommand renameCommand
@@ -542,7 +610,44 @@ namespace senior_project
 
         private void renameSection()
         {
+            int i = 0;
+            bool sectionSelected = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                if (_sections[i].IsSelected)
+                {
+                    sectionSelected = true;
+                    break;
+                }
+            }
+            if (!sectionSelected)
+            {
+                MessageBox.Show("No section is selected"); 
+            }
+            else
+            {
+                string newName = getNewSectionName();
+                if (newName == "")
+                {
+                    return;
+                }
+                else
+                {
+                    _sections[i].SectionHeading = newName;
+                }
+            }
+            
+        }
 
+        private string getNewSectionName()
+        {
+            renameDialogViewModel rename = new renameDialogViewModel();
+            bool? result = _dialogService.ShowDialog(rename);
+            if (result == true)
+            {
+                return rename.Comment;
+            }
+            else return "";
         }
 
         #endregion

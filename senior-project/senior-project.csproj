@@ -65,6 +65,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\Document.cs" />
+    <Compile Include="Dialog\renameDialog.xaml.cs">
+      <DependentUpon>renameDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\IDialog.cs" />
     <Compile Include="Dialog\CommentDialog.xaml.cs">
       <DependentUpon>CommentDialog.xaml</DependentUpon>
@@ -82,6 +85,10 @@
     <Compile Include="windows\Tester.xaml.cs" />
     <Compile Include="windows\TreeHelper.cs" />
     <Compile Include="Dialog\userInfoPage.xaml.cs" />
+    <Page Include="Dialog\renameDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialog\CommentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

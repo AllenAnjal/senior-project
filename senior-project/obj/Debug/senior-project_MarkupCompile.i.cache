@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\pacma\Source\Repos\AllenAnjal\senior-project\senior-project\obj\Debug\
+C:\Users\ttruo\Desktop\SeniorProject\senior-project\obj\Debug\
 senior_project
 none
 false
 DEBUG;TRACE
-C:\Users\pacma\Source\Repos\AllenAnjal\senior-project\senior-project\App.xaml
-101747993634
+C:\Users\ttruo\Desktop\SeniorProject\senior-project\App.xaml
+11806498923
 
-181671490482
+19-1907916506
 14-791637246
-Dialog\CommentDialog.xaml;MainWindow.xaml;windows\askForFilename.xaml;windows\commentWindow.xaml;windows\exportWindow.xaml;windows\Redlines.xaml;windows\RedlinesTester.xaml;windows\TestAdmin.xaml;windows\TesterView.xaml;Dialog\userInfoPage.xaml;
+Dialog\renameDialog.xaml;Dialog\CommentDialog.xaml;MainWindow.xaml;windows\askForFilename.xaml;windows\commentWindow.xaml;windows\exportWindow.xaml;windows\Redlines.xaml;windows\RedlinesTester.xaml;windows\TestAdmin.xaml;windows\TesterView.xaml;Dialog\userInfoPage.xaml;
 
-False
+True
 
