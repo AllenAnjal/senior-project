@@ -34,7 +34,27 @@
             <MenuItem Header="_Editor Tools">
                 <MenuItem Command="{Binding MoveSectionDownCommand}" Header="_Move Section Down"/>
                 <MenuItem Command="{Binding MoveSectionUpCommand}" Header="_Move Section Up"/>
+            </MenuItem>
+            <MenuItem Header="_Redline Changes">
+                <MenuItem Command="{Binding loadAllCommand}" Header="_Load All Redline Changes"/>
+                <MenuItem Header="_Select Redline to load">
+                    <MenuItem Command="{Binding loadStationCommand}" Header="_load Station"/>
+                    <MenuItem Command="{Binding loadExpectedCommand}" Header="_load Expected Result"/>
+                    <MenuItem Command="{Binding loaddActionCommand}" Header="_load Control Action"/>
+                </MenuItem>
+                <MenuItem Command="{Binding discardAllCommand}" Header="_Discard All Changes"/>
+                <MenuItem Header="_Select Redline to discard">
+                    <MenuItem Command="{Binding discardStationCommand}" Header="_Discard Station"/>
+                    <MenuItem Command="{Binding discardExpectedCommand}" Header="_Discard Expected Result"/>
+                    <MenuItem Command="{Binding discardActionCommand}" Header="_Discard Control Action"/>
+                </MenuItem>
                 <MenuItem Command="{Binding CommitAllCommand}" Header="_Commit All Changes"/>
+                <MenuItem Header="_Select Redline to Commit">
+                    <MenuItem Command="{Binding commitStationCommand}" Header="_Commit Station"/>
+                    <MenuItem Command="{Binding commitExpectedCommand}" Header="_Commit Expected Result"/>
+                    <MenuItem Command="{Binding commitActionCommand}" Header="_Commit Control Action"/>
+                </MenuItem>
+
             </MenuItem>
         </Menu>
 

@@ -34,6 +34,7 @@ namespace senior_project
 
             IDialogService dialogService = new DialogService(mw);
             dialogService.Register<renameDialogViewModel, renameDialog>();
+            dialogService.Register<DescriptionDialogViewModel, DescriptionDialog>();
             XmlDocument xml = new XmlDocument();
             try
             {
@@ -164,20 +165,26 @@ namespace senior_project
         private string _expectedResultOriginal;
         private string _expectedResult;
         private bool _isSelected;
+        private string _redlineStation;
+        private string _redlineControlAction;
+        private string _redlineExpectedResult;
 
         #endregion
 
         #region Constructor
 
-        public EditorStepViewModel(int stepID, string station, string controlAction, string expectedResult)
+        public EditorStepViewModel(int stepID, string station, string controlAction, string expectedResult, string redlineStation, string redlineExpectedResult, string redlineControlAction)
         {
             _stepID = stepID;
             _stationOriginal = station;
             _station = station;
+            _redlineStation = redlineStation;
             _controlActionOriginal = controlAction;
             _controlAction = controlAction;
+            _redlineControlAction = redlineControlAction;
             _expectedResultOriginal = expectedResult;
             _expectedResult = expectedResult;
+            _redlineExpectedResult = redlineExpectedResult;
         }
 
         #endregion
@@ -191,6 +198,19 @@ namespace senior_project
             get { return this; }
         }
 
+        public string orgControlAction
+        {
+            get { return _controlActionOriginal; }
+        }
+        public string orgStation
+        {
+            get { return _stationOriginal; }
+        }
+        public string orgExpectedResult
+        {
+            get { return _expectedResultOriginal; }
+        }
+
         public int StepID { 
             get { return _stepID; }
             set
@@ -202,6 +222,7 @@ namespace senior_project
                 }
             }
         }
+
 
         public string Station
         {
@@ -242,6 +263,20 @@ namespace senior_project
                     OnPropertyChanged("ExpectedResult");
                 }
             }
+        }
+
+        public string RedlineStation
+        {
+            get { return _redlineStation; }
+        }
+        public string RedlineControlAction
+        {
+            get { return _redlineControlAction; }
+        }
+        
+        public string RedlineExpectedResult
+        {
+            get { return _redlineExpectedResult; }
         }
 
         public bool IsSelected
@@ -439,8 +474,263 @@ namespace senior_project
         private ICommand _CommitAll;
         private ICommand _MoveSectionUp;
         private ICommand _MoveSectionDown;
+        private ICommand _loadAll;
+        private ICommand _discardAll;
+
+        #region redline stuff
+        public ICommand discardAllCommand
+        {
+            get
+            {
+                if (_discardAll == null)
+                {
+                    _discardAll = new RelayCommand(p => this.discardAll());
+                }
+                return _discardAll;
+            }
+        }
+
+        private void discardAll()
+        {
+            discardControlAction();
+            discardStation();
+            discardExpectedResult();
+        }
+
+        private void discardStation()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].Station = _sections[i].Steps[j].orgStation;
+        }
+
+        private void discardExpectedResult()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].ExpectedResult = _sections[i].Steps[j].orgExpectedResult;
+        }
+
+        private void discardControlAction()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].orgControlAction;
+        }
+        public ICommand CommitAllCommand
+        {
+            get
+            {
+                if (_CommitAll == null)
+                {
+                    _CommitAll = new RelayCommand(p => this.CommitAll());
+                }
+                return _CommitAll;
+            }
+        }
+
+        private void CommitAll()
+        {
+            commitControlAction();
+            commitStation();
+            commitExpectedResult();
+        }
+
+        private void commitStation()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].Station = _sections[i].Steps[j].RedlineStation;
+        }
+
+        private void commitExpectedResult()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].ExpectedResult = _sections[i].Steps[j].RedlineExpectedResult;
+        }
+
+        private void commitControlAction()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].RedlineControlAction;
+        }
+
+
+        public ICommand loadAllCommand
+        {
+            get
+            {
+                if (_loadAll == null)
+                {
+                    _loadAll = new RelayCommand(p => this.LoadAll());
+                }
+                return _loadAll;
+            }
+        }
+
+        private void LoadAll()
+        {
+
+            loadStation();
+            loadExpectedResult();
+            loadControlAction();
+            
+        }
+
+        private void loadStation()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].Station += "\nRedline Changes: " + _sections[i].Steps[j].RedlineStation;
+        }
+
+        private void loadExpectedResult()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].ExpectedResult += "\nRedline Changes: " + _sections[i].Steps[j].RedlineExpectedResult;
+        }
+
+        private void loadControlAction()
+        {
+            int i = 0, j = 0;
+            bool found = false;
+            for (i = 0; i < _sections.Count(); i++)
+            {
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+                if (found) break;
+            }
+            _sections[i].Steps[j].ControlAction += "\nRedline Changes: " + _sections[i].Steps[j].RedlineControlAction;
+        }
+
+        #endregion
+
 
         #region functionality portion for editor
+
         public ICommand removeCommand
         {
             get
@@ -528,7 +818,7 @@ namespace senior_project
                 }
                 if (testSelected) break;
             }
-            EditorStepViewModel newStep = new EditorStepViewModel((j + 1), "", "", "");
+            EditorStepViewModel newStep = new EditorStepViewModel((j + 1), "", "", "", "", "", "");
             if (!testSelected)
             {
                 
@@ -583,9 +873,12 @@ namespace senior_project
             }
             else
             {
-                EditorSectionsViewModel newSection = new EditorSectionsViewModel((i + 1), "new section");
+                string name = getNewSectionName();
+                string description = getDescription();
+                EditorSectionsViewModel newSection = new EditorSectionsViewModel((i + 1), name);
+                newSection.Description = description;
                 newSection.Steps = new ObservableCollection<EditorStepViewModel>();
-                EditorStepViewModel newStep = new EditorStepViewModel(1, "new station", "new control", "new expected");
+                EditorStepViewModel newStep = new EditorStepViewModel(1, "new station", "new control", "new expected", "", "", "");
                 newSection.Steps.Add(newStep);
                 
                 _sections.Insert(i + 1, newSection);
@@ -650,6 +943,14 @@ namespace senior_project
             {
                 return rename.Comment;
             }
+            else return "";
+        }
+
+        private string getDescription()
+        {
+            DescriptionDialogViewModel descript = new DescriptionDialogViewModel();
+            bool? result = _dialogService.ShowDialog(descript);
+            if (result == true) return descript.Comment;
             else return "";
         }
 
@@ -913,22 +1214,7 @@ namespace senior_project
             }
         }
 
-        public ICommand CommitAllCommand
-        {
-            get
-            {
-                if (_CommitAll == null)
-                {
-                    _CommitAll = new RelayCommand(p => this.CommitAll());
-                }
-                return _CommitAll;
-            }
-        }
 
-        private void CommitAll()
-        {
-
-        }
 
         public ICommand SaveToXmlCommand
         {
@@ -1028,19 +1314,22 @@ namespace senior_project
                     string station = testStepNode.SelectSingleNode("Station").InnerText;
                     string controlAction = testStepNode.SelectSingleNode("Control_Action").InnerText;
                     string expectedResult = testStepNode.SelectSingleNode("Expected_Result").InnerText;
-                    EditorStepViewModel newStep = new EditorStepViewModel(stepID, station, controlAction, expectedResult);
+                    string rControl = "";
+                    string rExp = "";
+                    string rStation = "";
+
+
                     XmlNode result = testStepNode.SelectSingleNode("Result");
 
-
                     if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Station_Redline").InnerText))
-                        newStep.Station = testStepNode.SelectSingleNode("Station_Redline").InnerText;
+                        rStation = testStepNode.SelectSingleNode("Station_Redline").InnerText;
 
                     if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Control_Action_Redline").InnerText))
-                        newStep.ControlAction = testStepNode.SelectSingleNode("Control_Action").InnerText;
+                        rControl = testStepNode.SelectSingleNode("Control_Action_Redline").InnerText;
 
                     if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText))
-                        newStep.ExpectedResult = testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText;
-
+                        rExp = testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText;
+                    EditorStepViewModel newStep = new EditorStepViewModel(stepID, station, controlAction, expectedResult, rStation, rExp, rControl);
                     newStep.Parent = newSection;
                     addEventHandlerToStep(newStep);
                     steps.Add(newStep);

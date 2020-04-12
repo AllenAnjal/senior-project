@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\ttruo\Desktop\SeniorProject\senior-project\App.xaml
-11806498923
+12-1840898662
 
-19-1907916506
+20-787320266
 14-791637246
-Dialog\renameDialog.xaml;Dialog\CommentDialog.xaml;MainWindow.xaml;windows\askForFilename.xaml;windows\commentWindow.xaml;windows\exportWindow.xaml;windows\Redlines.xaml;windows\RedlinesTester.xaml;windows\TestAdmin.xaml;windows\TesterView.xaml;Dialog\userInfoPage.xaml;
+Dialog\DescriptionDialog.xaml;Dialog\renameDialog.xaml;Dialog\CommentDialog.xaml;MainWindow.xaml;windows\askForFilename.xaml;windows\commentWindow.xaml;windows\exportWindow.xaml;windows\Redlines.xaml;windows\RedlinesTester.xaml;windows\TestAdmin.xaml;windows\TesterView.xaml;Dialog\userInfoPage.xaml;
 
 True
 
