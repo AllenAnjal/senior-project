@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Test_Procedure rev="">
+	<Revisions>
+		<Revision>
+			<Num></Num>
+			<Date></Date>
+			<Notes></Notes>
+		</Revision>
+	</Revisions>
 	<Procedure_Heading>
 		<!--Editor-->
 		<System />
