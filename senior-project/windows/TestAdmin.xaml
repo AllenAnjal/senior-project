@@ -22,6 +22,9 @@
 
         <local:EditorStepToTreeviewLabelConverter x:Key="EditorstepToTreeviewLabelConverter"/>
         <local:EditorStepToFullLabelConverter x:Key="EditorstepToFullLabelConverter"/>
+        <local:EditorSectionToFullLabelConverter x:Key="EditorsectionToFullLabelConverter"/>
+        <local:GridToTextboxConverter x:Key="gridToTextboxConverter"/>
+        <local:RedlineToVisibilityConverter x:Key="redlineToVisibilityConverter"/>
     </Window.Resources>
 
     <DockPanel>
@@ -63,8 +66,8 @@
                 <ItemsPanelTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" MaxWidth="150"/>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="100" />
@@ -73,8 +76,12 @@
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem>
-                <TextBlock Name="lblProcedurePosition" 
+                <TextBlock Name="lblProcedureStepPosition" 
                            Text="{Binding Path=SelectedStep, Converter={StaticResource EditorstepToFullLabelConverter}}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="lblProcedurePosition" 
+                           Text="{Binding Path=SelectedSection, Converter={StaticResource EditorsectionToFullLabelConverter}}"/>
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
@@ -218,18 +225,31 @@
                                 </Style>
                             </Label.Style>
                         </Label>
-                        <TextBox
-                            x:Name="tbStation"
-                            Margin="5,0,5,0"
-                            VerticalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            IsReadOnly="True"
-                            Text="{Binding Path=SelectedStep.Station, Mode=TwoWay}"
-                            TextWrapping="Wrap"
-                            FontFamily="Verdata"
-                            FontSize="18">
-                        </TextBox>
+                        <Grid x:Name="gridStation">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tbStation"
+                                     Grid.Column="0"
+                                     Margin="5,0,5,0"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=SelectedStep.Station, Mode=TwoWay}"
+                                     TextWrapping="Wrap"
+                                     FontFamily="Verdata"
+                                     FontSize="18" />
+                            <TextBox Grid.Column="1"
+                                     Margin="5 0 5 0"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=SelectedStep.StationRedline, Mode=TwoWay}"
+                                     FontFamily="Verdata"
+                                     FontSize="18" 
+                                     Visibility="{Binding Path=SelectedStep.StationRedline, Converter={StaticResource redlineToVisibilityConverter}, FallbackValue=Collapsed}"
+                                     Width="{Binding ElementName=gridStation, Path=ActualWidth, Converter={StaticResource gridToTextboxConverter}}"
+                                     IsReadOnly="True"/>
+                        </Grid>
                     </DockPanel>
                 </Border>
 
@@ -279,17 +299,31 @@
                                 </Style>
                             </Label.Style>
                         </Label>
-                        <TextBox
-                            x:Name="tbControlAction"
-                            Margin="5,0,5,0"
-                            VerticalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            FontSize="18"
-                            Text="{Binding Path=SelectedStep.ControlAction, Mode=TwoWay}"
-                            IsReadOnly="True"
-                            TextWrapping="Wrap">
-                        </TextBox>
+                        <Grid x:Name="gridControlAction">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tbControlAction"
+                                     Grid.Column="0"
+                                     Margin="5,0,5,0"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=SelectedStep.ControlAction, Mode=TwoWay}"
+                                     TextWrapping="Wrap"
+                                     FontFamily="Verdata"
+                                     FontSize="18" />
+                            <TextBox Grid.Column="1"
+                                     Margin="5 0 5 0"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=SelectedStep.ControlActionRedline, Mode=TwoWay}"
+                                     FontFamily="Verdata"
+                                     FontSize="18" 
+                                     Visibility="{Binding Path=SelectedStep.ControlActionRedline, Converter={StaticResource redlineToVisibilityConverter}, FallbackValue=Collapsed}"
+                                     Width="{Binding ElementName=gridControlAction, Path=ActualWidth, Converter={StaticResource gridToTextboxConverter}}"
+                                     IsReadOnly="True"/>
+                        </Grid>
                     </DockPanel>
                 </Border>
 
@@ -327,7 +361,7 @@
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background" Value="#025dba" />
-                            
+
                         </Style>
                     </Border.Style>
 
@@ -345,22 +379,35 @@
                             <Label.Style>
                                 <Style TargetType="Label">
                                     <Setter Property="Content" Value="Expected Result"/>
-                                    
+
                                 </Style>
                             </Label.Style>
                         </Label>
-                        <TextBox
-                            x:Name="tbExpectedResult"
-                            Margin="5,0,5,0"
-                            VerticalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            FontSize="18"
-                            IsReadOnly="True"
-                            Text="{Binding Path=SelectedStep.ExpectedResult, Mode=TwoWay}"
-                            TextWrapping="Wrap">
-                           
-                        </TextBox>
+                        <Grid x:Name="gridExpectedResult">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tbExpectedResult"
+                                     Grid.Column="0"
+                                     Margin="5,0,5,0"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=SelectedStep.ExpectedResult, Mode=TwoWay}"
+                                     TextWrapping="Wrap"
+                                     FontFamily="Verdata"
+                                     FontSize="18" />
+                            <TextBox Grid.Column="1"
+                                     Margin="5 0 5 0"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=SelectedStep.ExpectedResultRedline, Mode=TwoWay}"
+                                     FontFamily="Verdata"
+                                     FontSize="18" 
+                                     Visibility="{Binding Path=SelectedStep.ExpectedResultRedline, Converter={StaticResource redlineToVisibilityConverter}, FallbackValue=Collapsed}"
+                                     Width="{Binding ElementName=gridExpectedResult, Path=ActualWidth, Converter={StaticResource gridToTextboxConverter}}"
+                                     IsReadOnly="True"/>
+                        </Grid>
                     </DockPanel>
                 </Border>
 
@@ -374,11 +421,23 @@
                         x:Name="removeButton"
                         Width="100"
                         Height="45"
-                        Margin="0,0,30,0"
+                        Margin="0,0,15,0"
                         Command="{Binding removeCommand}"
                         DockPanel.Dock="Right"
-                        Content="Remove Item"
-                        ToolTip="Press to remove the selected item">
+                        ToolTip="Deletes the selected item"
+                        FontSize="15"
+                        FontWeight="DemiBold"
+                        Background="#025dba"
+                        Foreground="White"
+                        HorizontalContentAlignment="Center">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10" />
+                            </Style>
+                        </Button.Resources>
+                        <Button.Content>
+                            <TextBlock Text="Delete" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button.Content>
                     </Button>
                     <Button
                         x:Name="addStepButton"
@@ -387,8 +446,20 @@
                         Margin="0,0,30,0"
                         Command="{Binding addStepCommand}"
                         DockPanel.Dock="Right"
-                        Content="Add Step"
-                        ToolTip="Press to add a new test step under the current selected item">
+                        ToolTip="Adds test step under the selected item"
+                        FontSize="15"
+                        FontWeight="DemiBold"
+                        Background="#025dba"
+                        Foreground="White"
+                        HorizontalContentAlignment="Center">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10" />
+                            </Style>
+                        </Button.Resources>
+                        <Button.Content>
+                            <TextBlock Text="Add Step" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button.Content>
                     </Button>
                     <Button
                         x:Name="addSsectionButton"
@@ -397,8 +468,20 @@
                         Margin="0,0,30,0"
                         Command="{Binding addSectionCommand}"
                         DockPanel.Dock="Right"
-                        Content="Add Section"
-                        ToolTip="Press to add a new section under the current section">
+                        ToolTip="Adds a new section"
+                        FontSize="15"
+                        FontWeight="DemiBold"
+                        Background="#025dba"
+                        Foreground="White"
+                        HorizontalContentAlignment="Center">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10" />
+                            </Style>
+                        </Button.Resources>
+                        <Button.Content>
+                            <TextBlock Text="Add Section" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button.Content>
                     </Button>
                     <Button
                         x:Name="renameSectionButton"
@@ -407,8 +490,20 @@
                         Margin="0,0,30,0"
                         Command="{Binding renameCommand}"
                         DockPanel.Dock="Right"
-                        Content="Rename Section"
-                        ToolTip="Press to rename a section (section must be selected)">
+                        FontWeight="DemiBold"
+                        ToolTip="Rename the currently selected section"
+                        FontSize="15"
+                        Background="#025dba"
+                        Foreground="White"
+                        HorizontalContentAlignment="Center">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10" />
+                            </Style>
+                        </Button.Resources>
+                        <Button.Content>
+                            <TextBlock Text="Rename Section" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button.Content>
                     </Button>
                 </DockPanel>
             </Grid>

@@ -31,7 +31,7 @@
             Margin="10,0,0,-104"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="Version (2.0)"
+            Content="Version (0.8)"
             FontStyle="Italic"
             Foreground="White" Grid.ColumnSpan="2" />
         <Button

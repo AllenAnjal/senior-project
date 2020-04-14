@@ -25,28 +25,36 @@ namespace senior_project
     public partial class TestAdmin : Window
     {
         private MainWindow main;
-        private bool redlineClicked = false;
 
-        public TestAdmin(MainWindow mw, String xmlFile)
+        public TestAdmin(MainWindow mw) : this(mw, String.Empty) { }
+        public TestAdmin(MainWindow mw, String xmlPath)
         {
             InitializeComponent();
             main = mw;
 
             IDialogService dialogService = new DialogService(mw);
-            dialogService.Register<renameDialogViewModel, renameDialog>();
-            dialogService.Register<DescriptionDialogViewModel, DescriptionDialog>();
+            dialogService.Register<editSectionDialogViewModel, editSectionDialog>();
             XmlDocument xml = new XmlDocument();
-            try
+
+            if (!(String.IsNullOrEmpty(xmlPath)))
             {
-                xml.Load(xmlFile);
-            }
-            catch (Exception err)
+                try
+                {
+                    xml.Load(xmlPath);
+                }
+                catch (Exception err)
+                {
+                    throw new ArgumentException(err.ToString());
+                }
+                EditorViewModel test = new EditorViewModel(xml, dialogService);
+                this.DataContext = test;
+            } 
+            else
             {
-                throw new ArgumentException(err.ToString());
+                EditorViewModel test = new EditorViewModel(dialogService);
+                this.DataContext = test;
             }
 
-            EditorViewModel test = new EditorViewModel(xml, dialogService);
-            this.DataContext = test;
         }
 
         private void WindowClosed(object sender, EventArgs e)
@@ -63,65 +71,7 @@ namespace senior_project
 
     }
 
-    #region MVVM Implementation
-
-    public class EditorRelayCommand : ICommand
-    {
-        private readonly Predicate<object> _canExecute;
-        private readonly Action<object> _execute;
-
-        public EditorRelayCommand(Action<object> execute) : this(execute, null) { }
-        public EditorRelayCommand(Action<object> execute, Predicate<object> canExecute)
-        {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null ? true : _canExecute(parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute(parameter);
-        }
-    }
-
-    public class EditorBaseViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-
-        public event EventHandler<EditorSelectedItemUpdateEventArgs> SelectedItemUpdated;
-        protected void OnSelectedItemChanged(EditorStepViewModel testStep)
-            => SelectedItemUpdated?.Invoke(this, new EditorSelectedItemUpdateEventArgs(testStep));
-    }
-
-    public class EditorSelectedItemUpdateEventArgs : EventArgs
-    {
-        private readonly EditorStepViewModel _selectedStep;
-
-        public EditorSelectedItemUpdateEventArgs(EditorStepViewModel selectedStep)
-        {
-            _selectedStep = selectedStep;
-        }
-
-        public EditorStepViewModel SelectedStep
-        {
-            get { return _selectedStep; }
-        }
-    }
+    #region Converters
 
     public class EditorStepToTreeviewLabelConverter : IValueConverter
     {
@@ -143,6 +93,8 @@ namespace senior_project
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+                return String.Empty;
             EditorStepViewModel testStep = value as EditorStepViewModel;
             return "Section: " + testStep.Parent.SectionID.ToString() + ", Step: " + testStep.StepID.ToString();
         }
@@ -153,39 +105,135 @@ namespace senior_project
         }
     }
 
+    public class EditorSectionToFullLabelConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null)
+                return String.Empty;
+            EditorSectionsViewModel section = value as EditorSectionsViewModel;
+            return "Section: " + section.SectionID.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class GridToTextboxConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            double width = (double)value;
+            return (width * .5) - 10;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class RedlineToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (String.IsNullOrEmpty((string)value)) ? "Collapsed" : "Visible";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    #endregion
+
+    #region MVVM Implementation
+
+    public class EditorBaseViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+        public event EventHandler<EditorSelectedItemUpdateEventArgs> SelectedItemUpdated;
+        protected void OnSelectedItemChanged(EditorStepViewModel testStep)
+            => SelectedItemUpdated?.Invoke(this, new EditorSelectedItemUpdateEventArgs(testStep));
+
+        public event EventHandler<EditorSelectedSectionUpdateEventArgs> SelectedSectionUpdated;
+        protected void OnSelectedSectionChanged(EditorSectionsViewModel section)
+            => SelectedSectionUpdated?.Invoke(this, new EditorSelectedSectionUpdateEventArgs(section));
+    }
+
+    public class EditorSelectedItemUpdateEventArgs : EventArgs
+    {
+        private readonly EditorStepViewModel _selectedStep;
+
+        public EditorSelectedItemUpdateEventArgs(EditorStepViewModel selectedStep)
+        {
+            _selectedStep = selectedStep;
+        }
+
+        public EditorStepViewModel SelectedStep
+        {
+            get { return _selectedStep; }
+        }
+    }
+
+    public class EditorSelectedSectionUpdateEventArgs : EventArgs
+    {
+        private readonly EditorSectionsViewModel _selectedSection;
+
+        public EditorSelectedSectionUpdateEventArgs(EditorSectionsViewModel selectedSection)
+        {
+            _selectedSection = selectedSection;
+        }
+
+        public EditorSectionsViewModel SelectedSection
+        {
+            get { return _selectedSection; }
+        }
+    }
+
     public class EditorStepViewModel : EditorBaseViewModel
     {
         #region Private Members
 
-        private string _stationOriginal;
-        private string _station;
         private int _stepID;
-        private string _controlActionOriginal;
+
+        private string _station;
+        private string _stationRedline;
+
         private string _controlAction;
-        private string _expectedResultOriginal;
+        private string _controlActionRedline;
+
         private string _expectedResult;
+        private string _expectedResultRedline;
+
         private bool _isSelected;
-        private string _redlineStation;
-        private string _redlineControlAction;
-        private string _redlineExpectedResult;
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
-        public EditorStepViewModel(int stepID, string station, string controlAction, string expectedResult, string redlineStation, string redlineExpectedResult, string redlineControlAction)
+        public EditorStepViewModel(int stepID, string station, string controlAction, string expectedResult, string redlineStation, string redlineControlAction, string redlineExpectedResult)
         {
             _stepID = stepID;
-            _stationOriginal = station;
+
             _station = station;
-            _redlineStation = redlineStation;
-            _controlActionOriginal = controlAction;
+            _stationRedline = redlineStation;
+
             _controlAction = controlAction;
-            _redlineControlAction = redlineControlAction;
-            _expectedResultOriginal = expectedResult;
+            _controlActionRedline = redlineControlAction;
+
             _expectedResult = expectedResult;
-            _redlineExpectedResult = redlineExpectedResult;
+            _expectedResultRedline = redlineExpectedResult;
         }
+
+        public EditorStepViewModel(int stepID) : this(stepID, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty) { }
 
         #endregion
 
@@ -196,19 +244,6 @@ namespace senior_project
         public Object ItSelf
         {
             get { return this; }
-        }
-
-        public string orgControlAction
-        {
-            get { return _controlActionOriginal; }
-        }
-        public string orgStation
-        {
-            get { return _stationOriginal; }
-        }
-        public string orgExpectedResult
-        {
-            get { return _expectedResultOriginal; }
         }
 
         public int StepID { 
@@ -223,7 +258,6 @@ namespace senior_project
             }
         }
 
-
         public string Station
         {
             get { return _station; }
@@ -236,7 +270,6 @@ namespace senior_project
                 }
             }
         }
-
 
         public string ControlAction
         {
@@ -251,7 +284,6 @@ namespace senior_project
             }
         }
 
-
         public string ExpectedResult
         {
             get { return _expectedResult; }
@@ -265,18 +297,41 @@ namespace senior_project
             }
         }
 
-        public string RedlineStation
+        public string StationRedline
         {
-            get { return _redlineStation; }
+            get { return _stationRedline; }
+            set
+            {
+                if (!value.Equals(_stationRedline))
+                {
+                    _stationRedline = value;
+                    OnPropertyChanged("StationRedline");
+                }
+            }
         }
-        public string RedlineControlAction
+        public string ControlActionRedline
         {
-            get { return _redlineControlAction; }
+            get { return _controlActionRedline; }
+            set
+            {
+                if (!value.Equals(_controlActionRedline))
+                {
+                    _controlActionRedline = value;
+                    OnPropertyChanged("ControlActionRedline");
+                }
+            }
         }
-        
-        public string RedlineExpectedResult
+        public string ExpectedResultRedline
         {
-            get { return _redlineExpectedResult; }
+            get { return _expectedResultRedline; }
+            set
+            {
+                if (!value.Equals(_expectedResultRedline))
+                {
+                    _expectedResultRedline = value;
+                    OnPropertyChanged("ExpectedResultRedline");
+                }
+            }
         }
 
         public bool IsSelected
@@ -291,6 +346,10 @@ namespace senior_project
                     {
                         OnSelectedItemChanged(this);
                         OnPropertyChanged("IsSelected");
+                    } 
+                    else
+                    {
+                        OnSelectedItemChanged(null);
                     }
                 }
             }
@@ -306,10 +365,10 @@ namespace senior_project
         private ObservableCollection<EditorStepViewModel> _steps;
         private bool _isSelected = false;
 
-        public EditorSectionsViewModel(int sectionID, string sectionHeading)
+        public EditorSectionsViewModel(int sectionID)
         {
             _sectionID = sectionID;
-            _sectionHeading = sectionHeading;
+            _steps = new ObservableCollection<EditorStepViewModel>();
         }
 
         public ObservableCollection<EditorStepViewModel> Steps
@@ -361,22 +420,27 @@ namespace senior_project
                 if (_isSelected != value)
                 {
                     _isSelected = value;
-                    OnPropertyChanged("IsSelected");
+                    if (_isSelected)
+                    {
+                        OnSelectedSectionChanged(this);
+                        OnPropertyChanged("IsSelected");
+                    }
+                    else
+                    {
+                        OnSelectedSectionChanged(null);
+                    }
                 }
             }
         }
     }
 
-
     public class EditorViewModel : EditorBaseViewModel
     {
         #region Private Members
 
-        /// <summary>
-        /// List of all sections
-        /// </summary>
         private ObservableCollection<EditorSectionsViewModel> _sections;
         private EditorStepViewModel _selectedStep;
+        private EditorSectionsViewModel _selectedSection;
         private readonly IDialogService _dialogService;
         private XmlDocument originalXML;
 
@@ -395,8 +459,15 @@ namespace senior_project
             loadXML(xmlDocument);
             originalXML = xmlDocument;
 
-            _sections[0].Steps[0].IsSelected = true;
+            _sections[0].IsSelected = true;
         }
+
+        public EditorViewModel(IDialogService dialogService)
+        {
+            _dialogService = dialogService;
+            _sections = new ObservableCollection<EditorSectionsViewModel>();
+        }
+
         #endregion
 
         #region Public Members
@@ -434,7 +505,18 @@ namespace senior_project
             }
         }
 
-
+        public EditorSectionsViewModel SelectedSection
+        {
+            get { return _selectedSection; }
+            set
+            {
+                if (_selectedSection != value)
+                {
+                    _selectedSection = value;
+                    OnPropertyChanged("SelectedSection");
+                }
+            }
+        }
 
         #endregion
 
@@ -448,6 +530,12 @@ namespace senior_project
         public void StepSelectedChanged(object sender, EditorSelectedItemUpdateEventArgs e)
         {
             this.SelectedStep = e.SelectedStep;
+        }
+
+        public void SectionSelectedChanged(object sender, EditorSelectedSectionUpdateEventArgs e)
+        {
+            this.SelectedSection = e.SelectedSection;
+            OnPropertyChanged("SelectedStep");
         }
 
         /// <summary>
@@ -515,7 +603,6 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].Station = _sections[i].Steps[j].orgStation;
         }
 
         private void discardExpectedResult()
@@ -536,7 +623,6 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].ExpectedResult = _sections[i].Steps[j].orgExpectedResult;
         }
 
         private void discardControlAction()
@@ -557,7 +643,6 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].orgControlAction;
         }
         public ICommand CommitAllCommand
         {
@@ -596,7 +681,7 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].Station = _sections[i].Steps[j].RedlineStation;
+            _sections[i].Steps[j].Station = _sections[i].Steps[j].StationRedline;
         }
 
         private void commitExpectedResult()
@@ -617,7 +702,7 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].ExpectedResult = _sections[i].Steps[j].RedlineExpectedResult;
+            _sections[i].Steps[j].ExpectedResult = _sections[i].Steps[j].ExpectedResultRedline;
         }
 
         private void commitControlAction()
@@ -638,7 +723,7 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].RedlineControlAction;
+            _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].ControlActionRedline;
         }
 
 
@@ -681,7 +766,7 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].Station += "\nRedline Changes: " + _sections[i].Steps[j].RedlineStation;
+            _sections[i].Steps[j].Station += "\nRedline Changes: " + _sections[i].Steps[j].StationRedline;
         }
 
         private void loadExpectedResult()
@@ -702,7 +787,7 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].ExpectedResult += "\nRedline Changes: " + _sections[i].Steps[j].RedlineExpectedResult;
+            _sections[i].Steps[j].ExpectedResult += "\nRedline Changes: " + _sections[i].Steps[j].ExpectedResultRedline;
         }
 
         private void loadControlAction()
@@ -723,13 +808,10 @@ namespace senior_project
                 }
                 if (found) break;
             }
-            _sections[i].Steps[j].ControlAction += "\nRedline Changes: " + _sections[i].Steps[j].RedlineControlAction;
+            _sections[i].Steps[j].ControlAction += "\nRedline Changes: " + _sections[i].Steps[j].ControlActionRedline;
         }
 
         #endregion
-
-
-        #region functionality portion for editor
 
         public ICommand removeCommand
         {
@@ -742,49 +824,88 @@ namespace senior_project
                 return _removeCommand;
             }
         }
-
         private void remove()
         {
-            int i = 0;
-            bool sectionSelected = false;
-            for (i = 0; i < _sections.Count(); i++) {
-                if (_sections[i].IsSelected)
-                {
-                    sectionSelected = true;
-                    break;
-                }
-            }
-            if(sectionSelected)
-                _sections.RemoveAt(i);
-            else
+            // TO DO - REMOVE EVENT HANDLER
+            if (SelectedStep != null)
             {
-                i = 0;
-                int j = 0, location = 0;
-                bool testSelected = false;
-                for(i = 0; i< _sections.Count(); i++)
+                EditorStepViewModel temp = SelectedStep;
+                int i = 0;
+                for (; i < temp.Parent.Steps.Count(); i++)
                 {
-                    for(j = 0; j< _sections[i].Steps.Count(); j++)
+                    if (temp.Parent.Steps[i].IsSelected)
                     {
-                                       
-                        if (_sections[i].Steps[j].IsSelected) {
-                            testSelected = true;
-                            location = j;
-                        }
-                        else if (testSelected)
-                        {
-                            
-                            _sections[i].Steps[j].StepID--;
-                            
-                        }
-
+                        break;
                     }
-                    if (testSelected) break;
+                }
+                temp.Parent.Steps.RemoveAt(i);
+
+                if (i < temp.Parent.Steps.Count())
+                {
+                    temp.IsSelected = false;
+                    temp.Parent.Steps[i].IsSelected = true;
+                } 
+                else
+                {
+                    if (temp.Parent.Steps.Count() == 0)
+                    {
+                        temp.IsSelected = false;
+                        temp.Parent.IsSelected = true;
+                    }
+                    else
+                    {
+                        temp.IsSelected = false;
+                        temp.Parent.Steps.Last().IsSelected = true;
+                    }
                 }
 
-                _sections[i].Steps.RemoveAt(location);
-            }
+                for (; i < temp.Parent.Steps.Count(); i++)
+                {
+                    temp.Parent.Steps[i].StepID--;
+                }
 
-            
+                removeEventHandlerFromStep(temp);
+            } 
+            else if (SelectedSection != null)
+            {
+                EditorSectionsViewModel temp = SelectedSection;
+                int i = 0;
+                for (; i < _sections.Count(); i++)
+                {
+                    if (_sections[i].IsSelected)
+                    {
+                        break;
+                    }
+                }
+                Sections.RemoveAt(i);
+
+                if (i < _sections.Count())
+                {
+                    temp.IsSelected = false;
+                    _sections[0].IsSelected = false;
+                    _sections[i].IsSelected = true;
+                }
+                else
+                {
+                    if (_sections.Count() == 0)
+                    {
+                        temp.IsSelected = false;
+                    }
+                    else
+                    {
+                        temp.IsSelected = false;
+                        _sections[0].IsSelected = false;
+                        _sections.Last().IsSelected = true;
+                    }
+                }
+
+                for (; i < _sections.Count(); i++)
+                {
+                    _sections[i].SectionID--;
+                }
+
+                removeEventHandlerFromSection(temp);
+            }
         }
 
         public ICommand addStepCommand
@@ -798,48 +919,47 @@ namespace senior_project
                 return _addStepCommand;
             }
         }
-
         private void addStep()
         {
-
-            int i = 0, j = 0;
-            bool testSelected = false;
-            for (i = 0; i < _sections.Count(); i++)
+            if (SelectedStep != null)
             {
-                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                int i;
+                for (i = 0; i < SelectedStep.Parent.Steps.Count(); i++)
                 {
-
-                    if (_sections[i].Steps[j].IsSelected)
+                    if (SelectedStep.Parent.Steps[i].IsSelected)
                     {
-                        testSelected = true;
                         break;
                     }
-
                 }
-                if (testSelected) break;
-            }
-            EditorStepViewModel newStep = new EditorStepViewModel((j + 1), "", "", "", "", "", "");
-            if (!testSelected)
-            {
+                EditorStepViewModel newStep = new EditorStepViewModel(i + 2);
+                addEventHandlerToStep(newStep);
+                newStep.Parent = SelectedStep.Parent;
+
+                SelectedStep.Parent.Steps.Insert(i + 1, newStep);
                 
-                //add under section as first element 
-                for (i = 0; i < _sections.Count(); i++)
+                for (i += 2; i < SelectedStep.Parent.Steps.Count(); i++)
                 {
-                    if (_sections[i].IsSelected)
-                    {
-                        break;
-                    }
+                    SelectedStep.Parent.Steps[i].StepID++;
                 }
-                newStep.StepID = _sections[i].Steps.Count() + 1;
-                _sections[i].Steps.Add(newStep);
+                SelectedStep.IsSelected = false;
+                newStep.IsSelected = true;
+            }
+            else if (SelectedSection != null)
+            {
+                EditorStepViewModel newStep = new EditorStepViewModel(1);
+                addEventHandlerToStep(newStep);
+                SelectedSection.Steps.Insert(0, newStep);
+                newStep.Parent = SelectedSection;
+
+                for (int i = 1; i < SelectedSection.Steps.Count(); i++)
+                {
+                    SelectedSection.Steps[i].StepID++;
+                }
+                SelectedSection.Steps[0].IsSelected = true;
             }
             else
             {
-                _sections[i].Steps.Insert(j, newStep);
-                for (int k = j + 1; k < _sections[i].Steps.Count(); k++)
-                {
-                    _sections[i].Steps[k].StepID++;
-                }
+                MessageBox.Show("Insert location not selected.");
             }
         }
 
@@ -854,41 +974,51 @@ namespace senior_project
                 return _addSectionCommand;
             }
         }
-
         private void addSection()
         {
-            int i = 0;
-            bool sectionSelected = false;
+            int i, j;
+            bool found = false;
             for (i = 0; i < _sections.Count(); i++)
             {
                 if (_sections[i].IsSelected)
                 {
-                    sectionSelected = true;
+                    found = true;
                     break;
                 }
+                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                {
+                    if (_sections[i].Steps[j].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                    break;
             }
-            if (!sectionSelected)
+
+            if (found)
             {
-                MessageBox.Show("No section is selected");
-            }
+                EditorSectionsViewModel newSection = getNewSection(i + 2);
+                if (newSection == null)
+                    return;
+
+                _sections.Insert(i + 1, newSection);
+                _sections[i].IsSelected = false;
+                _sections[i + 1].IsSelected = true;
+                for (i += 2; i < _sections.Count(); i++)
+                {
+                    _sections[i].SectionID++;
+                }
+            } 
             else
             {
-                string name = getNewSectionName();
-                string description = getDescription();
-                EditorSectionsViewModel newSection = new EditorSectionsViewModel((i + 1), name);
-                newSection.Description = description;
-                newSection.Steps = new ObservableCollection<EditorStepViewModel>();
-                EditorStepViewModel newStep = new EditorStepViewModel(1, "new station", "new control", "new expected", "", "", "");
-                newSection.Steps.Add(newStep);
-                
-                _sections.Insert(i + 1, newSection);
-                for(int j = i + 1; j < _sections.Count(); j++)
-                {
-                    _sections[j].SectionID++;
-                }
-                
-                
+                EditorSectionsViewModel newSection = getNewSection(_sections.Count() + 1);
+                if (newSection == null)
+                    return;
 
+                _sections.Add(newSection);
+                _sections.Last().IsSelected = true;
             }
         }
 
@@ -903,58 +1033,41 @@ namespace senior_project
                 return _renameCommand;
             }
         }
-
         private void renameSection()
         {
-            int i = 0;
-            bool sectionSelected = false;
-            for (i = 0; i < _sections.Count(); i++)
+            if (SelectedSection != null)
             {
-                if (_sections[i].IsSelected)
-                {
-                    sectionSelected = true;
-                    break;
-                }
-            }
-            if (!sectionSelected)
-            {
-                MessageBox.Show("No section is selected"); 
-            }
+                editSection(SelectedSection);
+            } 
             else
             {
-                string newName = getNewSectionName();
-                if (newName == "")
+                int i, j;
+                bool found = false;
+                for (i = 0; i < _sections.Count(); i++)
                 {
-                    return;
+                    if (_sections[i].IsSelected)
+                    {
+                        found = true;
+                        break;
+                    }
+                    for (j = 0; j < _sections[i].Steps.Count(); j++)
+                    {
+                        if (_sections[i].Steps[j].IsSelected)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found)
+                        break;
                 }
-                else
+
+                if (found)
                 {
-                    _sections[i].SectionHeading = newName;
+                    editSection(_sections[i]);
                 }
             }
-            
         }
-
-        private string getNewSectionName()
-        {
-            renameDialogViewModel rename = new renameDialogViewModel();
-            bool? result = _dialogService.ShowDialog(rename);
-            if (result == true)
-            {
-                return rename.Comment;
-            }
-            else return "";
-        }
-
-        private string getDescription()
-        {
-            DescriptionDialogViewModel descript = new DescriptionDialogViewModel();
-            bool? result = _dialogService.ShowDialog(descript);
-            if (result == true) return descript.Comment;
-            else return "";
-        }
-
-        #endregion
 
         public ICommand MoveUpCommand
         {
@@ -969,67 +1082,76 @@ namespace senior_project
         }
         private void MoveUp()
         {
-            int i = 0, j = 0;
-            bool stepSelected = false;
-            EditorStepViewModel tmp;
-            for (i = 0; i < _sections.Count(); i++)
+            if (SelectedStep != null)
             {
-                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                int i = 0, j = 0;
+                bool found = false;
+                for (; i < _sections.Count(); i++)
                 {
-
-                    if (_sections[i].Steps[j].IsSelected)
+                    for (j = 0; j < _sections[i].Steps.Count(); j++)
                     {
-                        stepSelected = true;
-
+                        if (_sections[i].Steps[j].IsSelected)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found)
                         break;
+                }
+
+                if (j == 0)
+                {
+                    if (i == 0)
+                    {
+                        return;
+                    } 
+                    else
+                    {
+                        EditorStepViewModel temp = SelectedStep;
+                        _sections[i].Steps.RemoveAt(j);
+                        for (;j < _sections[i].Steps.Count(); j++)
+                        {
+                            _sections[i].Steps[j].StepID--;
+                        }
+
+                        temp.Parent = _sections[i-1];
+                        temp.StepID = _sections[i-1].Steps.Count() + 1;
+                        _sections[i-1].Steps.Add(temp);
                     }
                 }
-                if (stepSelected) break;
+                else 
+                {
+                    EditorStepViewModel temp = SelectedStep;
+                    _sections[i].Steps[j] = _sections[i].Steps[j - 1];
+                    _sections[i].Steps[j].StepID = temp.StepID;
+                    temp.StepID--;
+                    _sections[i].Steps[j - 1] = temp; 
+                }
             }
-            if (stepSelected)
+            else if (SelectedSection != null)
             {
-                if (j == 0 && i > 0)
+                int i = 0;
+                for (; i < _sections.Count(); i++)
                 {
-                    _sections[i].Steps[j].IsSelected = false;
-                    _sections[i - 1].Steps.Add(_sections[i].Steps[j]);
-                    _sections[i].Steps.RemoveAt(j);
-                    _sections[i - 1].Steps[_sections[i - 1].Steps.Count() - 1].IsSelected = true;
-                    _sections[i - 1].Steps[_sections[i - 1].Steps.Count() - 1].StepID = _sections[i - 1].Steps.Count();
-                    for (int k = 0; k < _sections[i].Steps.Count(); k++)
-                    {
-                        _sections[i].Steps[k].StepID = k + 1;
-                    }
+                    if (_sections[i].IsSelected)
+                        break;
                 }
-                else if (j == 0 && i == 0)
+
+                if (i == 0)
                 {
-                    _sections[_sections.Count() -  1].Steps.Add(_sections[i].Steps[j]);
-                    _sections[0].Steps.RemoveAt(0);
-                    _sections[0].Steps[0].IsSelected = false;
-                    _sections[_sections.Count() - 1].Steps[_sections[_sections.Count() - 1].Steps.Count() - 1].IsSelected = true;
-                    _sections[_sections.Count() - 1].Steps[_sections[_sections.Count() - 1].Steps.Count() - 1].StepID = _sections[_sections.Count() - 1].Steps.Count();
-                    for (int k = 0; k < _sections[0].Steps.Count(); k++)
-                    {
-                        _sections[0].Steps[k].StepID = k + 1;
-                    }
-
-
+                    return;
                 }
                 else
                 {
-
-                    int id1 = _sections[i].Steps[j].StepID;
-                    int id2 = _sections[i].Steps[j - 1].StepID;
-
-                    tmp = _sections[i].Steps[j];
-                    _sections[i].Steps[j] = _sections[i].Steps[j - 1];
-                    _sections[i].Steps[j].IsSelected = false;
-                    _sections[i].Steps[j - 1] = tmp;
-                    _sections[i].Steps[j].StepID = id1;
-                    _sections[i].Steps[j - 1].StepID = id2;
+                    EditorSectionsViewModel temp = SelectedSection;
+                    _sections[i] = _sections[i - 1];
+                    _sections[i].SectionID = temp.SectionID;
+                    temp.SectionID--;
+                    _sections[i - 1] = temp;
+                    OnPropertyChanged("SelectedSection");
                 }
-                //selectPreviousStep();
             }
-            else { MessageBox.Show("No test step selected"); }
         }
 
         public ICommand MoveDownCommand
@@ -1045,176 +1167,78 @@ namespace senior_project
         }
         private void MoveDown()
         {
-            //selectNextStep();
-            int i = 0, j = 0;
-            bool stepSelected = false;
-            EditorStepViewModel tmp;
-            for (i = 0; i < _sections.Count(); i++)
+            if (SelectedStep != null)
             {
-                for (j = 0; j < _sections[i].Steps.Count(); j++)
+                int i = 0, j = 0;
+                bool found = false;
+                for (; i < _sections.Count(); i++)
                 {
-
-                    if (_sections[i].Steps[j].IsSelected)
+                    for (j = 0; j < _sections[i].Steps.Count(); j++)
                     {
-                        stepSelected = true;
-
+                        if (_sections[i].Steps[j].IsSelected)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found)
                         break;
-                    }
                 }
-                if (stepSelected) break;
-            }
-            if (stepSelected)
-            {
-                if (j == _sections[_sections.Count() - 1].Steps.Count() - 1 && i < _sections.Count() - 1 )
+
+                if (_sections[i].Steps[j] == _sections[i].Steps.Last())
                 {
-
-
-                    _sections[i].Steps[j].IsSelected = false;
-                    _sections[i + 1].Steps.Insert(0, _sections[i].Steps[j]);
-                    _sections[i].Steps.RemoveAt(j);
-                    _sections[i + 1].Steps[0].IsSelected = true;
-                    for(int k = 0; k < _sections[i + 1].Steps.Count(); k++)
+                    if (i == _sections.Count() - 1)
                     {
-                        _sections[i + 1].Steps[k].StepID = k + 1;
+                        return;
                     }
-
-                }
-                else if (j == _sections[_sections.Count() - 1].Steps.Count() - 1 && i == _sections.Count() - 1)
-                {
-                    _sections[0].Steps.Insert(0, _sections[i].Steps[j]);
-                    _sections[_sections.Count() - 1].Steps.RemoveAt(_sections[_sections.Count() - 1].Steps.Count() - 1);
-                    _sections[_sections.Count() - 1].Steps[_sections[_sections.Count() - 1].Steps.Count() - 1].IsSelected = false;
-                    _sections[0].Steps[0].IsSelected = true;
-
-                    for (int k = 0; k < _sections[0].Steps.Count(); k++)
+                    else
                     {
-                        _sections[0].Steps[k].StepID = k + 1;
+                        EditorStepViewModel temp = SelectedStep;
+                        _sections[i].Steps.RemoveAt(j);
+
+                        temp.Parent = _sections[i + 1];
+                        temp.StepID = 1;
+                        _sections[i + 1].Steps.Insert(0, temp);
+
+                        for (j = 1; j < _sections[i+1].Steps.Count(); j++)
+                        {
+                            _sections[i+1].Steps[j].StepID++;
+                        }
                     }
                 }
                 else
                 {
-                    int id1 = _sections[i].Steps[j].StepID;
-                    int id2 = _sections[i].Steps[j + 1].StepID;
-                    tmp = _sections[i].Steps[j];
+                    EditorStepViewModel temp = SelectedStep;
                     _sections[i].Steps[j] = _sections[i].Steps[j + 1];
-                    _sections[i].Steps[j].IsSelected = false;
-                    _sections[i].Steps[j + 1] = tmp;
-                    _sections[i].Steps[j + 1].StepID = id2;
-                    _sections[i].Steps[j].StepID = id1;
+                    _sections[i].Steps[j].StepID = temp.StepID;
+                    temp.StepID++;
+                    _sections[i].Steps[j + 1] = temp;
                 }
-                //selectPreviousStep();
             }
-            else { MessageBox.Show("No test step selected"); }
-        }
-
-
-        public ICommand MoveSectionDownCommand
-        {
-            get
+            else if (SelectedSection != null)
             {
-                if(_MoveSectionDown == null)
+                int i = 0;
+                for (; i < _sections.Count(); i++)
                 {
-                    _MoveSectionDown = new RelayCommand(p => this.MoveSectionDown());
+                    if (_sections[i].IsSelected)
+                        break;
                 }
-                return _MoveSectionDown;
-            }
-        }
 
-        private void MoveSectionDown()
-        {
-            int i = 0;
-            bool sectionSelected = false;
-            for (i = 0; i < _sections.Count(); i++)
-            {
-                if (_sections[i].IsSelected)
+                if (_sections[i] == _sections.Last())
                 {
-                    sectionSelected = true;
-                    break;
-                }
-            }
-            if (!sectionSelected)
-            {
-                MessageBox.Show("No section is selected");
-            }
-            else
-            {
-                if (i == _sections.Count() - 1)
-                {
-                    int id1 = _sections[i].SectionID;
-                    int id2 = _sections[0].SectionID;
-                    EditorSectionsViewModel tmp = _sections[i];
-                    _sections[i] = _sections[0];
-                    _sections[0] = tmp;
-                    _sections[i].SectionID = id1;
-                    _sections[0].SectionID = id2;
-                }
+                    return;
+                } 
                 else
                 {
-                    int id1 = _sections[i].SectionID;
-                    int id2 = _sections[i + 1].SectionID;
-                    EditorSectionsViewModel tmp = _sections[i];
+                    EditorSectionsViewModel temp = SelectedSection;
                     _sections[i] = _sections[i + 1];
-                    _sections[i + 1] = tmp;
-                    _sections[i].SectionID = id1;
-                    _sections[i + 1].SectionID = id2;
+                    _sections[i].SectionID = temp.SectionID;
+                    temp.SectionID++;
+                    _sections[i + 1] = temp;
+                    OnPropertyChanged("SelectedSection");
                 }
             }
         }
-
-        public ICommand MoveSectionUpCommand
-        {
-            get
-            {
-                if (_MoveSectionUp == null)
-                {
-                    _MoveSectionUp = new RelayCommand(p => this.MoveSectionUp());
-                }
-                return _MoveSectionUp;
-            }
-        }
-
-        private void MoveSectionUp()
-        {
-            int i = 0;
-            bool sectionSelected = false;
-            for (i = 0; i < _sections.Count(); i++)
-            {
-                if (_sections[i].IsSelected)
-                {
-                    sectionSelected = true;
-                    break;
-                }
-            }
-            if (!sectionSelected)
-            {
-                MessageBox.Show("No section is selected");
-            }
-            else
-            {
-                if (i == 0)
-                {
-                    int id1 = _sections[i].SectionID;
-                    int id2 = _sections[_sections.Count()].SectionID;
-                    EditorSectionsViewModel tmp = _sections[i];
-                    _sections[i] = _sections[_sections.Count()];
-                    _sections[_sections.Count()] = tmp;
-                    _sections[i].SectionID = id1;
-                    _sections[_sections.Count()].SectionID = id2;
-                }
-                else
-                {
-                    int id1 = _sections[i].SectionID;
-                    int id2 = _sections[i - 1].SectionID;
-                    EditorSectionsViewModel tmp = _sections[i];
-                    _sections[i] = _sections[i - 1];
-                    _sections[i - 1] = tmp;
-                    _sections[i].SectionID = id1;
-                    _sections[i - 1].SectionID = id2;
-                }
-            }
-        }
-
-
 
         public ICommand SaveToXmlCommand
         {
@@ -1288,11 +1312,6 @@ namespace senior_project
 
         #region Helper Functions
 
-        /// <summary>
-        /// Adds event listeners to the test step
-        /// </summary>
-        /// <param name="newStep">test step to add event handler to</param>
-
         private void loadXML(XmlDocument xmlDocument)
         {
             XmlNode root = xmlDocument.SelectSingleNode("Test_Procedure");
@@ -1302,9 +1321,9 @@ namespace senior_project
             var sectionsList = root.SelectNodes("Sections/Section");
             foreach (XmlNode sectionNode in sectionsList)
             {
-                EditorSectionsViewModel newSection = new EditorSectionsViewModel(Int32.Parse(sectionNode.Attributes.GetNamedItem("id").Value), sectionNode.SelectSingleNode("Heading").InnerText);
+                EditorSectionsViewModel newSection = new EditorSectionsViewModel(Int32.Parse(sectionNode.Attributes.GetNamedItem("id").Value));
+                newSection.SectionHeading = sectionNode.SelectSingleNode("Heading").InnerText;
                 newSection.Description = sectionNode.SelectSingleNode("Description").InnerText;
-
 
                 var steps = new ObservableCollection<EditorStepViewModel>();
                 var testStepsList = sectionNode.SelectNodes("Test_Step");
@@ -1329,13 +1348,15 @@ namespace senior_project
 
                     if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText))
                         rExp = testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText;
-                    EditorStepViewModel newStep = new EditorStepViewModel(stepID, station, controlAction, expectedResult, rStation, rExp, rControl);
+
+                    EditorStepViewModel newStep = new EditorStepViewModel(stepID, station, controlAction, expectedResult, rStation, rControl, rExp);
                     newStep.Parent = newSection;
                     addEventHandlerToStep(newStep);
                     steps.Add(newStep);
                 }
 
                 newSection.Steps = steps;
+                addEventHandlerToSection(newSection);
                 _sections.Add(newSection);
             }
         }
@@ -1344,6 +1365,22 @@ namespace senior_project
         {
             newStep.SelectedItemUpdated += StepSelectedChanged;
             newStep.PropertyChanged += StepSelectedValueChanged;
+        }
+        
+        private void removeEventHandlerFromStep(EditorStepViewModel step)
+        {
+            step.SelectedItemUpdated -= StepSelectedChanged;
+            step.PropertyChanged -= StepSelectedValueChanged;
+        }
+
+        private void addEventHandlerToSection(EditorSectionsViewModel newSection)
+        {
+            newSection.SelectedSectionUpdated += SectionSelectedChanged;
+        }
+
+        private void removeEventHandlerFromSection(EditorSectionsViewModel section)
+        {
+            section.SelectedSectionUpdated -= SectionSelectedChanged;
         }
 
         private void selectNextStep()
@@ -1390,6 +1427,38 @@ namespace senior_project
             }
         }
 
+        private EditorSectionsViewModel getNewSection(int sectionID)
+        {
+            EditorSectionsViewModel newSection = new EditorSectionsViewModel(sectionID);
+            editSectionDialogViewModel newSectionDialog = new editSectionDialogViewModel(newSection);
+            bool? result = _dialogService.ShowDialog(newSectionDialog);
+            if (result == true)
+            {
+                addEventHandlerToSection(newSection);
+                newSection.SectionHeading = newSectionDialog.Name;
+                newSection.Description = newSectionDialog.Description;
+                return newSection;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void editSection(EditorSectionsViewModel section)
+        {
+            editSectionDialogViewModel newSectionDialog = new editSectionDialogViewModel(section);
+            bool? result = _dialogService.ShowDialog(newSectionDialog);
+            if (result == true)
+            {
+                section.SectionHeading = newSectionDialog.Name;
+                section.Description = newSectionDialog.Description;
+            }
+            else
+            {
+                return;
+            }
+        }
 
         #endregion
     }
