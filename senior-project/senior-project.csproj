@@ -68,8 +68,8 @@
     <Compile Include="Dialog\DescriptionDialog.xaml.cs">
       <DependentUpon>DescriptionDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialog\editSectionDialog.xaml.cs">
-      <DependentUpon>editSectionDialog.xaml</DependentUpon>
+    <Compile Include="Dialog\renameDialog.xaml.cs">
+      <DependentUpon>renameDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\IDialog.cs" />
     <Compile Include="Dialog\CommentDialog.xaml.cs">
@@ -84,7 +84,6 @@
     </Compile>
     <Compile Include="windows\Redlines.xaml.cs" />
     <Compile Include="windows\RedlinesTester.xaml.cs" />
-    <Compile Include="windows\RelayCommand.cs" />
     <Compile Include="windows\TestAdmin.xaml.cs" />
     <Compile Include="windows\Tester.xaml.cs" />
     <Compile Include="windows\TreeHelper.cs" />
@@ -93,7 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialog\editSectionDialog.xaml">
+    <Page Include="Dialog\renameDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

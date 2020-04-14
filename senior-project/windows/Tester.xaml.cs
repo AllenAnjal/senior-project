@@ -1,11 +1,17 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.ComponentModel;
+using System.Collections;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
+using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -58,12 +64,16 @@ namespace senior_project
                 changeColors(254, 1, 1);
                 setBoolean(false);
                 redlineIndicator.Text = "Redline Mode";
+                //tItems[pos].IsSelected = true;
             }
             else
             {
                 changeColors(2, 93, 186);
                 setBoolean(true);
                 redlineIndicator.Text = "";
+                //treeView1.Items.Refresh();
+                //treeView1.UpdateLayout();
+                //tItems[pos].IsSelected = true;
             }
 
             //red.ShowDialog();
@@ -97,7 +107,65 @@ namespace senior_project
         }
     }
 
-    #region Converters
+    #region MVVM Implementation
+
+    public class RelayCommand : ICommand
+    {
+        private readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
+
+        public RelayCommand(Action<object> execute) : this(execute, null) { }
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        {
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+            _execute = execute; 
+            _canExecute = canExecute;
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null ? true : _canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute(parameter);
+        }
+    }
+
+    public class BaseViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+        public event EventHandler<SelectedItemUpdateEventArgs> SelectedItemUpdated;
+        protected void OnSelectedItemChanged(TestStepViewModel testStep)
+            => SelectedItemUpdated?.Invoke(this, new SelectedItemUpdateEventArgs(testStep));
+    }
+
+    public class SelectedItemUpdateEventArgs : EventArgs
+    {
+        private readonly TestStepViewModel _selectedStep;
+
+        public SelectedItemUpdateEventArgs(TestStepViewModel selectedStep)
+        {
+            _selectedStep = selectedStep;
+        }
+
+        public TestStepViewModel SelectedStep
+        {
+            get { return _selectedStep; }
+        }
+    }
 
     public class ResultToColorConverter : IValueConverter
     {
@@ -107,7 +175,7 @@ namespace senior_project
             if (step.ControlActionChanged || step.ExpectedResultChanged || step.StationChanged)
             {
                 return new SolidColorBrush(Colors.Yellow);
-            }
+            } 
             else if (step.ResultChanged)
             {
                 if (step.Result)
@@ -118,7 +186,7 @@ namespace senior_project
                 {
                     return new SolidColorBrush(Colors.Red);
                 }
-            }
+            } 
             else
             {
                 return new SolidColorBrush(Colors.Transparent);
@@ -165,8 +233,6 @@ namespace senior_project
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return "";
             TestStepViewModel testStep = value as TestStepViewModel;
             return "Section: " + testStep.Parent.SectionID.ToString() + ", Step: " + testStep.StepID.ToString();
         }
@@ -174,37 +240,6 @@ namespace senior_project
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
-        }
-    }
-
-    #endregion
-
-    #region MVVM Implementation
-
-    public class BaseViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-
-        public event EventHandler<SelectedItemUpdateEventArgs> SelectedItemUpdated;
-        protected void OnSelectedItemChanged(TestStepViewModel testStep)
-            => SelectedItemUpdated?.Invoke(this, new SelectedItemUpdateEventArgs(testStep));
-    }
-
-    public class SelectedItemUpdateEventArgs : EventArgs
-    {
-        private readonly TestStepViewModel _selectedStep;
-
-        public SelectedItemUpdateEventArgs(TestStepViewModel selectedStep)
-        {
-            _selectedStep = selectedStep;
-        }
-
-        public TestStepViewModel SelectedStep
-        {
-            get { return _selectedStep; }
         }
     }
 
@@ -406,10 +441,6 @@ namespace senior_project
                     {
                         OnSelectedItemChanged(this);
                         OnPropertyChanged("IsSelected");
-                    } 
-                    else
-                    {
-                        OnSelectedItemChanged(null);
                     }
                 }
             }
@@ -797,7 +828,7 @@ namespace senior_project
             XmlNode heading = root.SelectSingleNode("Procedure_Heading");
 
             this.Name = heading.SelectSingleNode("Name").InnerText;
-            _date = String.IsNullOrEmpty(heading.SelectSingleNode("Date").InnerText) ? DateTime.Now.Date.ToString("dd MM yyyy") : heading.SelectSingleNode("Start_Time").InnerText;
+            _date = String.IsNullOrEmpty(heading.SelectSingleNode("Date").InnerText) ? DateTime.Now.Date.ToString("MM/dd/yyyy") : heading.SelectSingleNode("Start_Time").InnerText;
             this.SoftwareLoadVersion = heading.SelectSingleNode("Software_Load_Version").InnerText;
             this.ProgramPhase = heading.SelectSingleNode("Program_Phase").InnerText;
             this.ProgramType = heading.SelectSingleNode("Program_Type").InnerText;
@@ -833,7 +864,7 @@ namespace senior_project
                         newStep.Station = testStepNode.SelectSingleNode("Station_Redline").InnerText;
 
                     if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Control_Action_Redline").InnerText))
-                        newStep.ControlAction = testStepNode.SelectSingleNode("Control_Action_Redline").InnerText;
+                        newStep.ControlAction = testStepNode.SelectSingleNode("Control_Action").InnerText;
 
                     if (!String.IsNullOrEmpty(testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText))
                         newStep.ExpectedResult = testStepNode.SelectSingleNode("Expected_Result_Redline").InnerText;
@@ -865,7 +896,6 @@ namespace senior_project
                 {
                     if (selectedFound)
                     {
-                        _selectedStep.IsSelected = false;
                         _sections[i].Steps[j].IsSelected = true;
                         return;
                     }
@@ -888,7 +918,6 @@ namespace senior_project
                 {
                     if (selectedFound)
                     {
-                        _selectedStep.IsSelected = false;
                         _sections[i].Steps[j].IsSelected = true;
                         return;
                     }

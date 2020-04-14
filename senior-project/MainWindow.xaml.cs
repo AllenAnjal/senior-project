@@ -51,6 +51,13 @@ namespace senior_project
 
                 tester.Show();
             }
+            else
+            {
+                MessageBox.Show("No valid XML has been selected", "Error");
+            }
+
+            return;
+            //xmlProcedure = XmlVerification.loadXml();
         }
 
         private void edit_btn(object sender, RoutedEventArgs e)
@@ -66,13 +73,18 @@ namespace senior_project
                 admin.Show();
                 // this.Close();
             }
+            else
+            {
+                MessageBox.Show("No valid XML has been selected", "Error");
+            }
         }
 
         private void create_btn(object sender, RoutedEventArgs e)
         {
-            TestAdmin admin = new TestAdmin(this);
+            askForFilename ask = new askForFilename();
             this.Hide();
-            admin.Show();
+            ask.Show();
+            
         }
 
         #endregion Context Menu Buttons
