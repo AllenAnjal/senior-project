@@ -7,6 +7,7 @@
     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
     xmlns:local="clr-namespace:senior_project"
     Title="Editor"
+    Width="699"
     Height="600"
     MinWidth="800"
     MinHeight="600"
@@ -38,7 +39,11 @@
                 <MenuItem Command="{Binding MoveSectionUpCommand}" Header="_Move Section Up"/>
             </MenuItem>
             <MenuItem Header="_Redline Changes">
+                <MenuItem Command="{Binding loadAllCommand}" Header="_Load All Redline Changes" Click="toggleAll"/>
                 <MenuItem Header="_Select Redline to load">
+                    <MenuItem Command="{Binding loadStationCommand}" Header="_load Station" Click="toggleStation"/>
+                    <MenuItem Command="{Binding loadExpectedCommand}" Header="_load Expected Result" Click="toggleExp"/>
+                    <MenuItem Command="{Binding loadActionCommand}" Header="_load Control Action" Click="toggleCtrl"/>
                 </MenuItem>
                 <MenuItem Command="{Binding discardAllCommand}" Header="_Discard All Changes"/>
                 <MenuItem Header="_Select Redline to discard">
@@ -196,7 +201,9 @@
                     BorderThickness="1"
                     CornerRadius="7">
                     <DockPanel Margin="5">
+                        <DockPanel
                             DockPanel.Dock="Top">
+<<<<<<< HEAD
                             <Label.Style>
                                 <Style TargetType="Label">
                                     <Setter Property="Content" Value="Station"/>
@@ -236,6 +243,56 @@
                                      Width="{Binding ElementName=gridStation, Path=ActualWidth, Converter={StaticResource gridToTextboxConverter}}"
                                      IsReadOnly="True"/>
                         </Grid>
+=======
+                            <Label
+                                x:Name="lblStation"
+                                Height="auto"
+                                Background="#025dba"
+                                BorderThickness="1"
+                                FontFamily="Verdana"
+                                FontSize="18"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Left"
+                                TextElement.Foreground="White"
+                                Content="Station" Width="86"
+                                DockPanel.Dock="Left"/>
+                            <Button
+                                 x:Name="acceptStation"
+                                Width="100"
+                                Height="20"
+                                Margin="0,0,4,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding commitStationCommand}"
+                                DockPanel.Dock="Right"
+                                Content="Accept Changes"
+                                Visibility="Hidden"
+                                >
+                            </Button>
+                            <Button
+                                Visibility="Hidden"
+                                 x:Name="rejectStation"
+                                Width="100"
+                                Height="20"
+                                Margin="0,0,4,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding discardStationCommand}"
+                                DockPanel.Dock="Right"
+                                Content="Reject Changes"
+                                >
+                            </Button>
+                        </DockPanel>
+                        <TextBox
+                            x:Name="tbStation"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Text="{Binding Path=SelectedStep.Station, Mode=TwoWay}"
+                            TextWrapping="Wrap"
+                            FontFamily="Verdata"
+                            FontSize="18">
+                        </TextBox>
+>>>>>>> 6eed07386fa8caf501fd039c3f8683e47e8e48b0
                     </DockPanel>
                 </Border>
 
@@ -269,7 +326,9 @@
                     BorderThickness="1"
                     CornerRadius="7">
                     <DockPanel Margin="5">
+                        <DockPanel
                             DockPanel.Dock="Top">
+<<<<<<< HEAD
                             <Label.Style>
                                 <Style TargetType="Label">
                                     <Setter Property="Content" Value="Control Action"/>
@@ -301,6 +360,55 @@
                                      Width="{Binding ElementName=gridControlAction, Path=ActualWidth, Converter={StaticResource gridToTextboxConverter}}"
                                      IsReadOnly="True"/>
                         </Grid>
+=======
+                            <Label
+                                x:Name="lblControlAction"
+                                Height="auto"
+                                Background="#025dba"
+                                BorderThickness="1"
+                                FontFamily="Verdana"
+                                FontSize="18"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Left"
+                                TextElement.Foreground="White"
+                                Content="Control Action" Width="191"
+                                DockPanel.Dock="Left"/>
+                            <Button
+                                 x:Name="acceptControl"
+                                Width="100"
+                                Height="20"
+                                Margin="0,0,4,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding commitActionCommand}"
+                                DockPanel.Dock="Right"
+                                Content="Accept Changes"
+                                Visibility="Hidden"
+                                >
+                            </Button>
+                            <Button
+                                Visibility="Hidden"
+                                 x:Name="rejectControlAction"
+                                Width="100"
+                                Height="20"
+                                Margin="0,0,4,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding discardActionCommand}"
+                                DockPanel.Dock="Right"
+                                Content="Reject Changes"
+                                >
+                            </Button>
+                        </DockPanel>
+                        <TextBox
+                            x:Name="tbControlAction"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="18"
+                            Text="{Binding Path=SelectedStep.ControlAction, Mode=TwoWay}"
+                            TextWrapping="Wrap">
+                        </TextBox>
+>>>>>>> 6eed07386fa8caf501fd039c3f8683e47e8e48b0
                     </DockPanel>
                 </Border>
 
@@ -343,6 +451,7 @@
                     </Border.Style>
 
                     <DockPanel Margin="5">
+<<<<<<< HEAD
                         <Label
                             x:Name="lblExpectedResult"
                             DockPanel.Dock="Top"
@@ -385,6 +494,58 @@
                                      Width="{Binding ElementName=gridExpectedResult, Path=ActualWidth, Converter={StaticResource gridToTextboxConverter}}"
                                      IsReadOnly="True"/>
                         </Grid>
+=======
+                        <DockPanel
+                            DockPanel.Dock="Top">
+                            <Label
+                                x:Name="lblExpectedResult"
+                                Height="auto"
+                                Background="#025dba"
+                                BorderThickness="1"
+                                FontFamily="Verdana"
+                                FontSize="18"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Left"
+                                TextElement.Foreground="White"
+                                Content="Expected Result" Width="191"
+                                DockPanel.Dock="Left"/>
+                            <Button
+                                 x:Name="acceptExpectedbtn"
+                                Width="100"
+                                Height="20"
+                                Margin="0,0,4,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding commitExpectedCommand}"
+                                DockPanel.Dock="Right"
+                                Content="Accept Changes"
+                                Visibility="Hidden"
+                                >
+                            </Button>
+                            <Button
+                                Visibility="Hidden"
+                                 x:Name="rejectExpectedResult"
+                                Width="100"
+                                Height="20"
+                                Margin="0,0,4,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding discardExpectedCommand}"
+                                DockPanel.Dock="Right"
+                                Content="Reject Changes"
+                                >
+                            </Button>
+                        </DockPanel>
+                        <TextBox
+                            x:Name="tbExpectedResult"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="18"
+                            Text="{Binding Path=SelectedStep.ExpectedResult, Mode=TwoWay}"
+                            TextWrapping="Wrap">
+                        </TextBox>
+
+>>>>>>> 6eed07386fa8caf501fd039c3f8683e47e8e48b0
                     </DockPanel>
                 </Border>
 

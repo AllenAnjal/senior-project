@@ -17,11 +17,13 @@ using System.Globalization;
 using System.Linq;
 using System.IO;
 
+
 namespace senior_project
 {
     /// <summary>
     /// Interaction logic for Tester.xaml
     /// </summary>
+    /// 
     public partial class TestAdmin : Window
     {
         private MainWindow main;
@@ -57,6 +59,45 @@ namespace senior_project
 
         }
 
+        #region more buttons
+
+        private void toggleAll(object sender, EventArgs e)
+        {
+            summonControlAction();
+            summonExpectedResult();
+            summonStation();
+        }
+
+        private void toggleCtrl(object sender, EventArgs e)
+        {
+            summonControlAction();
+        }
+
+        private void toggleExp(object sender, EventArgs e)
+        {
+            summonExpectedResult();
+        }
+
+        private void toggleStation(object sender, EventArgs e)
+        {
+            summonStation();
+        }
+
+        private void summonStation()
+        {
+            acceptStation.Visibility = Visibility.Visible;
+            rejectStation.Visibility = Visibility.Visible;
+        }
+        private void summonExpectedResult()
+        {
+            acceptExpectedbtn.Visibility = Visibility.Visible;
+            rejectExpectedResult.Visibility = Visibility.Visible;
+        }
+        private void summonControlAction()
+        {
+            acceptControl.Visibility = Visibility.Visible;
+            rejectControlAction.Visibility = Visibility.Visible;
+        }
         private void WindowClosed(object sender, EventArgs e)
         {
             main.Show();
@@ -67,6 +108,8 @@ namespace senior_project
         {
             this.Close();
         }
+
+        #endregion
 
 
     }
@@ -562,9 +605,55 @@ namespace senior_project
         private ICommand _MoveSectionUp;
         private ICommand _MoveSectionDown;
         private ICommand _loadAll;
+        private ICommand _loadStationCommand;
+        private ICommand _loadExpectedCommand;
+        private ICommand _loadActionCommand;
         private ICommand _discardAll;
+        private ICommand _discardStationCommand;
+        private ICommand _discardExpectedCommand;
+        private ICommand _discardActionCommand;
+        private ICommand _CommitAll;
+        private ICommand _commitStationCommand;
+        private ICommand _commitExpectedCommand;
+        private ICommand _commitActionCommand;
+
 
         #region redline stuff
+
+        public ICommand discardStationCommand
+        {
+            get
+            {
+                if (_discardStationCommand == null)
+                {
+                    _discardStationCommand = new RelayCommand(p => this.discardStation());
+                }
+                return _discardStationCommand;
+            }
+        }
+        public ICommand discardExpectedCommand
+        {
+            get
+            {
+                if (_discardExpectedCommand == null)
+                {
+                    _discardExpectedCommand = new RelayCommand(p => this.discardExpectedResult());
+                }
+                return _discardExpectedCommand;
+            }
+        }
+        public ICommand discardActionCommand
+        {
+            get
+            {
+                if (_discardActionCommand == null)
+                {
+                    _discardActionCommand = new RelayCommand(p => this.discardControlAction());
+                }
+                return _discardActionCommand;
+            }
+        }
+
         public ICommand discardAllCommand
         {
             get
@@ -643,6 +732,41 @@ namespace senior_project
                 if (found) break;
             }
         }
+
+        public ICommand commitStationCommand
+        {
+            get
+            {
+                if (_commitStationCommand == null)
+                {
+                    _commitStationCommand = new RelayCommand(p => this.commitStation());
+                }
+                return _commitStationCommand;
+            }
+        }
+        public ICommand commitExpectedCommand
+        {
+            get
+            {
+                if (_commitExpectedCommand == null)
+                {
+                    _commitExpectedCommand = new RelayCommand(p => this.commitExpectedResult());
+                }
+                return _commitExpectedCommand;
+            }
+        }
+        public ICommand commitActionCommand
+        {
+            get
+            {
+                if (_commitActionCommand == null)
+                {
+                    _commitActionCommand = new RelayCommand(p => this.commitControlAction());
+                }
+                return _commitActionCommand;
+            }
+        }
+
         public ICommand CommitAllCommand
         {
             get
@@ -725,6 +849,39 @@ namespace senior_project
             _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].ControlActionRedline;
         }
 
+        public ICommand loadStationCommand
+        {
+            get
+            {
+                if (_loadStationCommand == null)
+                {
+                    _loadStationCommand = new RelayCommand(p => this.loadStation());
+                }
+                return _loadStationCommand;
+            }
+        }
+        public ICommand loadExpectedCommand
+        {
+            get
+            {
+                if (_loadExpectedCommand == null)
+                {
+                    _loadExpectedCommand = new RelayCommand(p => this.loadExpectedResult());
+                }
+                return _loadExpectedCommand;
+            }
+        }
+        public ICommand loadActionCommand
+        {
+            get
+            {
+                if (_loadActionCommand == null)
+                {
+                    _loadActionCommand = new RelayCommand(p => this.loadControlAction());
+                }
+                return _loadActionCommand;
+            }
+        }
 
         public ICommand loadAllCommand
         {
@@ -765,7 +922,14 @@ namespace senior_project
                 }
                 if (found) break;
             }
+<<<<<<< HEAD
             _sections[i].Steps[j].Station += "\nRedline Changes: " + _sections[i].Steps[j].StationRedline;
+=======
+            _sections[i].Steps[j].Station += "\nRedline Changes: " + _sections[i].Steps[j].RedlineStation;
+            
+
+
+>>>>>>> 6eed07386fa8caf501fd039c3f8683e47e8e48b0
         }
 
         private void loadExpectedResult()
@@ -867,9 +1031,16 @@ namespace senior_project
             } 
             else if (SelectedSection != null)
             {
+<<<<<<< HEAD
                 EditorSectionsViewModel temp = SelectedSection;
                 int i = 0;
                 for (; i < _sections.Count(); i++)
+=======
+                
+                int j = 0, location = 0;
+                bool testSelected = false;
+                for(i = 0; i< _sections.Count(); i++)
+>>>>>>> 6eed07386fa8caf501fd039c3f8683e47e8e48b0
                 {
                     if (_sections[i].IsSelected)
                     {
@@ -995,6 +1166,7 @@ namespace senior_project
                 if (found)
                     break;
             }
+<<<<<<< HEAD
 
             if (found)
             {
@@ -1002,6 +1174,35 @@ namespace senior_project
                 if (newSection == null)
                     return;
 
+=======
+            if (!sectionSelected)
+            {
+                bool testSelected = false;
+                for (i = 0; i < _sections.Count(); i++)
+                {
+                    for (int j = 0; j < _sections[i].Steps.Count(); j++)
+                    {
+
+                        if (_sections[i].Steps[j].IsSelected)
+                        {
+                            testSelected = true;
+                            break;
+                        }
+
+                    }
+                    if (testSelected) break;
+                }
+            }
+
+                string name = getNewSectionName();
+                string description = getDescription();
+                EditorSectionsViewModel newSection = new EditorSectionsViewModel((i + 1), name);
+                newSection.Description = description;
+                newSection.Steps = new ObservableCollection<EditorStepViewModel>();
+                EditorStepViewModel newStep = new EditorStepViewModel(1, "new station", "new control", "new expected", "", "", "");
+                newSection.Steps.Add(newStep);
+                
+>>>>>>> 6eed07386fa8caf501fd039c3f8683e47e8e48b0
                 _sections.Insert(i + 1, newSection);
                 _sections[i].IsSelected = false;
                 _sections[i + 1].IsSelected = true;
@@ -1009,6 +1210,7 @@ namespace senior_project
                 {
                     _sections[i].SectionID++;
                 }
+<<<<<<< HEAD
             } 
             else
             {
@@ -1019,6 +1221,9 @@ namespace senior_project
                 _sections.Add(newSection);
                 _sections.Last().IsSelected = true;
             }
+=======
+
+>>>>>>> 6eed07386fa8caf501fd039c3f8683e47e8e48b0
         }
 
         public ICommand renameCommand
