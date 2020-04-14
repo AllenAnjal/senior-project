@@ -17,11 +17,13 @@ using System.Globalization;
 using System.Linq;
 using System.IO;
 
+
 namespace senior_project
 {
     /// <summary>
     /// Interaction logic for Tester.xaml
     /// </summary>
+    /// 
     public partial class TestAdmin : Window
     {
         private MainWindow main;
@@ -49,6 +51,45 @@ namespace senior_project
             this.DataContext = test;
         }
 
+        #region more buttons
+
+        private void toggleAll(object sender, EventArgs e)
+        {
+            summonControlAction();
+            summonExpectedResult();
+            summonStation();
+        }
+
+        private void toggleCtrl(object sender, EventArgs e)
+        {
+            summonControlAction();
+        }
+
+        private void toggleExp(object sender, EventArgs e)
+        {
+            summonExpectedResult();
+        }
+
+        private void toggleStation(object sender, EventArgs e)
+        {
+            summonStation();
+        }
+
+        private void summonStation()
+        {
+            acceptStation.Visibility = Visibility.Visible;
+            rejectStation.Visibility = Visibility.Visible;
+        }
+        private void summonExpectedResult()
+        {
+            acceptExpectedbtn.Visibility = Visibility.Visible;
+            rejectExpectedResult.Visibility = Visibility.Visible;
+        }
+        private void summonControlAction()
+        {
+            acceptControl.Visibility = Visibility.Visible;
+            rejectControlAction.Visibility = Visibility.Visible;
+        }
         private void WindowClosed(object sender, EventArgs e)
         {
             main.Show();
@@ -59,6 +100,8 @@ namespace senior_project
         {
             this.Close();
         }
+
+        #endregion
 
 
     }
@@ -471,13 +514,58 @@ namespace senior_project
         private ICommand _MoveUpCommand;
         private ICommand _MoveDownCommand;
         private ICommand _SaveToXmlCommand;
-        private ICommand _CommitAll;
         private ICommand _MoveSectionUp;
         private ICommand _MoveSectionDown;
         private ICommand _loadAll;
+        private ICommand _loadStationCommand;
+        private ICommand _loadExpectedCommand;
+        private ICommand _loadActionCommand;
         private ICommand _discardAll;
+        private ICommand _discardStationCommand;
+        private ICommand _discardExpectedCommand;
+        private ICommand _discardActionCommand;
+        private ICommand _CommitAll;
+        private ICommand _commitStationCommand;
+        private ICommand _commitExpectedCommand;
+        private ICommand _commitActionCommand;
+
 
         #region redline stuff
+
+        public ICommand discardStationCommand
+        {
+            get
+            {
+                if (_discardStationCommand == null)
+                {
+                    _discardStationCommand = new RelayCommand(p => this.discardStation());
+                }
+                return _discardStationCommand;
+            }
+        }
+        public ICommand discardExpectedCommand
+        {
+            get
+            {
+                if (_discardExpectedCommand == null)
+                {
+                    _discardExpectedCommand = new RelayCommand(p => this.discardExpectedResult());
+                }
+                return _discardExpectedCommand;
+            }
+        }
+        public ICommand discardActionCommand
+        {
+            get
+            {
+                if (_discardActionCommand == null)
+                {
+                    _discardActionCommand = new RelayCommand(p => this.discardControlAction());
+                }
+                return _discardActionCommand;
+            }
+        }
+
         public ICommand discardAllCommand
         {
             get
@@ -559,6 +647,41 @@ namespace senior_project
             }
             _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].orgControlAction;
         }
+
+        public ICommand commitStationCommand
+        {
+            get
+            {
+                if (_commitStationCommand == null)
+                {
+                    _commitStationCommand = new RelayCommand(p => this.commitStation());
+                }
+                return _commitStationCommand;
+            }
+        }
+        public ICommand commitExpectedCommand
+        {
+            get
+            {
+                if (_commitExpectedCommand == null)
+                {
+                    _commitExpectedCommand = new RelayCommand(p => this.commitExpectedResult());
+                }
+                return _commitExpectedCommand;
+            }
+        }
+        public ICommand commitActionCommand
+        {
+            get
+            {
+                if (_commitActionCommand == null)
+                {
+                    _commitActionCommand = new RelayCommand(p => this.commitControlAction());
+                }
+                return _commitActionCommand;
+            }
+        }
+
         public ICommand CommitAllCommand
         {
             get
@@ -641,6 +764,39 @@ namespace senior_project
             _sections[i].Steps[j].ControlAction = _sections[i].Steps[j].RedlineControlAction;
         }
 
+        public ICommand loadStationCommand
+        {
+            get
+            {
+                if (_loadStationCommand == null)
+                {
+                    _loadStationCommand = new RelayCommand(p => this.loadStation());
+                }
+                return _loadStationCommand;
+            }
+        }
+        public ICommand loadExpectedCommand
+        {
+            get
+            {
+                if (_loadExpectedCommand == null)
+                {
+                    _loadExpectedCommand = new RelayCommand(p => this.loadExpectedResult());
+                }
+                return _loadExpectedCommand;
+            }
+        }
+        public ICommand loadActionCommand
+        {
+            get
+            {
+                if (_loadActionCommand == null)
+                {
+                    _loadActionCommand = new RelayCommand(p => this.loadControlAction());
+                }
+                return _loadActionCommand;
+            }
+        }
 
         public ICommand loadAllCommand
         {
@@ -682,6 +838,9 @@ namespace senior_project
                 if (found) break;
             }
             _sections[i].Steps[j].Station += "\nRedline Changes: " + _sections[i].Steps[j].RedlineStation;
+            
+
+
         }
 
         private void loadExpectedResult()
@@ -758,7 +917,7 @@ namespace senior_project
                 _sections.RemoveAt(i);
             else
             {
-                i = 0;
+                
                 int j = 0, location = 0;
                 bool testSelected = false;
                 for(i = 0; i< _sections.Count(); i++)
@@ -869,10 +1028,23 @@ namespace senior_project
             }
             if (!sectionSelected)
             {
-                MessageBox.Show("No section is selected");
+                bool testSelected = false;
+                for (i = 0; i < _sections.Count(); i++)
+                {
+                    for (int j = 0; j < _sections[i].Steps.Count(); j++)
+                    {
+
+                        if (_sections[i].Steps[j].IsSelected)
+                        {
+                            testSelected = true;
+                            break;
+                        }
+
+                    }
+                    if (testSelected) break;
+                }
             }
-            else
-            {
+
                 string name = getNewSectionName();
                 string description = getDescription();
                 EditorSectionsViewModel newSection = new EditorSectionsViewModel((i + 1), name);
@@ -886,10 +1058,7 @@ namespace senior_project
                 {
                     _sections[j].SectionID++;
                 }
-                
-                
 
-            }
         }
 
         public ICommand renameCommand
