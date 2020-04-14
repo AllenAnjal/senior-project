@@ -259,6 +259,7 @@ namespace senior_project
         private bool _result = false;
         private bool _resultChanged = false;
         private bool _isSelected = false;
+        private int _stepID;
 
         #endregion
 
@@ -286,7 +287,18 @@ namespace senior_project
             get { return this; }
         }
 
-        public int StepID { get; set; }
+        public int StepID
+        {
+            get { return _stepID; }
+            set
+            {
+                if (value != _stepID)
+                {
+                    _stepID = value;
+                    OnPropertyChanged("ItSelf");
+                }
+            }
+        }
 
         public string Station
         {
