@@ -559,7 +559,6 @@ namespace senior_project
         private ICommand _MoveUpCommand;
         private ICommand _MoveDownCommand;
         private ICommand _SaveToXmlCommand;
-        private ICommand _CommitAll;
         private ICommand _MoveSectionUp;
         private ICommand _MoveSectionDown;
         private ICommand _loadAll;

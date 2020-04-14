@@ -7,7 +7,6 @@
     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
     xmlns:local="clr-namespace:senior_project"
     Title="Editor"
-    Width="800"
     Height="600"
     MinWidth="800"
     MinHeight="600"
@@ -39,11 +38,7 @@
                 <MenuItem Command="{Binding MoveSectionUpCommand}" Header="_Move Section Up"/>
             </MenuItem>
             <MenuItem Header="_Redline Changes">
-                <MenuItem Command="{Binding loadAllCommand}" Header="_Load All Redline Changes"/>
                 <MenuItem Header="_Select Redline to load">
-                    <MenuItem Command="{Binding loadStationCommand}" Header="_load Station"/>
-                    <MenuItem Command="{Binding loadExpectedCommand}" Header="_load Expected Result"/>
-                    <MenuItem Command="{Binding loaddActionCommand}" Header="_load Control Action"/>
                 </MenuItem>
                 <MenuItem Command="{Binding discardAllCommand}" Header="_Discard All Changes"/>
                 <MenuItem Header="_Select Redline to discard">
@@ -201,15 +196,6 @@
                     BorderThickness="1"
                     CornerRadius="7">
                     <DockPanel Margin="5">
-                        <Label
-                            x:Name="lblStation"
-                            Height="auto"
-                            Background="#025dba"
-                            BorderThickness="1"
-                            FontFamily="Verdana"
-                            FontSize="18"
-                            FontWeight="DemiBold"
-                            TextElement.Foreground="White"
                             DockPanel.Dock="Top">
                             <Label.Style>
                                 <Style TargetType="Label">
@@ -283,15 +269,6 @@
                     BorderThickness="1"
                     CornerRadius="7">
                     <DockPanel Margin="5">
-                        <Label
-                            x:Name="lblControlAction"
-                            Height="auto"
-                            Background="#025dba"
-                            BorderThickness="1"
-                            FontFamily="Verdana"
-                            FontSize="18"
-                            FontWeight="DemiBold"
-                            TextElement.Foreground="White"
                             DockPanel.Dock="Top">
                             <Label.Style>
                                 <Style TargetType="Label">
